@@ -35,10 +35,6 @@ st.set_page_config(
 
 PHASE_ORDER = ["Pre-match", "First innings", "Break", "Second innings", "Exit phase"]
 
-# ─────────────────────────────────────────────────────────
-# LIGHT THEMES — one accent colour per page
-# legend_rgba uses rgba() format — Plotly does NOT accept 8-digit hex
-# ─────────────────────────────────────────────────────────
 THEMES = {
     "Overview": {
         "bg":          "#F6F4FF",
@@ -150,9 +146,6 @@ PAGES = [
     ("📦", "Resource Planning"),
 ]
 
-# ─────────────────────────────────────────────────────────
-# SESSION STATE
-# ─────────────────────────────────────────────────────────
 if "active_page" not in st.session_state:
     st.session_state.active_page = "Overview"
 
@@ -182,17 +175,14 @@ def load_all():
     for df in [ops, inc, evt, zone, stadium]:
         df.columns = df.columns.str.strip().str.lower()
 
-    # Dims → ops
     ops = ops.merge(zone[["zone_id", "zone_name", "zone_type"]], on="zone_id", how="left")
     zone_s = zone[["zone_id", "stadium_id"]].merge(
         stadium[["stadium_id", "stadium_name"]], on="stadium_id")
     ops = ops.merge(zone_s[["zone_id", "stadium_name"]], on="zone_id", how="left")
 
-    # Event fields
     evt_cols = ["event_id", "season_year", "is_final_match", "total_attendance"]
     ops = ops.merge(evt[evt_cols], on="event_id", how="left")
 
-    # Derived columns
     ops["heat_risk_index"]      = ops["temperature_celsius"] * 0.7 + ops["humidity_percent"] * 0.3
     ops["occupancy_pct"]        = ops["occupancy_rate"] * 100
     ops["capacity_breach"]      = (ops["occupancy_rate"] >= 0.55).astype(int)
@@ -211,19 +201,17 @@ def load_all():
         labels=["Acceptable under 10 min", "Moderate 10-20 min",
                 "High 20-35 min", "Extreme 25+ min"])
 
-    # Match category
     q75 = evt["total_attendance"].quantile(0.75)
     q40 = evt["total_attendance"].quantile(0.40)
     evt["match_category"] = np.select(
         [evt["is_final_match"] == 1,
          evt["total_attendance"] >= q75,
          evt["total_attendance"] >= q40],
-        ["Final Match", "High Attendance Match", "Moderate Attendace Match"],
+        ["Final Match", "High Attendance Match", "Moderate Attendance Match"],
         default="Regular Match")
     ops = ops.merge(evt[["event_id", "match_category"]], on="event_id", how="left")
     ops["match_category"] = ops["match_category"].fillna("Regular Match")
 
-    # Incidents enrichment
     inc = inc.merge(evt[["event_id", "season_year"]], on="event_id", how="left")
     inc = inc.merge(zone_s[["zone_id", "stadium_name"]], on="zone_id", how="left")
 
@@ -237,7 +225,7 @@ except Exception as e:
     st.stop()
 
 # ─────────────────────────────────────────────────────────
-# CSS INJECTION — light theme, per page
+# CSS INJECTION
 # ─────────────────────────────────────────────────────────
 def inject_css(t):
     st.markdown(f"""
@@ -256,8 +244,6 @@ html, body, [class*="css"] {{
     padding-bottom: 1rem;
     max-width: 1580px;
 }}
-
-/* ── Sidebar ── */
 section[data-testid="stSidebar"] {{
     background-color: {t['sidebar']};
     border-right: 2px solid {t['border']};
@@ -274,8 +260,6 @@ section[data-testid="stSidebar"] label {{
     letter-spacing: 0.6px;
     color: {t['text2']} !important;
 }}
-
-/* ── Nav buttons in sidebar ── */
 section[data-testid="stSidebar"] .stButton > button {{
     width: 100% !important;
     text-align: left !important;
@@ -296,8 +280,6 @@ section[data-testid="stSidebar"] .stButton > button:hover {{
     border-color: {t['accent']} !important;
     color: {t['accent2']} !important;
 }}
-
-/* ── Page header ── */
 .dash-header {{
     background: linear-gradient(120deg, {t['card']} 60%, {t['accent_lt']});
     border: 1px solid {t['border']};
@@ -324,8 +306,6 @@ section[data-testid="stSidebar"] .stButton > button:hover {{
     margin: 5px 0 0 0;
     font-weight: 500;
 }}
-
-/* ── KPI cards ── */
 .kpi-card {{
     background: {t['card']};
     border: 1px solid {t['border']};
@@ -347,7 +327,6 @@ section[data-testid="stSidebar"] .stButton > button:hover {{
 .kpi-warn::before  {{ background: {t['warn_col']}; }}
 .kpi-crit::before  {{ background: {t['crit_col']}; }}
 .kpi-ok::before    {{ background: {t['ok_col']}; }}
-
 .kpi-label {{
     font-size: 10px;
     font-weight: 700;
@@ -370,23 +349,17 @@ section[data-testid="stSidebar"] .stButton > button:hover {{
     margin-top: 5px;
     font-weight: 500;
 }}
-
-/* ── Charts ── */
 div[data-testid="stPlotlyChart"] > div {{
     border-radius: 14px !important;
     border: 1px solid {t['border']} !important;
     box-shadow: 0 2px 8px rgba(0,0,0,0.045) !important;
 }}
-
-/* ── Dataframe ── */
 [data-testid="stDataFrame"] {{
     border-radius: 12px;
     border: 1px solid {t['border']};
     overflow: hidden;
     box-shadow: 0 1px 6px rgba(0,0,0,0.04);
 }}
-
-/* ── Section label ── */
 .sec-lbl {{
     font-family: 'Sora', sans-serif;
     font-size: 12px;
@@ -398,12 +371,9 @@ div[data-testid="stPlotlyChart"] > div {{
     padding-bottom: 4px;
     border-bottom: 2px solid {t['accent_lt']};
 }}
-
-/* scrollbar */
 ::-webkit-scrollbar {{ width: 5px; height: 5px; }}
 ::-webkit-scrollbar-track {{ background: {t['bg']}; }}
 ::-webkit-scrollbar-thumb {{ background: {t['border']}; border-radius: 3px; }}
-
 hr {{ border-color: {t['border']} !important; opacity: 0.6; }}
 </style>
 """, unsafe_allow_html=True)
@@ -413,7 +383,6 @@ hr {{ border-color: {t['border']} !important; opacity: 0.6; }}
 # HELPERS
 # ─────────────────────────────────────────────────────────
 def kpi_card(label, value, style="info", sub=""):
-    """Render a KPI card inside whatever st.column it is called from."""
     sub_html = f'<div class="kpi-sub">{sub}</div>' if sub else ""
     st.markdown(f"""
 <div class="kpi-card kpi-{style}">
@@ -438,11 +407,7 @@ def sec_label(text):
     st.markdown(f'<div class="sec-lbl">{text}</div>', unsafe_allow_html=True)
 
 
-# ─────────────────────────────────────────────────────────
-# COHERE AI INSIGHTS HELPERS
-# ─────────────────────────────────────────────────────────
 def get_cohere_key():
-    """Read Cohere API key from Streamlit secrets."""
     try:
         return st.secrets.get("COHERE_API_KEY", "")
     except Exception:
@@ -450,18 +415,14 @@ def get_cohere_key():
 
 
 def generate_cohere_insights(summary_text, temperature_value=0.4, token_value=700):
-    """Generate dashboard insights and recommendations using Cohere."""
     api_key = get_cohere_key()
-
     if not api_key:
         return (
             "⚠️ Cohere API key not found. Add your key in `.streamlit/secrets.toml` "
             "or Streamlit Cloud Secrets as: `COHERE_API_KEY = \"your_api_key_here\"`."
         )
-
     try:
         co = cohere.Client(api_key)
-
         prompt = f"""
 You are a professional data analyst for an IPL Crowd Safety Management Dashboard.
 
@@ -480,7 +441,6 @@ Rules:
 Dashboard Summary:
 {summary_text}
 """
-
         response = co.chat(
             model="command-r-plus-08-2024",
             message=prompt,
@@ -488,13 +448,11 @@ Dashboard Summary:
             max_tokens=token_value,
         )
         return response.text
-
     except Exception as e:
         return f"❌ Cohere insight generation failed: {e}"
 
 
 def sfig(fig, t, h=320):
-    """Apply light theme styling to a plotly figure. Uses rgba() for legend bgcolor."""
     fig.update_layout(
         height=h,
         paper_bgcolor=t["paper_bg"],
@@ -503,7 +461,7 @@ def sfig(fig, t, h=320):
         title_font=dict(color=t["text"], size=14, family="Sora"),
         title_x=0.03,
         legend=dict(
-            bgcolor=t["legend_rgba"],        # rgba() — never 8-digit hex
+            bgcolor=t["legend_rgba"],
             bordercolor=t["border"],
             borderwidth=1,
             font=dict(color=t["text2"], size=11),
@@ -527,7 +485,7 @@ def sfig(fig, t, h=320):
 
 
 # ─────────────────────────────────────────────────────────
-# SIDEBAR  — navigation + global filters
+# SIDEBAR
 # ─────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("""
@@ -554,17 +512,13 @@ with st.sidebar:
 
     all_stadiums = sorted(ops["stadium_name"].dropna().unique())
     sel_stadium  = st.multiselect("Stadium", all_stadiums, default=all_stadiums, key="f_stad")
-
-    sel_phase = st.multiselect("Phase", PHASE_ORDER, default=PHASE_ORDER, key="f_ph")
-
-    all_years = sorted(ops["season_year"].dropna().astype(int).unique())
-    sel_year  = st.multiselect("Year", all_years, default=all_years, key="f_yr")
-
-    all_zones = sorted(ops["zone_type"].dropna().unique())
-    sel_zone  = st.multiselect("Zone Type", all_zones, default=all_zones, key="f_zt")
-
-    all_cats  = sorted(ops["match_category"].dropna().unique())
-    sel_cat   = st.multiselect("Match Category", all_cats, default=all_cats, key="f_mc")
+    sel_phase    = st.multiselect("Phase", PHASE_ORDER, default=PHASE_ORDER, key="f_ph")
+    all_years    = sorted(ops["season_year"].dropna().astype(int).unique())
+    sel_year     = st.multiselect("Year", all_years, default=all_years, key="f_yr")
+    all_zones    = sorted(ops["zone_type"].dropna().unique())
+    sel_zone     = st.multiselect("Zone Type", all_zones, default=all_zones, key="f_zt")
+    all_cats     = sorted(ops["match_category"].dropna().unique())
+    sel_cat      = st.multiselect("Match Category", all_cats, default=all_cats, key="f_mc")
 
     st.markdown("<hr>", unsafe_allow_html=True)
     st.markdown(
@@ -572,23 +526,12 @@ with st.sidebar:
         'margin:0 0 8px 0;opacity:0.6;">COHERE AI SETTINGS</p>',
         unsafe_allow_html=True)
 
-    ai_temperature = st.slider(
-        "Temperature",
-        min_value=0.0,
-        max_value=1.0,
-        value=0.4,
-        step=0.1,
-        help="Lower values give professional and consistent insights. Higher values make responses more creative."
-    )
-
-    ai_max_tokens = st.slider(
-        "Max Tokens",
-        min_value=100,
-        max_value=2000,
-        value=700,
-        step=100,
-        help="Controls the maximum length of the AI-generated insights."
-    )
+    ai_temperature = st.slider("Temperature", min_value=0.0, max_value=1.0,
+                                value=0.4, step=0.1,
+                                help="Lower = professional. Higher = creative.")
+    ai_max_tokens  = st.slider("Max Tokens", min_value=100, max_value=2000,
+                                value=700, step=100,
+                                help="Controls length of AI insights.")
 
 # ─────────────────────────────────────────────────────────
 # FILTER DATA
@@ -633,7 +576,7 @@ high_risk_zones = int(f[f["bottleneck_risk_score"] >= 70]["zone_id"].nunique()) 
 delayed_med     = int(f[f["ambulance_response_time"] >= 10]["zone_id"].nunique()) \
     if "zone_id" in f.columns else 0
 
-res_rate    = round(
+res_rate = round(
     inc_f[inc_f["status"] == "Resolved"].shape[0] / max(len(inc_f), 1) * 100, 2
 ) if not inc_f.empty and "status" in inc_f.columns else 0
 
@@ -647,7 +590,7 @@ med_teams    = int(f["deployed_medical_teams"].sum())
 staff_ratio  = round(f["staff_adequacy_ratio"].mean(), 2)
 
 # ─────────────────────────────────────────────────────────
-# COHERE AI SUMMARY TEXT
+# COHERE SUMMARY TEXT
 # ─────────────────────────────────────────────────────────
 summary_text = f"""
 Selected Filters Summary:
@@ -695,7 +638,6 @@ if page == "Overview":
                 "IPL Stadium Crowd Management & Public Safety Dashboard",
                 "Executive overview — crowd movement, stadium risk, medical response and match safety performance")
 
-    # KPI row — individual columns, no HTML flex
     k1, k2, k3, k4, k5 = st.columns(5)
     with k1: kpi_card("Safety Risk Score",     safety_risk,        "crit")
     with k2: kpi_card("Medical Incident Rate", med_rate,           "warn")
@@ -770,7 +712,7 @@ if page == "Overview":
 
 
 # ═══════════════════════════════════════════════════════════
-# PAGE 2  ·  CROWD FLOW & CONGESTION
+# PAGE 2  ·  CROWD FLOW
 # ═══════════════════════════════════════════════════════════
 elif page == "Crowd Flow":
     page_header("🌊",
@@ -778,7 +720,7 @@ elif page == "Crowd Flow":
                 "Zone congestion, crowd pressure trends, and high-risk areas across match phases")
 
     k1, k2, k3, k4 = st.columns(4)
-    with k1: kpi_card("High Risk Zones",     high_risk_zones,     "crit", "bottleneck ≥ 70")
+    with k1: kpi_card("High Risk Zones",     high_risk_zones,     "crit", "bottleneck >= 70")
     with k2: kpi_card("Avg Bottleneck Risk", avg_bottleneck,      "warn")
     with k3: kpi_card("Avg Queue Wait",      f"{avg_queue} min",  "info")
     with k4: kpi_card("Avg Crowd Pressure",  avg_pressure,        "ok")
@@ -828,13 +770,12 @@ elif page == "Crowd Flow":
         fig.update_traces(textinfo="percent+label", textfont_size=10)
         st.plotly_chart(sfig(fig, t, 275), use_container_width=True)
 
-    # ── Dual metric grouped bar — Crowd Pressure vs Bottleneck Risk by Zone ──
     dual = (
         f.groupby("zone_name", as_index=False)
         .agg(
-            crowd_pressure=("crowd_pressure_index",  "mean"),
-            bottleneck=    ("bottleneck_risk_score",  "mean"),
-            zone_type=     ("zone_type",              "first"),
+            crowd_pressure=("crowd_pressure_index", "mean"),
+            bottleneck=    ("bottleneck_risk_score", "mean"),
+            zone_type=     ("zone_type",             "first"),
         )
         .sort_values("bottleneck", ascending=False)
     )
@@ -842,91 +783,52 @@ elif page == "Crowd Flow":
     dual["bottleneck"]     = dual["bottleneck"].round(2)
 
     fig = go.Figure()
-
-    # ── FIX: replaced deprecated `titlefont` with `title=dict(font=dict(...))` ──
     fig.add_trace(go.Bar(
         name="Avg Crowd Pressure Index",
-        y=dual["zone_name"],
-        x=dual["crowd_pressure"],
+        y=dual["zone_name"], x=dual["crowd_pressure"],
         orientation="h",
         marker=dict(
             color=dual["crowd_pressure"],
-            colorscale=[
-                [0.0, t["accent_lt"]],
-                [0.5, t["accent"]],
-                [1.0, t["crit_col"]],
-            ],
+            colorscale=[[0.0, t["accent_lt"]], [0.5, t["accent"]], [1.0, t["crit_col"]]],
             showscale=True,
             colorbar=dict(
-                title=dict(
-                    text="Pressure",
-                    font=dict(color=t["text2"], size=11),
-                ),
-                thickness=12,
-                len=0.45,
-                x=1.02,
-                xanchor="left",
-                y=1.0,
-                yanchor="top",
-                tickfont=dict(color=t["text2"], size=10),
+                title=dict(text="Pressure", font=dict(color=t["text2"], size=11)),
+                thickness=12, len=0.45, x=1.02, xanchor="left",
+                y=1.0, yanchor="top", tickfont=dict(color=t["text2"], size=10),
             ),
         ),
         text=dual["crowd_pressure"],
-        texttemplate="%{text:.1f}",
-        textposition="outside",
+        texttemplate="%{text:.1f}", textposition="outside",
         textfont=dict(color=t["text2"], size=10),
         hovertemplate="<b>%{y}</b><br>Crowd Pressure: %{x:.2f}<extra></extra>",
     ))
-
     fig.add_trace(go.Bar(
         name="Avg Bottleneck Risk Score",
-        y=dual["zone_name"],
-        x=dual["bottleneck"],
+        y=dual["zone_name"], x=dual["bottleneck"],
         orientation="h",
         marker=dict(
             color=dual["bottleneck"],
-            colorscale=[
-                [0.0, "#FEF3C7"],
-                [0.5, t["warn_col"]],
-                [1.0, "#DC2626"],
-            ],
+            colorscale=[[0.0, "#FEF3C7"], [0.5, t["warn_col"]], [1.0, "#DC2626"]],
             showscale=True,
             colorbar=dict(
-                title=dict(
-                    text="Bottleneck",
-                    font=dict(color=t["text2"], size=11),
-                ),
-                thickness=12,
-                len=0.45,
-                x=1.02,
-                xanchor="left",
-                y=0.45,
-                yanchor="top",
-                tickfont=dict(color=t["text2"], size=10),
+                title=dict(text="Bottleneck", font=dict(color=t["text2"], size=11)),
+                thickness=12, len=0.45, x=1.02, xanchor="left",
+                y=0.45, yanchor="top", tickfont=dict(color=t["text2"], size=10),
             ),
         ),
         text=dual["bottleneck"],
-        texttemplate="%{text:.1f}",
-        textposition="outside",
+        texttemplate="%{text:.1f}", textposition="outside",
         textfont=dict(color=t["text2"], size=10),
         hovertemplate="<b>%{y}</b><br>Bottleneck Risk: %{x:.2f}<extra></extra>",
     ))
-
     fig.update_layout(
         barmode="group",
         title="Crowd Pressure vs Bottleneck Risk by Zone",
         yaxis=dict(categoryorder="total ascending"),
-        bargap=0.18,
-        bargroupgap=0.06,
+        bargap=0.18, bargroupgap=0.06,
         margin=dict(l=30, r=110, t=50, b=60),
-        legend=dict(
-            orientation="h",
-            x=0.0,
-            y=-0.15,
-            xanchor="left",
-            yanchor="top",
-            font=dict(size=11),
-        ),
+        legend=dict(orientation="h", x=0.0, y=-0.15,
+                    xanchor="left", yanchor="top", font=dict(size=11)),
     )
     st.plotly_chart(sfig(fig, t, 440), use_container_width=True)
 
@@ -943,7 +845,7 @@ elif page == "Medical & Heat":
     with k1: kpi_card("Medical Incident Rate",  med_rate,          "warn", "per 1K people")
     with k2: kpi_card("Avg Ambulance Response", f"{amb_resp} min", "crit")
     with k3: kpi_card("Avg Heat Risk Index",    avg_heat,          "warn")
-    with k4: kpi_card("Delayed Medical Zones",  delayed_med,       "crit", "response ≥ 10 min")
+    with k4: kpi_card("Delayed Medical Zones",  delayed_med,       "crit", "response >= 10 min")
 
     c1, c2 = st.columns([1.55, 1])
 
@@ -1149,12 +1051,11 @@ elif page == "Resource Planning":
         fig.update_layout(showlegend=False)
         st.plotly_chart(sfig(fig, t, 275), use_container_width=True)
 
-    # Readiness matrix
     mat2 = f.pivot_table(values="staff_adequacy_ratio",
                          index="stadium_name", columns="phase", aggfunc="mean").round(2)
     ord_cols = [p for p in PHASE_ORDER if p in mat2.columns]
     mat2 = mat2[ord_cols]
-    sec_label("Staff Adequacy Ratio — Stadium × Phase")
+    sec_label("Staff Adequacy Ratio — Stadium x Phase")
     st.dataframe(mat2.style.format("{:.2f}").background_gradient(
         cmap="Greens", axis=None), use_container_width=True)
 
@@ -1167,4 +1068,4 @@ st.markdown(
     f'<p style="text-align:center;font-size:11px;color:{t["text2"]};padding:4px 0;">'
     "🏏 IPL Crowd Safety Management Dashboard &nbsp;|&nbsp; Powered by Streamlit, Plotly & Cohere AI"
     "</p>",
-    unsafe_allow_html=True)v
+    unsafe_allow_html=True)
