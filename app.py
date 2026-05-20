@@ -668,7 +668,7 @@ if page == "Overview":
     k1, k2, k3, k4, k5 = st.columns(5)
     with k1: kpi_card("Overall Risk Score",    overall_risk_score,      "crit", "Advanced combined score")
     with k2: kpi_card("Medical Incident Rate", med_rate,                "warn", "Per 1K people")
-    with k3: kpi_card("Capacity Breach",       cap_breach,        "info")
+    with k3: kpi_card("Capacity Breach",       f"{cap_breach}%",        "info")
     with k4: kpi_card("Resolution Rate",       f"{res_rate}%",          "ok")
     with k5: kpi_card("Ambulance Response",    f"{amb_resp} min",       "warn")
 
