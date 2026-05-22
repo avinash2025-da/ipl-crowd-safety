@@ -34,71 +34,71 @@ THEMES_DARK = {
         "bg": "#0B101E", "sidebar": "#070B14", "card": "#131C33",
         "border": "#212F4F", "accent": "#00F0FF", "accent_lt": "rgba(0, 240, 255, 0.12)", "accent2": "#38BDF8",
         "text": "#FAFAFA", "text2": "#94A3B8",
-        "plot_bg": "#131C33", "paper_bg": "#0B101E", "grid": "#1F2F4D",
+        "plot_bg": "#121A2F", "paper_bg": "#090D1A", "grid": "#212F4F",
         "legend_rgba": "rgba(11,16,30,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
         "palette": ["#00F0FF", "#38BDF8", "#FBBF24", "#34D399", "#F87171", "#A78BFA"],
         "crit_col": "#F43F5E", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#00F0FF",
     },
     "Overview": {
-        "bg": "#0B101E", "sidebar": "#070B14", "card": "#131C33",
-        "border": "#212F4F", "accent": "#00F0FF", "accent_lt": "rgba(0, 240, 255, 0.12)", "accent2": "#38BDF8",
+        "bg": "#0B1123", "sidebar": "#080C1A", "card": "#141C3B",
+        "border": "#232F5A", "accent": "#38BDF8", "accent_lt": "rgba(56, 189, 248, 0.12)", "accent2": "#0EA5E9",
         "text": "#FAFAFA", "text2": "#94A3B8",
-        "plot_bg": "#131C33", "paper_bg": "#0B101E", "grid": "#1F2F4D",
-        "legend_rgba": "rgba(11,16,30,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
-        "palette": ["#00F0FF", "#38BDF8", "#FBBF24", "#34D399", "#F87171", "#A78BFA"],
-        "crit_col": "#F43F5E", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#00F0FF",
+        "plot_bg": "#141C3B", "paper_bg": "#0B1123", "grid": "#1D2B4A",
+        "legend_rgba": "rgba(11,17,35,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
+        "palette": ["#38BDF8", "#0ea5e9", "#FBBF24", "#34D399", "#F87171", "#A78BFA"],
+        "crit_col": "#F43F5E", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#38BDF8",
     },
     "Crowd Flow": {
-        "bg": "#0B101E", "sidebar": "#070B14", "card": "#131C33",
-        "border": "#212F4F", "accent": "#38BDF8", "accent_lt": "rgba(56, 189, 248, 0.12)", "accent2": "#0EA5E9",
+        "bg": "#061320", "sidebar": "#040D17", "card": "#0F2136",
+        "border": "#1C3654", "accent": "#00F0FF", "accent_lt": "rgba(0, 240, 255, 0.12)", "accent2": "#38BDF8",
         "text": "#FAFAFA", "text2": "#94A3B8",
-        "plot_bg": "#131C33", "paper_bg": "#0B101E", "grid": "#1F2F4D",
-        "legend_rgba": "rgba(11,16,30,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
-        "palette": ["#38BDF8", "#0ea5e9", "#FBBF24", "#10B981", "#8B5CF6", "#EF4444"],
-        "crit_col": "#EF4444", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#38BDF8",
+        "plot_bg": "#0F2136", "paper_bg": "#061320", "grid": "#192F47",
+        "legend_rgba": "rgba(6,19,32,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
+        "palette": ["#00F0FF", "#38BDF8", "#FBBF24", "#34D399", "#F43F5E", "#A78BFA"],
+        "crit_col": "#F43F5E", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#00F0FF",
     },
     "Medical & Heat": {
-        "bg": "#0B101E", "sidebar": "#070B14", "card": "#131C33",
-        "border": "#212F4F", "accent": "#F43F5E", "accent_lt": "rgba(244, 63, 94, 0.12)", "accent2": "#E11D48",
+        "bg": "#1C0810", "sidebar": "#12050A", "card": "#2E111D",
+        "border": "#4F2134", "accent": "#F43F5E", "accent_lt": "rgba(244, 63, 94, 0.12)", "accent2": "#E11D48",
         "text": "#FAFAFA", "text2": "#94A3B8",
-        "plot_bg": "#131C33", "paper_bg": "#0B101E", "grid": "#1F2F4D",
-        "legend_rgba": "rgba(11,16,30,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
+        "plot_bg": "#2E111D", "paper_bg": "#1C0810", "grid": "#421B2B",
+        "legend_rgba": "rgba(28,8,16,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
         "palette": ["#F43F5E", "#E11D48", "#F97316", "#8B5CF6", "#3B82F6", "#10B981"],
-        "crit_col": "#F43F5E", "warn_col": "#F97316", "ok_col": "#10B981", "info_col": "#8B5CF6",
+        "crit_col": "#F43F5E", "warn_col": "#F97316", "ok_col": "#10B981", "info_col": "#F43F5E",
     },
     "Security": {
-        "bg": "#0B101E", "sidebar": "#070B14", "card": "#131C33",
-        "border": "#212F4F", "accent": "#FBBF24", "accent_lt": "rgba(251, 191, 36, 0.12)", "accent2": "#B45309",
+        "bg": "#1A1005", "sidebar": "#100A03", "card": "#2F1F0C",
+        "border": "#4F3418", "accent": "#FBBF24", "accent_lt": "rgba(251, 191, 36, 0.12)", "accent2": "#B45309",
         "text": "#FAFAFA", "text2": "#94A3B8",
-        "plot_bg": "#131C33", "paper_bg": "#0B101E", "grid": "#1F2F4D",
-        "legend_rgba": "rgba(11,16,30,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
+        "plot_bg": "#2F1F0C", "paper_bg": "#1A1005", "grid": "#422C14",
+        "legend_rgba": "rgba(26,16,5,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
         "palette": ["#FBBF24", "#F97316", "#3B82F6", "#10B981", "#8B5CF6", "#EF4444"],
-        "crit_col": "#EF4444", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#3B82F6",
+        "crit_col": "#EF4444", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#FBBF24",
     },
     "Resource Planning": {
-        "bg": "#0B101E", "sidebar": "#070B14", "card": "#131C33",
-        "border": "#212F4F", "accent": "#10B981", "accent_lt": "rgba(16, 185, 129, 0.12)", "accent2": "#047857",
+        "bg": "#051610", "sidebar": "#030E0A", "card": "#0D2A20",
+        "border": "#1A493B", "accent": "#10B981", "accent_lt": "rgba(16, 185, 129, 0.12)", "accent2": "#047857",
         "text": "#FAFAFA", "text2": "#94A3B8",
-        "plot_bg": "#131C33", "paper_bg": "#0B101E", "grid": "#1F2F4D",
-        "legend_rgba": "rgba(11,16,30,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
+        "plot_bg": "#0D2A20", "paper_bg": "#051610", "grid": "#153C31",
+        "legend_rgba": "rgba(5,22,16,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
         "palette": ["#10B981", "#34D399", "#8B5CF6", "#0ea5e9", "#FBBF24", "#EF4444"],
-        "crit_col": "#EF4444", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#0ea5e9",
+        "crit_col": "#EF4444", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#10B981",
     },
     "Risk Matrix": {
-        "bg": "#0B101E", "sidebar": "#070B14", "card": "#131C33",
-        "border": "#212F4F", "accent": "#EF4444", "accent_lt": "rgba(239, 68, 68, 0.12)", "accent2": "#9C1C1C",
+        "bg": "#1D0707", "sidebar": "#120404", "card": "#301212",
+        "border": "#552121", "accent": "#EF4444", "accent_lt": "rgba(239, 68, 68, 0.12)", "accent2": "#9C1C1C",
         "text": "#FAFAFA", "text2": "#94A3B8",
-        "plot_bg": "#131C33", "paper_bg": "#0B101E", "grid": "#1F2F4D",
-        "legend_rgba": "rgba(11,16,30,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
+        "plot_bg": "#301212", "paper_bg": "#1D0707", "grid": "#471919",
+        "legend_rgba": "rgba(29,7,7,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
         "palette": ["#EF4444", "#F97316", "#FBBF24", "#10B981", "#3B82F6", "#8B5CF6"],
-        "crit_col": "#EF4444", "warn_col": "#F97316", "ok_col": "#10B981", "info_col": "#3B82F6",
+        "crit_col": "#EF4444", "warn_col": "#F97316", "ok_col": "#10B981", "info_col": "#EF4444",
     },
     "Ask AI": {
-        "bg": "#0B101E", "sidebar": "#070B14", "card": "#131C33",
-        "border": "#212F4F", "accent": "#818CF8", "accent_lt": "rgba(129, 140, 248, 0.12)", "accent2": "#A78BFA",
+        "bg": "#100C26", "sidebar": "#0A0819", "card": "#1D1845",
+        "border": "#312B6E", "accent": "#818CF8", "accent_lt": "rgba(129, 140, 248, 0.12)", "accent2": "#A78BFA",
         "text": "#FAFAFA", "text2": "#94A3B8",
-        "plot_bg": "#131C33", "paper_bg": "#0B101E", "grid": "#1F2F4D",
-        "legend_rgba": "rgba(11,16,30,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
+        "plot_bg": "#1D1845", "paper_bg": "#100C26", "grid": "#271E57",
+        "legend_rgba": "rgba(16,12,38,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
         "palette": ["#818CF8", "#A78BFA", "#FBBF24", "#10B981", "#EF4444", "#3B82F6"],
         "crit_col": "#EF4444", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#818CF8",
     },
@@ -106,76 +106,76 @@ THEMES_DARK = {
 
 THEMES_LIGHT = {
     "Intro": {
-        "bg": "#F4F6F9", "sidebar": "#E6ECF2", "card": "#FFFFFF",
-        "border": "#D8E1EC", "accent": "#0091B2", "accent_lt": "rgba(0, 145, 178, 0.08)", "accent2": "#0ea5e9",
-        "text": "#1E293B", "text2": "#475569",
-        "plot_bg": "#FFFFFF", "paper_bg": "#F4F6F9", "grid": "#EAEFF4",
+        "bg": "#F2F5FB", "sidebar": "#E5ECF6", "card": "#FFFFFF",
+        "border": "#CBD6E4", "accent": "#008CA8", "accent_lt": "rgba(0, 140, 168, 0.08)", "accent2": "#0ea5e9",
+        "text": "#0F172A", "text2": "#475569",
+        "plot_bg": "#FFFFFF", "paper_bg": "#F2F5FB", "grid": "#E2E8F0",
         "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
-        "palette": ["#0091B2", "#0ea5e9", "#D97706", "#059669", "#DC2626", "#7C3AED"],
-        "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#0091B2",
+        "palette": ["#008CA8", "#0ea5e9", "#D97706", "#059669", "#DC2626", "#7C3AED"],
+        "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#008CA8",
     },
     "Overview": {
-        "bg": "#F4F6F9", "sidebar": "#E6ECF2", "card": "#FFFFFF",
-        "border": "#D8E1EC", "accent": "#0091B2", "accent_lt": "rgba(0, 145, 178, 0.08)", "accent2": "#0ea5e9",
-        "text": "#1E293B", "text2": "#475569",
-        "plot_bg": "#FFFFFF", "paper_bg": "#F4F6F9", "grid": "#EAEFF4",
+        "bg": "#F3F5FA", "sidebar": "#E6ECF5", "card": "#FFFFFF",
+        "border": "#CCD6E5", "accent": "#1D4ED8", "accent_lt": "rgba(29, 78, 216, 0.08)", "accent2": "#3B82F6",
+        "text": "#0F172A", "text2": "#475569",
+        "plot_bg": "#FFFFFF", "paper_bg": "#F3F5FA", "grid": "#E2E8F0",
         "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
-        "palette": ["#0091B2", "#0ea5e9", "#D97706", "#059669", "#DC2626", "#7C3AED"],
-        "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#0091B2",
-    },
-    "Crowd Flow": {
-        "bg": "#F4F6F9", "sidebar": "#E6ECF2", "card": "#FFFFFF",
-        "border": "#D8E1EC", "accent": "#0284C7", "accent_lt": "rgba(2, 132, 199, 0.08)", "accent2": "#2563EB",
-        "text": "#1E293B", "text2": "#475569",
-        "plot_bg": "#FFFFFF", "paper_bg": "#F4F6F9", "grid": "#EAEFF4",
-        "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
-        "palette": ["#0284C7", "#2563EB", "#D97706", "#059669", "#7C3AED", "#DC2626"],
-        "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#0284C7",
-    },
-    "Medical & Heat": {
-        "bg": "#F4F6F9", "sidebar": "#E6ECF2", "card": "#FFFFFF",
-        "border": "#D8E1EC", "accent": "#DC2626", "accent_lt": "rgba(220, 38, 38, 0.08)", "accent2": "#BE123C",
-        "text": "#1E293B", "text2": "#475569",
-        "plot_bg": "#FFFFFF", "paper_bg": "#F4F6F9", "grid": "#EAEFF4",
-        "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
-        "palette": ["#DC2626", "#BE123C", "#EA580C", "#6D28D9", "#1D4ED8", "#059669"],
-        "crit_col": "#DC2626", "warn_col": "#EA580C", "ok_col": "#059669", "info_col": "#6D28D9",
-    },
-    "Security": {
-        "bg": "#F4F6F9", "sidebar": "#E6ECF2", "card": "#FFFFFF",
-        "border": "#D8E1EC", "accent": "#D97706", "accent_lt": "rgba(217, 119, 6, 0.08)", "accent2": "#9A3412",
-        "text": "#1E293B", "text2": "#475569",
-        "plot_bg": "#FFFFFF", "paper_bg": "#F4F6F9", "grid": "#EAEFF4",
-        "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
-        "palette": ["#D97706", "#EA580C", "#1D4ED8", "#059669", "#6D28D9", "#DC2626"],
+        "palette": ["#1D4ED8", "#3B82F6", "#D97706", "#059669", "#DC2626", "#7C3AED"],
         "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#1D4ED8",
     },
-    "Resource Planning": {
-        "bg": "#F4F6F9", "sidebar": "#E6ECF2", "card": "#FFFFFF",
-        "border": "#D8E1EC", "accent": "#059669", "accent_lt": "rgba(5, 150, 105, 0.08)", "accent2": "#047857",
-        "text": "#1E293B", "text2": "#475569",
-        "plot_bg": "#FFFFFF", "paper_bg": "#F4F6F9", "grid": "#EAEFF4",
+    "Crowd Flow": {
+        "bg": "#EDF7F9", "sidebar": "#D6EDF2", "card": "#FFFFFF",
+        "border": "#B5DEE5", "accent": "#2B82A1", "accent_lt": "rgba(43, 130, 161, 0.08)", "accent2": "#0284C7",
+        "text": "#0F172A", "text2": "#475569",
+        "plot_bg": "#FFFFFF", "paper_bg": "#EDF7F9", "grid": "#E2E8F0",
         "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
-        "palette": ["#059669", "#10B981", "#6D28D9", "#0284C7", "#D97706", "#DC2626"],
-        "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#0284C7",
+        "palette": ["#2B82A1", "#0284C7", "#D97706", "#059669", "#7C3AED", "#DC2626"],
+        "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#2B82A1",
+    },
+    "Medical & Heat": {
+        "bg": "#FFF0F2", "sidebar": "#FFDDE2", "card": "#FFFFFF",
+        "border": "#F3BAC2", "accent": "#C11D3E", "accent_lt": "rgba(193, 29, 62, 0.08)", "accent2": "#DC2626",
+        "text": "#0F172A", "text2": "#475569",
+        "plot_bg": "#FFFFFF", "paper_bg": "#FFF0F2", "grid": "#E2E8F0",
+        "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
+        "palette": ["#C11D3E", "#DC2626", "#EA580C", "#6D28D9", "#1D4ED8", "#059669"],
+        "crit_col": "#C11D3E", "warn_col": "#EA580C", "ok_col": "#059669", "info_col": "#6D28D9",
+    },
+    "Security": {
+        "bg": "#FFF9EA", "sidebar": "#FFF0CC", "card": "#FFFFFF",
+        "border": "#EED8A7", "accent": "#B86F00", "accent_lt": "rgba(184, 111, 0, 0.08)", "accent2": "#D97706",
+        "text": "#0F172A", "text2": "#475569",
+        "plot_bg": "#FFFFFF", "paper_bg": "#FFF9EA", "grid": "#E2E8F0",
+        "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
+        "palette": ["#B86F00", "#D97706", "#1D4ED8", "#059669", "#6D28D9", "#DC2626"],
+        "crit_col": "#DC2626", "warn_col": "#B86F00", "ok_col": "#059669", "info_col": "#1D4ED8",
+    },
+    "Resource Planning": {
+        "bg": "#EEFAFA", "sidebar": "#DCF5ED", "card": "#FFFFFF",
+        "border": "#B9E8D9", "accent": "#047857", "accent_lt": "rgba(4, 120, 87, 0.08)", "accent2": "#059669",
+        "text": "#0F172A", "text2": "#475569",
+        "plot_bg": "#FFFFFF", "paper_bg": "#EEFAFA", "grid": "#E2E8F0",
+        "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
+        "palette": ["#047857", "#059669", "#6D28D9", "#0284C7", "#D97706", "#DC2626"],
+        "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#047857",
     },
     "Risk Matrix": {
-        "bg": "#F4F6F9", "sidebar": "#E6ECF2", "card": "#FFFFFF",
-        "border": "#D8E1EC", "accent": "#DC2626", "accent_lt": "rgba(220, 38, 38, 0.08)", "accent2": "#991B1B",
-        "text": "#1E293B", "text2": "#475569",
-        "plot_bg": "#FFFFFF", "paper_bg": "#F4F6F9", "grid": "#EAEFF4",
+        "bg": "#FFF2F2", "sidebar": "#FFE0E0", "card": "#FFFFFF",
+        "border": "#F4C4C4", "accent": "#D32F2F", "accent_lt": "rgba(211, 47, 47, 0.08)", "accent2": "#EF4444",
+        "text": "#0F172A", "text2": "#475569",
+        "plot_bg": "#FFFFFF", "paper_bg": "#FFF2F2", "grid": "#E2E8F0",
         "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
-        "palette": ["#DC2626", "#EA580C", "#D97706", "#059669", "#1D4ED8", "#6D28D9"],
-        "crit_col": "#DC2626", "warn_col": "#EA580C", "ok_col": "#059669", "info_col": "#1D4ED8",
+        "palette": ["#D32F2F", "#EF4444", "#EA580C", "#D97706", "#059669", "#1D4ED8"],
+        "crit_col": "#D32F2F", "warn_col": "#EA580C", "ok_col": "#059669", "info_col": "#1D4ED8",
     },
     "Ask AI": {
-        "bg": "#F4F6F9", "sidebar": "#E6ECF2", "card": "#FFFFFF",
-        "border": "#D8E1EC", "accent": "#4F46E5", "accent_lt": "rgba(79, 70, 229, 0.08)", "accent2": "#6D28D9",
-        "text": "#1E293B", "text2": "#475569",
-        "plot_bg": "#FFFFFF", "paper_bg": "#F4F6F9", "grid": "#EAEFF4",
+        "bg": "#F6F5FC", "sidebar": "#ECE9FC", "card": "#FFFFFF",
+        "border": "#D7D2FB", "accent": "#5A2EDB", "accent_lt": "rgba(90, 46, 219, 0.08)", "accent2": "#6366F1",
+        "text": "#0F172A", "text2": "#475569",
+        "plot_bg": "#FFFFFF", "paper_bg": "#F6F5FC", "grid": "#E2E8F0",
         "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
-        "palette": ["#4F46E5", "#6D28D9", "#D97706", "#059669", "#DC2626", "#1D4ED8"],
-        "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#4F46E5",
+        "palette": ["#5A2EDB", "#6366F1", "#D97706", "#059669", "#DC2626", "#1D4ED8"],
+        "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#5A2EDB",
     },
 }
 
@@ -285,6 +285,53 @@ except Exception as e:
 # CSS — with draggable sidebar resizer & centered Layout
 # ─────────────────────────────────────────────────────────
 def inject_css(t, active_idx=0):
+    mode = st.session_state.get("theme_mode", "dark")
+    page_buttons_css = ""
+    for idx, (_, name) in enumerate(PAGES):
+        p_theme = THEMES_DARK[name] if mode == "dark" else THEMES_LIGHT[name]
+        p_accent = p_theme["accent"]
+        p_accent_lt = p_theme["accent_lt"]
+        elem_idx = idx + 2
+        
+        if idx == active_idx:
+            page_buttons_css += f"""
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-container:nth-of-type({elem_idx}) .stButton > button {{
+    background: {p_accent} !important;
+    border-color: {p_accent} !important;
+    box-shadow: {p_theme['shadow']} !important;
+    transform: translateX(4px) !important;
+}}
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-container:nth-of-type({elem_idx}) .stButton > button p,
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-container:nth-of-type({elem_idx}) .stButton > button span,
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-container:nth-of-type({elem_idx}) .stButton > button div {{
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+}}
+"""
+        else:
+            page_buttons_css += f"""
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-container:nth-of-type({elem_idx}) .stButton > button {{
+    background: rgba(120, 140, 180, 0.05) !important;
+    border-color: {p_accent}3A !important;
+}}
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-container:nth-of-type({elem_idx}) .stButton > button p,
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-container:nth-of-type({elem_idx}) .stButton > button span,
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-container:nth-of-type({elem_idx}) .stButton > button div {{
+    color: {p_accent} !important;
+    font-weight: 600 !important;
+}}
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-container:nth-of-type({elem_idx}) .stButton > button:hover {{
+    background: {p_accent_lt} !important;
+    border-color: {p_accent} !important;
+    transform: translateX(4px) !important;
+}}
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-container:nth-of-type({elem_idx}) .stButton > button:hover p,
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-container:nth-of-type({elem_idx}) .stButton > button:hover span,
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-container:nth-of-type({elem_idx}) .stButton > button:hover div {{
+    color: {p_accent} !important;
+}}
+"""
+
     st.markdown(f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap');
@@ -347,71 +394,59 @@ section[data-testid="stSidebar"] [data-testid="stElementContainer"] {{
     margin-bottom: 3px !important;
 }}
 
-/* ── Sidebar Navigation Icon Standardization ── */
+/* ── Sidebar Navigation Icon Standardization & Flex layout ── */
 section[data-testid="stSidebar"] div.stButton > button {{
     width: 100% !important;
     height: 42px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
     text-align: left !important;
-    background: rgba(120, 140, 180, 0.05) !important;
-    border: 1px solid {t['border']} !important;
-    border-radius: 10px !important;
     padding: 0 16px !important;
     margin: 3px 0 !important;
+    border-radius: 10px !important;
     box-shadow: none !important;
-    display: block !important;
     position: relative !important;
     overflow: hidden !important;
     transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }}
 
+/* Set inner elements to lay out cleanly in modern flexbox, alignment independent of text */
+section[data-testid="stSidebar"] div.stButton > button > div {{
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    width: 100% !important;
+}}
+
 section[data-testid="stSidebar"] div.stButton > button div[data-testid="stMarkdownContainer"] p {{
     font-family: 'Plus Jakarta Sans', sans-serif !important;
-    font-weight: 600 !important;
     font-size: 13.5px !important;
     line-height: 24px !important;
-    display: block !important;
+    display: flex !important;
+    align-items: center !important;
     text-align: left !important;
     letter-spacing: 0.2px !important;
-    color: {t['text']} !important;
     margin: 0 !important;
     width: 100% !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
-    padding: 8px 0 !important;
 }}
 
-/* Standardized, Fixed-Size Icons detached from text flow with float */
-section[data-testid="stSidebar"] div.stButton > button div[data-testid="stMarkdownContainer"] p::first-letter {{
+/* Standardized, Fixed-Size Icons (the first character or element) */
+section[data-testid="stSidebar"] div.stButton > button div[data-testid="stMarkdownContainer"] p::first-letter,
+section[data-testid="stSidebar"] div.stButton > button span::first-letter {{
     font-size: 18px !important;
     display: inline-block !important;
-    width: 26px !important;
-    height: 24px !important;
-    line-height: 24px !important;
+    width: 24px !important;
+    min-width: 24px !important;
     text-align: center !important;
     margin-right: 12px !important;
-    float: left !important;
-    margin-top: 0px !important;
 }}
 
-section[data-testid="stSidebar"] div.stButton > button:hover {{
-    background: {t['accent_lt']} !important;
-    border-color: {t['accent']} !important;
-    color: {t['text']} !important;
-    transform: translateX(4px) !important;
-}}
-
-/* Active Nav HIGHLIGHT (using active item target index based on layout) */
-section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-container:nth-of-type({active_idx + 2}) .stButton > button {{
-    background: {t['accent']} !important;
-    border-color: {t['accent']} !important;
-    box-shadow: {t['shadow']} !important;
-    transform: translateX(5px) !important;
-}}
-section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-container:nth-of-type({active_idx + 2}) .stButton > button div[data-testid="stMarkdownContainer"] p {{
-    color: #FFFFFF !important; /* Stand out text */
-    font-weight: 700 !important;
-}}
+{page_buttons_css}
 
 /* ── Centered Page Header Layout ── */
 .dash-header {{
@@ -1359,7 +1394,7 @@ if page == "Intro":
     st.markdown(f"""
 <div class="intro-hero" style="background: linear-gradient(135deg, {t['bg']} 0%, {t['sidebar']} 100%); border: 1px solid {t['border']}; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border-radius: 24px; padding: 40px; margin-bottom: 30px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
   <div class="intro-badge" style="background: rgba(56,189,248,0.15); border: 1px solid {t['accent']}; color: {t['accent']}; padding: 6px 14px; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 18px;">🏏 Stadium Command Operations Suite</div>
-  <h1 class="intro-title" style="color: {t['text']}; font-family: 'Sora', sans-serif; font-size: 36px; font-weight: 800; line-height: 1.25; margin-bottom: 12px;">IPL Crowd Safety<br><span style="background: linear-gradient(90deg, {t['accent']}, {t['accent2']}); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Management Control Platform</span></h1>
+  <h1 class="intro-title" style="color: {t['text']}; font-family: 'Sora', sans-serif; font-size: 36px; font-weight: 800; line-height: 1.25; margin-bottom: 12px;">IPL Crowd Safety<br><span style="color: {t['accent']}; font-weight: 800;">Management Control Platform</span></h1>
   <p class="intro-desc" style="color: {t['text2']}; max-width: 780px; font-size: 14px; line-height: 1.6; margin: 0 auto;">
     An advanced executive analytics console engineered to support stadium commanders, safety directors, and logistics staff. 
     Monitor human densities, thermal thresholds, emergency paramedic transit parameters, and security occurrences across multi-season IPL venues.
