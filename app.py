@@ -674,14 +674,12 @@ def render_ai_insight_report(text, t):
             continue
             
         meta = get_header_info(sect_title)
-        html_out.append(f"""
-        <div class="report-card" style="border-left: 5px solid {meta['border']} !important;">
-            <div class="report-header-wrapper">
-                <div class="report-icon">{meta['icon']}</div>
-                <h4 class="report-title">{meta['title']}</h4>
-            </div>
-            <div class="report-body">
-        """)
+        html_out.append(f'<div class="report-card" style="border-left: 5px solid {meta["border"]} !important;">')
+        html_out.append('<div class="report-header-wrapper">')
+        html_out.append(f'<div class="report-icon">{meta["icon"]}</div>')
+        html_out.append(f'<h4 class="report-title">{meta["title"]}</h4>')
+        html_out.append('</div>')
+        html_out.append('<div class="report-body">')
         
         in_list = False
         for sl in sect_lines:
@@ -712,10 +710,8 @@ def render_ai_insight_report(text, t):
         if in_list:
             html_out.append('</ul>')
             
-        html_out.append("""
-            </div>
-        </div>
-        """)
+        html_out.append('</div>')
+        html_out.append('</div>')
         
     html_out.append('</div>')
     return "\n".join(html_out)
@@ -1414,28 +1410,6 @@ if page == "Overview":
 
     # ── AI Executive Panel placed cleanly at bottom! ──
     ai_section_header("🤖 AI Executive Operations Evaluation")
-
-    m1, m2, m3, m4 = st.columns(4)
-    with m1:
-        st.markdown(f'<div class="ai-mini-card"><div class="ai-label">Overall Risk Score</div>'
-                    f'<div class="ai-metric">{overall_risk_score}</div>'
-                    f'<div class="ai-status-warning">● Master Index</div></div>',
-                    unsafe_allow_html=True)
-    with m2:
-        st.markdown(f'<div class="ai-mini-card"><div class="ai-label">Critical Records</div>'
-                    f'<div class="ai-metric">{critical_zone_count}</div>'
-                    f'<div class="ai-status-critical">● Immediate Support</div></div>',
-                    unsafe_allow_html=True)
-    with m3:
-        st.markdown(f'<div class="ai-mini-card"><div class="ai-label">Medical Delay Zones</div>'
-                    f'<div class="ai-metric">{delayed_med}</div>'
-                    f'<div class="ai-status-critical">● Dispatch delays</div></div>',
-                    unsafe_allow_html=True)
-    with m4:
-        st.markdown(f'<div class="ai-mini-card"><div class="ai-label">Anomaly Warnings</div>'
-                    f'<div class="ai-metric">{len(anomaly_table)}</div>'
-                    f'<div class="ai-status-warning">● Outlier clusters</div></div>',
-                    unsafe_allow_html=True)
 
     top1, top2 = st.columns([1, 2.4])
     with top1:
