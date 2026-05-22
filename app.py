@@ -1601,7 +1601,7 @@ if page == "Overview":
     k1, k2, k3, k4, k5 = st.columns(5)
     with k1: kpi_card("Overall Risk Score",    str(overall_risk_score),      "crit", "Aggregate live score")
     with k2: kpi_card("Medical Incident Rate", str(med_rate),                "warn", "Per 1K spectators")
-    with k3: kpi_card("Capacity Breach Ratio", f"{cap_breach}%",             "info", "Zones near/above limit")
+    with k3: kpi_card("Capacity Breach Ratio", cap_breach,             "info", "Zones near/above limit")
     with k4: kpi_card("Incident Resolution",   f"{res_rate}%",               "ok",   "Current resolution rate")
     with k5: kpi_card("Ambulance Response",    f"{amb_resp} min",            "warn", "Mean response delay")
 
@@ -1668,7 +1668,7 @@ if page == "Overview":
     p1, p2 = st.columns(2)
     with p1:
         st.markdown("##### 🚦 Live Capacity Pressure Index")
-        st.progress(min(cap_breach / 100, 1.0))
+        st.progress(min(cap_breach , 1.0))
         st.caption(f"{cap_breach}% of mapped stadium zones have breached loading boundaries")
         st.markdown("##### 🌊 Crowd Dynamic Pressure Index")
         st.progress(min(avg_pressure / 100, 1.0))
