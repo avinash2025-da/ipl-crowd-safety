@@ -27,78 +27,155 @@ PHASE_ORDER = ["Pre-match", "First innings", "Break", "Second innings", "Exit ph
 
 # THEMES — Redesigned with custom premium dark stadium operations control command palettes
 # ─────────────────────────────────────────────────────────
-THEMES = {
+# THEMES — Redesigned with custom premium dark/light stadium operations control command palettes
+# ─────────────────────────────────────────────────────────
+THEMES_DARK = {
     "Intro": {
-        "bg": "#090D1A", "sidebar": "#050811", "card": "#121A2F",
-        "accent": "#00F0FF", "accent_lt": "rgba(0, 240, 255, 0.1)", "accent2": "#38BDF8",
-        "text": "#FAFAFA", "text2": "#94A3B8", "border": "#1E2942",
-        "plot_bg": "#121A2F", "paper_bg": "#090D1A", "grid": "#1E2942",
-        "legend_rgba": "rgba(9,13,26,0.92)",
+        "bg": "#0B101E", "sidebar": "#070B14", "card": "#131C33",
+        "border": "#212F4F", "accent": "#00F0FF", "accent_lt": "rgba(0, 240, 255, 0.12)", "accent2": "#38BDF8",
+        "text": "#FAFAFA", "text2": "#94A3B8",
+        "plot_bg": "#131C33", "paper_bg": "#0B101E", "grid": "#1F2F4D",
+        "legend_rgba": "rgba(11,16,30,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
         "palette": ["#00F0FF", "#38BDF8", "#FBBF24", "#34D399", "#F87171", "#A78BFA"],
         "crit_col": "#F43F5E", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#00F0FF",
     },
     "Overview": {
-        "bg": "#090D1A", "sidebar": "#050811", "card": "#121A2F",
-        "accent": "#00F0FF", "accent_lt": "rgba(0, 240, 255, 0.1)", "accent2": "#38BDF8",
-        "text": "#FAFAFA", "text2": "#94A3B8", "border": "#1E2942",
-        "plot_bg": "#121A2F", "paper_bg": "#090D1A", "grid": "#1E2942",
-        "legend_rgba": "rgba(9,13,26,0.92)",
+        "bg": "#0B101E", "sidebar": "#070B14", "card": "#131C33",
+        "border": "#212F4F", "accent": "#00F0FF", "accent_lt": "rgba(0, 240, 255, 0.12)", "accent2": "#38BDF8",
+        "text": "#FAFAFA", "text2": "#94A3B8",
+        "plot_bg": "#131C33", "paper_bg": "#0B101E", "grid": "#1F2F4D",
+        "legend_rgba": "rgba(11,16,30,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
         "palette": ["#00F0FF", "#38BDF8", "#FBBF24", "#34D399", "#F87171", "#A78BFA"],
         "crit_col": "#F43F5E", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#00F0FF",
     },
     "Crowd Flow": {
-        "bg": "#090D1A", "sidebar": "#050811", "card": "#121A2F",
-        "accent": "#38BDF8", "accent_lt": "rgba(56, 189, 248, 0.1)", "accent2": "#0EA5E9",
-        "text": "#FAFAFA", "text2": "#94A3B8", "border": "#1E2942",
-        "plot_bg": "#121A2F", "paper_bg": "#090D1A", "grid": "#1E2942",
-        "legend_rgba": "rgba(9,13,26,0.92)",
+        "bg": "#0B101E", "sidebar": "#070B14", "card": "#131C33",
+        "border": "#212F4F", "accent": "#38BDF8", "accent_lt": "rgba(56, 189, 248, 0.12)", "accent2": "#0EA5E9",
+        "text": "#FAFAFA", "text2": "#94A3B8",
+        "plot_bg": "#131C33", "paper_bg": "#0B101E", "grid": "#1F2F4D",
+        "legend_rgba": "rgba(11,16,30,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
         "palette": ["#38BDF8", "#0ea5e9", "#FBBF24", "#10B981", "#8B5CF6", "#EF4444"],
         "crit_col": "#EF4444", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#38BDF8",
     },
     "Medical & Heat": {
-        "bg": "#090D1A", "sidebar": "#050811", "card": "#121A2F",
-        "accent": "#EF4444", "accent_lt": "rgba(239, 68, 68, 0.1)", "accent2": "#F43F5E",
-        "text": "#FAFAFA", "text2": "#94A3B8", "border": "#1E2942",
-        "plot_bg": "#121A2F", "paper_bg": "#090D1A", "grid": "#1E2942",
-        "legend_rgba": "rgba(9,13,26,0.92)",
-        "palette": ["#EF4444", "#F43F5E", "#F97316", "#8B5CF6", "#3B82F6", "#10B981"],
-        "crit_col": "#EF4444", "warn_col": "#F97316", "ok_col": "#10B981", "info_col": "#8B5CF6",
+        "bg": "#0B101E", "sidebar": "#070B14", "card": "#131C33",
+        "border": "#212F4F", "accent": "#F43F5E", "accent_lt": "rgba(244, 63, 94, 0.12)", "accent2": "#E11D48",
+        "text": "#FAFAFA", "text2": "#94A3B8",
+        "plot_bg": "#131C33", "paper_bg": "#0B101E", "grid": "#1F2F4D",
+        "legend_rgba": "rgba(11,16,30,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
+        "palette": ["#F43F5E", "#E11D48", "#F97316", "#8B5CF6", "#3B82F6", "#10B981"],
+        "crit_col": "#F43F5E", "warn_col": "#F97316", "ok_col": "#10B981", "info_col": "#8B5CF6",
     },
     "Security": {
-        "bg": "#090D1A", "sidebar": "#050811", "card": "#121A2F",
-        "accent": "#FBBF24", "accent_lt": "rgba(251, 191, 36, 0.1)", "accent2": "#B45309",
-        "text": "#FAFAFA", "text2": "#94A3B8", "border": "#1E2942",
-        "plot_bg": "#121A2F", "paper_bg": "#090D1A", "grid": "#1E2942",
-        "legend_rgba": "rgba(9,13,26,0.92)",
+        "bg": "#0B101E", "sidebar": "#070B14", "card": "#131C33",
+        "border": "#212F4F", "accent": "#FBBF24", "accent_lt": "rgba(251, 191, 36, 0.12)", "accent2": "#B45309",
+        "text": "#FAFAFA", "text2": "#94A3B8",
+        "plot_bg": "#131C33", "paper_bg": "#0B101E", "grid": "#1F2F4D",
+        "legend_rgba": "rgba(11,16,30,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
         "palette": ["#FBBF24", "#F97316", "#3B82F6", "#10B981", "#8B5CF6", "#EF4444"],
         "crit_col": "#EF4444", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#3B82F6",
     },
     "Resource Planning": {
-        "bg": "#090D1A", "sidebar": "#050811", "card": "#121A2F",
-        "accent": "#10B981", "accent_lt": "rgba(16, 185, 129, 0.1)", "accent2": "#047857",
-        "text": "#FAFAFA", "text2": "#94A3B8", "border": "#1E2942",
-        "plot_bg": "#121A2F", "paper_bg": "#090D1A", "grid": "#1E2942",
-        "legend_rgba": "rgba(9,13,26,0.92)",
+        "bg": "#0B101E", "sidebar": "#070B14", "card": "#131C33",
+        "border": "#212F4F", "accent": "#10B981", "accent_lt": "rgba(16, 185, 129, 0.12)", "accent2": "#047857",
+        "text": "#FAFAFA", "text2": "#94A3B8",
+        "plot_bg": "#131C33", "paper_bg": "#0B101E", "grid": "#1F2F4D",
+        "legend_rgba": "rgba(11,16,30,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
         "palette": ["#10B981", "#34D399", "#8B5CF6", "#0ea5e9", "#FBBF24", "#EF4444"],
         "crit_col": "#EF4444", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#0ea5e9",
     },
     "Risk Matrix": {
-        "bg": "#090D1A", "sidebar": "#050811", "card": "#121A2F",
-        "accent": "#EF4444", "accent_lt": "rgba(239, 68, 68, 0.1)", "accent2": "#9C1C1C",
-        "text": "#FAFAFA", "text2": "#94A3B8", "border": "#1E2942",
-        "plot_bg": "#121A2F", "paper_bg": "#090D1A", "grid": "#1E2942",
-        "legend_rgba": "rgba(9,13,26,0.92)",
+        "bg": "#0B101E", "sidebar": "#070B14", "card": "#131C33",
+        "border": "#212F4F", "accent": "#EF4444", "accent_lt": "rgba(239, 68, 68, 0.12)", "accent2": "#9C1C1C",
+        "text": "#FAFAFA", "text2": "#94A3B8",
+        "plot_bg": "#131C33", "paper_bg": "#0B101E", "grid": "#1F2F4D",
+        "legend_rgba": "rgba(11,16,30,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
         "palette": ["#EF4444", "#F97316", "#FBBF24", "#10B981", "#3B82F6", "#8B5CF6"],
         "crit_col": "#EF4444", "warn_col": "#F97316", "ok_col": "#10B981", "info_col": "#3B82F6",
     },
     "Ask AI": {
-        "bg": "#090D1A", "sidebar": "#050811", "card": "#121A2F",
-        "accent": "#818CF8", "accent_lt": "rgba(129, 140, 248, 0.1)", "accent2": "#A78BFA",
-        "text": "#FAFAFA", "text2": "#94A3B8", "border": "#1E2942",
-        "plot_bg": "#121A2F", "paper_bg": "#090D1A", "grid": "#1E2942",
-        "legend_rgba": "rgba(9,13,26,0.92)",
+        "bg": "#0B101E", "sidebar": "#070B14", "card": "#131C33",
+        "border": "#212F4F", "accent": "#818CF8", "accent_lt": "rgba(129, 140, 248, 0.12)", "accent2": "#A78BFA",
+        "text": "#FAFAFA", "text2": "#94A3B8",
+        "plot_bg": "#131C33", "paper_bg": "#0B101E", "grid": "#1F2F4D",
+        "legend_rgba": "rgba(11,16,30,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
         "palette": ["#818CF8", "#A78BFA", "#FBBF24", "#10B981", "#EF4444", "#3B82F6"],
         "crit_col": "#EF4444", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#818CF8",
+    },
+}
+
+THEMES_LIGHT = {
+    "Intro": {
+        "bg": "#F4F6F9", "sidebar": "#E6ECF2", "card": "#FFFFFF",
+        "border": "#D8E1EC", "accent": "#0091B2", "accent_lt": "rgba(0, 145, 178, 0.08)", "accent2": "#0ea5e9",
+        "text": "#1E293B", "text2": "#475569",
+        "plot_bg": "#FFFFFF", "paper_bg": "#F4F6F9", "grid": "#EAEFF4",
+        "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
+        "palette": ["#0091B2", "#0ea5e9", "#D97706", "#059669", "#DC2626", "#7C3AED"],
+        "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#0091B2",
+    },
+    "Overview": {
+        "bg": "#F4F6F9", "sidebar": "#E6ECF2", "card": "#FFFFFF",
+        "border": "#D8E1EC", "accent": "#0091B2", "accent_lt": "rgba(0, 145, 178, 0.08)", "accent2": "#0ea5e9",
+        "text": "#1E293B", "text2": "#475569",
+        "plot_bg": "#FFFFFF", "paper_bg": "#F4F6F9", "grid": "#EAEFF4",
+        "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
+        "palette": ["#0091B2", "#0ea5e9", "#D97706", "#059669", "#DC2626", "#7C3AED"],
+        "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#0091B2",
+    },
+    "Crowd Flow": {
+        "bg": "#F4F6F9", "sidebar": "#E6ECF2", "card": "#FFFFFF",
+        "border": "#D8E1EC", "accent": "#0284C7", "accent_lt": "rgba(2, 132, 199, 0.08)", "accent2": "#2563EB",
+        "text": "#1E293B", "text2": "#475569",
+        "plot_bg": "#FFFFFF", "paper_bg": "#F4F6F9", "grid": "#EAEFF4",
+        "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
+        "palette": ["#0284C7", "#2563EB", "#D97706", "#059669", "#7C3AED", "#DC2626"],
+        "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#0284C7",
+    },
+    "Medical & Heat": {
+        "bg": "#F4F6F9", "sidebar": "#E6ECF2", "card": "#FFFFFF",
+        "border": "#D8E1EC", "accent": "#DC2626", "accent_lt": "rgba(220, 38, 38, 0.08)", "accent2": "#BE123C",
+        "text": "#1E293B", "text2": "#475569",
+        "plot_bg": "#FFFFFF", "paper_bg": "#F4F6F9", "grid": "#EAEFF4",
+        "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
+        "palette": ["#DC2626", "#BE123C", "#EA580C", "#6D28D9", "#1D4ED8", "#059669"],
+        "crit_col": "#DC2626", "warn_col": "#EA580C", "ok_col": "#059669", "info_col": "#6D28D9",
+    },
+    "Security": {
+        "bg": "#F4F6F9", "sidebar": "#E6ECF2", "card": "#FFFFFF",
+        "border": "#D8E1EC", "accent": "#D97706", "accent_lt": "rgba(217, 119, 6, 0.08)", "accent2": "#9A3412",
+        "text": "#1E293B", "text2": "#475569",
+        "plot_bg": "#FFFFFF", "paper_bg": "#F4F6F9", "grid": "#EAEFF4",
+        "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
+        "palette": ["#D97706", "#EA580C", "#1D4ED8", "#059669", "#6D28D9", "#DC2626"],
+        "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#1D4ED8",
+    },
+    "Resource Planning": {
+        "bg": "#F4F6F9", "sidebar": "#E6ECF2", "card": "#FFFFFF",
+        "border": "#D8E1EC", "accent": "#059669", "accent_lt": "rgba(5, 150, 105, 0.08)", "accent2": "#047857",
+        "text": "#1E293B", "text2": "#475569",
+        "plot_bg": "#FFFFFF", "paper_bg": "#F4F6F9", "grid": "#EAEFF4",
+        "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
+        "palette": ["#059669", "#10B981", "#6D28D9", "#0284C7", "#D97706", "#DC2626"],
+        "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#0284C7",
+    },
+    "Risk Matrix": {
+        "bg": "#F4F6F9", "sidebar": "#E6ECF2", "card": "#FFFFFF",
+        "border": "#D8E1EC", "accent": "#DC2626", "accent_lt": "rgba(220, 38, 38, 0.08)", "accent2": "#991B1B",
+        "text": "#1E293B", "text2": "#475569",
+        "plot_bg": "#FFFFFF", "paper_bg": "#F4F6F9", "grid": "#EAEFF4",
+        "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
+        "palette": ["#DC2626", "#EA580C", "#D97706", "#059669", "#1D4ED8", "#6D28D9"],
+        "crit_col": "#DC2626", "warn_col": "#EA580C", "ok_col": "#059669", "info_col": "#1D4ED8",
+    },
+    "Ask AI": {
+        "bg": "#F4F6F9", "sidebar": "#E6ECF2", "card": "#FFFFFF",
+        "border": "#D8E1EC", "accent": "#4F46E5", "accent_lt": "rgba(79, 70, 229, 0.08)", "accent2": "#6D28D9",
+        "text": "#1E293B", "text2": "#475569",
+        "plot_bg": "#FFFFFF", "paper_bg": "#F4F6F9", "grid": "#EAEFF4",
+        "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
+        "palette": ["#4F46E5", "#6D28D9", "#D97706", "#059669", "#DC2626", "#1D4ED8"],
+        "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#4F46E5",
     },
 }
 
@@ -113,9 +190,16 @@ PAGES = [
     ("💬", "Ask AI"),
 ]
 
-# Initialize active page state
+# Initialize active page state and theme mode
 if "active_page" not in st.session_state:
     st.session_state.active_page = "Intro"
+if "theme_mode" not in st.session_state:
+    st.session_state.theme_mode = "dark"
+
+# Define the dynamic active theme t based on active mode & page
+page = st.session_state.active_page
+mode = st.session_state.theme_mode
+t = THEMES_DARK[page] if mode == "dark" else THEMES_LIGHT[page]
 
 
 # ─────────────────────────────────────────────────────────
@@ -203,21 +287,44 @@ except Exception as e:
 def inject_css(t, active_idx=0):
     st.markdown(f"""
 <style>
-@import url('https://fonts.googleapis.com/css2family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap');
 
-html, body, [class*="css"] {{ font-family: 'Plus Jakarta Sans', sans-serif; }}
-.stApp {{ background-color: {t['bg']}; color: {t['text']}; }}
-.block-container {{ padding-top: 4.2rem; padding-bottom: 2rem; max-width: 1580px; }}
+/* ── Smooth Scrolling and Transitions ── */
+html {{
+    scroll-behavior: smooth;
+}}
+
+/* ── Page Transition Fade-In Animation ── */
+@keyframes pageFadeIn {{
+    from {{ opacity: 0; transform: translateY(6px); }}
+    to {{ opacity: 1; transform: translateY(0); }}
+}}
+
+html, body, [class*="css"] {{
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}}
+
+.stApp {{
+    background-color: {t['bg']};
+    color: {t['text']};
+    animation: pageFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}}
+.block-container {{
+    padding-top: 4.2rem;
+    padding-bottom: 2rem;
+    max-width: 1580px;
+}}
 
 /* ── Draggable/Resizable Sidebar ── */
 section[data-testid="stSidebar"] {{
-    background-color: {t['sidebar']};
-    border-right: 3px solid {t['border']};
-    min-width: 200px !important;
+    background-color: {t['sidebar']} !important;
+    border-right: 1px solid {t['border']};
+    min-width: 220px !important;
     max-width: 420px !important;
     resize: horizontal;
     overflow: auto;
     position: relative;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }}
 section[data-testid="stSidebar"]::after {{
     content: '⠿';
@@ -225,130 +332,196 @@ section[data-testid="stSidebar"]::after {{
     top: 50%;
     right: 4px;
     transform: translateY(-50%);
-    font-size: 18px;
+    font-size: 16px;
     color: {t['border']};
     cursor: col-resize;
     pointer-events: none;
-    opacity: 0.6;
+    opacity: 0.5;
 }}
-section[data-testid="stSidebar"] * {{ color: {t['text']} !important; }}
+section[data-testid="stSidebar"] * {{
+    color: {t['text']} !important;
+}}
 
-/* Consistent height, padding, spacing, border-radius on buttons */
+/* Consistent sidebar element pacing */
 section[data-testid="stSidebar"] [data-testid="stElementContainer"] {{
-    margin-bottom: 2px !important;
+    margin-bottom: 3px !important;
 }}
+
+/* ── Sidebar Navigation Icon Standardization ── */
 section[data-testid="stSidebar"] div.stButton > button {{
     width: 100% !important;
-    height: 44px !important;
+    height: 42px !important;
     text-align: left !important;
-    background: rgba(18, 26, 47, 0.45) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: rgba(120, 140, 180, 0.05) !important;
+    border: 1px solid {t['border']} !important;
     border-radius: 10px !important;
     padding: 0 16px !important;
-    margin: 4px 0 !important;
+    margin: 3px 0 !important;
     box-shadow: none !important;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
+    display: block !important;
+    position: relative !important;
+    overflow: hidden !important;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }}
+
 section[data-testid="stSidebar"] div.stButton > button div[data-testid="stMarkdownContainer"] p {{
     font-family: 'Plus Jakarta Sans', sans-serif !important;
     font-weight: 600 !important;
-    font-size: 14px !important;
-    line-height: 44px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    letter-spacing: 0.3px !important;
+    font-size: 13.5px !important;
+    line-height: 24px !important;
+    display: block !important;
+    text-align: left !important;
+    letter-spacing: 0.2px !important;
     color: {t['text']} !important;
     margin: 0 !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    padding: 8px 0 !important;
 }}
-/* Unified Equal-Sized Sidebar Navigation Icons */
+
+/* Standardized, Fixed-Size Icons detached from text flow with float */
 section[data-testid="stSidebar"] div.stButton > button div[data-testid="stMarkdownContainer"] p::first-letter {{
     font-size: 18px !important;
     display: inline-block !important;
-    width: 24px !important;
+    width: 26px !important;
+    height: 24px !important;
+    line-height: 24px !important;
     text-align: center !important;
     margin-right: 12px !important;
-    flex-shrink: 0 !important;
+    float: left !important;
+    margin-top: 0px !important;
 }}
+
 section[data-testid="stSidebar"] div.stButton > button:hover {{
-    background: rgba(255, 255, 255, 0.08) !important;
+    background: {t['accent_lt']} !important;
     border-color: {t['accent']} !important;
     color: {t['text']} !important;
     transform: translateX(4px) !important;
 }}
 
-/* Active Nav HIGHLIGHT (using target indexing based on PAGES sequence) */
+/* Active Nav HIGHLIGHT (using active item target index based on layout) */
 section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-container:nth-of-type({active_idx + 2}) .stButton > button {{
     background: {t['accent']} !important;
     border-color: {t['accent']} !important;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.25) !important;
-    transform: translateX(4px) !important;
+    box-shadow: {t['shadow']} !important;
+    transform: translateX(5px) !important;
 }}
 section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-container:nth-of-type({active_idx + 2}) .stButton > button div[data-testid="stMarkdownContainer"] p {{
-    color: {t['sidebar']} !important;
+    color: #FFFFFF !important; /* Stand out text */
     font-weight: 700 !important;
 }}
 
 /* ── Centered Page Header Layout ── */
 .dash-header {{
-    background: linear-gradient(120deg, {t['card']} 60%, {t['accent_lt']});
-    border: 1px solid {t['border']}; border-top: 5px solid {t['accent']};
-    border-radius: 18px; padding: 26px 28px 24px;
+    background: linear-gradient(135deg, {t['card']} 70%, {t['accent_lt']});
+    border: 1px solid {t['border']};
+    border-top: 4px solid {t['accent']};
+    border-radius: 18px;
+    padding: 24px 28px;
     margin-bottom: 24px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    box-shadow: {t['shadow']};
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    animation: pageFadeIn 0.5s ease-out;
 }}
-.dash-icon {{ font-size: 44px; line-height: 1; margin-bottom: 12px; }}
+.dash-icon {{
+    font-size: 40px;
+    line-height: 1;
+    margin-bottom: 10px;
+}}
 .dash-title {{
-    font-family: 'Sora', sans-serif; font-size: 26px; font-weight: 800;
-    color: {t['text']}; margin: 0 0 8px 0; letter-spacing: -0.3px;
+    font-family: 'Sora', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: {t['text']};
+    margin: 0 0 6px 0;
+    letter-spacing: -0.3px;
 }}
-.dash-sub {{ font-size: 13px; color: {t['text2']}; margin: 0; max-width: 800px; line-height: 1.5; }}
+.dash-sub {{
+    font-size: 13px;
+    color: {t['text2']};
+    margin: 0;
+    max-width: 800px;
+    line-height: 1.5;
+}}
 
-/* ── Centered KPI Card Layout ── */
+/* ── Balanced executive-grade themed KPI Cards ── */
 .kpi-card {{
-    background: {t['card']}; border: 1px solid {t['border']};
-    border-radius: 16px; padding: 22px 16px 18px;
+    background: {t['card']} !important;
+    border: 1px solid {t['border']} !important;
+    border-radius: 16px !important;
+    padding: 20px 16px 16px !important;
     min-height: 110px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-    position: relative; overflow: hidden;
+    box-shadow: {t['shadow']} !important;
+    position: relative;
+    overflow: hidden;
     margin-bottom: 16px;
     text-align: center;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease, box-shadow 0.22s ease !important;
 }}
 .kpi-card::before {{
-    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
 }}
+.kpi-card:hover {{
+    transform: translateY(-3px) !important;
+    border-color: {t['accent']} !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12) !important;
+}}
+
 .kpi-info::before  {{ background: linear-gradient(90deg, {t['info_col']}, {t['accent2']}); }}
 .kpi-warn::before  {{ background: linear-gradient(90deg, {t['warn_col']}, #FBBF24); }}
 .kpi-crit::before  {{ background: linear-gradient(90deg, {t['crit_col']}, #F87171); }}
 .kpi-ok::before    {{ background: linear-gradient(90deg, {t['ok_col']}, #34D399); }}
 
 .kpi-label {{
-    font-size: 10px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 1px; color: {t['text2']}; margin-bottom: 10px;
-    text-align: center; width: 100%;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    color: {t['text2']};
+    margin-bottom: 8px;
+    text-align: center;
+    width: 100%;
 }}
 .kpi-val {{
-    font-family: 'Sora', sans-serif; font-size: 30px; font-weight: 800;
-    color: {t['text']}; line-height: 1; text-align: center;
+    font-family: 'Sora', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: {t['text']} !important;
+    line-height: 1;
+    text-align: center;
 }}
 .kpi-sub {{
-    font-size: 10px; color: {t['text2']}; margin-top: 8px;
-    text-align: center; width: 100%;
+    font-size: 10.5px;
+    color: {t['text2']};
+    margin-top: 8px;
+    text-align: center;
+    width: 100%;
 }}
 
 .sec-lbl {{
-    font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 700;
-    color: {t['accent2']}; text-transform: uppercase; letter-spacing: 0.9px;
-    margin: 22px 0 12px 0; padding-bottom: 6px;
+    font-family: 'Sora', sans-serif;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: {t['accent']};
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 22px 0 12px 0;
+    padding-bottom: 6px;
     border-bottom: 2px solid {t['accent_lt']};
 }}
 
@@ -356,22 +529,29 @@ section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-c
 .report-container {{
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 16px;
     margin-top: 20px;
     margin-bottom: 20px;
     width: 100%;
 }}
+
+@keyframes revealCard {{
+    from {{ opacity: 0; transform: translateY(12px); }}
+    to {{ opacity: 1; transform: translateY(0); }}
+}}
+
 .report-card {{
     background: {t['card']} !important;
     border: 1px solid {t['border']} !important;
     border-radius: 16px !important;
     padding: 22px 24px !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
-    transition: all 0.22s ease !important;
+    box-shadow: {t['shadow']} !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    animation: revealCard 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }}
 .report-card:hover {{
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15) !important;
     border-color: {t['accent']} !important;
 }}
 .report-header-wrapper {{
@@ -395,7 +575,7 @@ section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-c
 }}
 .report-title {{
     font-family: 'Sora', sans-serif !important;
-    font-size: 15px !important;
+    font-size: 14.5px !important;
     font-weight: 700 !important;
     color: {t['text']} !important;
     margin: 0 !important;
@@ -405,11 +585,11 @@ section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-c
     font-family: 'Plus Jakarta Sans', sans-serif !important;
     font-size: 13.5px !important;
     line-height: 1.65 !important;
-    color: {t['text2']} !important;
+    color: {t['text']} !important;
 }}
 .report-body p {{
-    margin-bottom: 10px !important;
-    color: {t['text2']} !important;
+    margin-bottom: 8px !important;
+    color: {t['text']} !important;
 }}
 .report-list {{
     list-style: none !important;
@@ -489,19 +669,19 @@ section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-c
     padding: 12px 18px;
     font-size: 13.8px;
     line-height: 1.55;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+    box-shadow: {t['shadow']};
 }}
 .bubble-user {{
     background: {t['accent']} !important;
-    color: {t['sidebar']} !important;
+    color: #FFFFFF !important;
     border-top-right-radius: 4px;
 }}
 .bubble-user * {{
-    color: {t['sidebar']} !important;
+    color: #FFFFFF !important;
 }}
 .bubble-assistant {{
     background: {t['card']} !important;
-    border: 1px solid {t['border']};
+    border: 1px solid {t['border']} !important;
     color: {t['text']} !important;
     border-top-left-radius: 4px;
 }}
@@ -532,18 +712,18 @@ section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-c
     border-radius: 10px;
     font-family: 'Sora', sans-serif;
     font-size: 14px; font-weight: 800;
-    color: {t['accent2']};
+    color: {t['accent']};
     letter-spacing: 0.5px;
 }}
 .ai-card {{
     background: {t["card"]}; border: 1px solid {t["border"]}; border-radius: 18px;
-    padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    padding: 20px; box-shadow: {t["shadow"]};
     margin-bottom: 14px; color: {t["text"]};
 }}
 .ai-mini-card {{
     background: {t["card"]}; border: 1px solid {t["border"]};
     border-left: 5px solid {t["accent"]}; border-radius: 14px;
-    padding: 14px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 14px; margin-bottom: 10px; box-shadow: {t["shadow"]};
     text-align: center;
 }}
 .ai-metric {{
@@ -561,21 +741,59 @@ section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-c
 .insight-pill {{
     display: inline-block; padding: 6px 14px; border-radius: 999px;
     font-size: 11px; font-weight: 700; margin-bottom: 10px;
-    background: {t["accent_lt"]}; color: {t["accent2"]};
+    background: {t["accent_lt"]}; color: {t["accent"]};
 }}
 
 div[data-testid="stPlotlyChart"] > div {{
-    border-radius: 14px !important; border: 1px solid {t['border']} !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+    border-radius: 14px !important;
+    border: 1px solid {t['border']} !important;
+    box-shadow: {t['shadow']} !important;
+    transition: transform 0.22s ease !important;
 }}
+div[data-testid="stPlotlyChart"] > div:hover {{
+    transform: translateY(-2px);
+}}
+
 [data-testid="stDataFrame"] {{
     border-radius: 12px; border: 1px solid {t['border']}; overflow: hidden;
 }}
 
+/* ── General Scrollbars and Separation borders ── */
 ::-webkit-scrollbar {{ width: 5px; height: 5px; }}
 ::-webkit-scrollbar-track {{ background: {t['bg']}; }}
 ::-webkit-scrollbar-thumb {{ background: {t['border']}; border-radius: 3px; }}
 hr {{ border-color: {t['border']} !important; opacity: 0.4; }}
+
+/* ── Streamlit Form Element Accessibility Fixes ── */
+div[data-testid="stWidgetLabel"] p {{
+    color: {t['text']} !important;
+    font-weight: 600 !important;
+}}
+div[data-testid="stMarkdownContainer"] p {{
+    color: {t['text']};
+}}
+
+/* Ensure all multiselect / dropdown values have comfortable contrast */
+div[data-baseweb="select"] span {{
+    color: {t['text']} !important;
+}}
+div[data-baseweb="select"] div[role="button"] {{
+    background-color: {t['card']} !important;
+    border-color: {t['border']} !important;
+}}
+div[data-baseweb="tag"] {{
+    background-color: {t['accent_lt']} !important;
+    border: 1px solid {t['border']} !important;
+}}
+div[data-baseweb="tag"] span {{
+    color: {t['text']} !important;
+    font-weight: 500 !important;
+}}
+
+/* Slider text dynamic colors */
+div[data-testid="stSlider"] div[data-testid="stWidgetLabel"] {{
+    color: {t['text']} !important;
+}}
 </style>
 
 <script>
@@ -586,7 +804,7 @@ hr {{ border-color: {t['border']} !important; opacity: 0.4; }}
         if (!sidebar) return;
         sidebar.style.resize = 'horizontal';
         sidebar.style.overflow = 'auto';
-        sidebar.style.minWidth = '200px';
+        sidebar.style.minWidth = '220px';
         sidebar.style.maxWidth = '450px';
     }}
     setTimeout(initSidebarResize, 800);
@@ -1041,13 +1259,13 @@ def dataframe_to_csv_bytes(df):
 # SIDEBAR
 # ─────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("""
+    st.markdown(f"""
 <div style="text-align:center;padding:12px 0 20px 0;">
   <div style="font-size:36px; margin-bottom:8px;">🏏</div>
-  <div style="font-family:'Sora',sans-serif;font-size:16px;font-weight:800;color:#F8F8FF;">
+  <div style="font-family:'Sora',sans-serif;font-size:16px;font-weight:800;color:{t['text']};">
     IPL Crowd Safety
   </div>
-  <div style="font-size:10px;letter-spacing:1.2px;font-weight:700;color:#94A3B8;margin-top:4px;text-transform:uppercase;">
+  <div style="font-size:10px;letter-spacing:1.2px;font-weight:700;color:{t['text2']};margin-top:4px;text-transform:uppercase;">
     Stadium Operations Command
   </div>
 </div>""", unsafe_allow_html=True)
@@ -1098,12 +1316,32 @@ with st.sidebar:
         ai_temperature = 0.4
         ai_max_tokens  = 750
 
+    # Modern dynamic theme toggle at bottom of sidebar
+    st.markdown("<hr style='margin:16px 0; opacity:0.15;'>", unsafe_allow_html=True)
+    st.markdown(
+        f'<p style="font-size:10px;font-weight:800;letter-spacing:1px;margin:0 0 10px 0;color:{t["text2"]};text-transform:uppercase;">DISPLAY CONTROLS</p>',
+        unsafe_allow_html=True
+    )
+    col_t1, col_t2 = st.columns([3, 1])
+    with col_t1:
+        cur_mode_label = "🌙 Dark Theme" if st.session_state.theme_mode == "dark" else "☀️ Light Theme"
+        st.markdown(
+            f'<div style="font-size: 12px; font-weight: 600; color: {t["text"]}; padding-top: 5px;">'
+            f'{cur_mode_label}</div>',
+            unsafe_allow_html=True
+        )
+    with col_t2:
+        if st.button("🔄", key="main_theme_quick_toggle", help="Switch Light/Dark Theme"):
+            st.session_state.theme_mode = "light" if st.session_state.theme_mode == "dark" else "dark"
+            st.rerun()
+
 
 # ─────────────────────────────────────────────────────────
 # RENDER PAGES
 # ─────────────────────────────────────────────────────────
 page = st.session_state.active_page
-t    = THEMES[page]
+mode = st.session_state.theme_mode
+t    = THEMES_DARK[page] if mode == "dark" else THEMES_LIGHT[page]
 
 # Compute active page index for sidebar nav highlighting
 active_idx = 0
@@ -1411,17 +1649,8 @@ if page == "Overview":
     # ── AI Executive Panel placed cleanly at bottom! ──
     ai_section_header("🤖 AI Executive Operations Evaluation")
 
-    top1, top2 = st.columns([1, 2.4])
-    with top1:
-        # State-persistent AI generation button
-        generate_ai = st.button("🤖 Generate Live AI Insights Report", use_container_width=True)
-        st.caption(f"Temp: {ai_temperature} | Max Tokens: {ai_max_tokens}")
-    with top2:
-        st.markdown(f"""
-        <div class="ai-card" style="padding: 14px 18px;">
-          <div class="insight-pill" style="margin-bottom: 6px;">AI Intelligence Service</div>
-          Takes live filtered KPI vectors, hazard levels, anomalies, and active risk priority logs to produce specialized stadium safety tasks.
-        </div>""", unsafe_allow_html=True)
+    generate_ai = st.button("🤖 Generate Live AI Insights Report", use_container_width=True)
+    st.caption(f"Temp: {ai_temperature} | Max Tokens: {ai_max_tokens}")
 
     # Persistent AI Report display
     if "overview_report" not in st.session_state:
