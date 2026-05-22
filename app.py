@@ -1600,7 +1600,7 @@ if page == "Overview":
     # KPI Layout centered!
     k1, k2, k3, k4, k5 = st.columns(5)
     with k1: kpi_card("Overall Risk Score",    str(overall_risk_score),      "crit", "Aggregate live score")
-    with k2: kpi_card("Medical Incident Rate", str(med_rate),                "warn", "Per 1K spectators")
+    with k2: kpi_card("Medical Incident Rate", med_rate*100,                "warn", "Per 1K spectators")
     with k3: kpi_card("Capacity Breach Ratio", cap_breach,             "info", "Zones near/above limit")
     with k4: kpi_card("Incident Resolution",   f"{res_rate}%",               "ok",   "Current resolution rate")
     with k5: kpi_card("Ambulance Response",    f"{amb_resp} min",            "warn", "Mean response delay")
