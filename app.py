@@ -25,81 +25,80 @@ st.set_page_config(
 
 PHASE_ORDER = ["Pre-match", "First innings", "Break", "Second innings", "Exit phase"]
 
-# ─────────────────────────────────────────────────────────
-# THEMES — Redesigned with comfortable Intermediate Slate-Slate-Gray colors
+# THEMES — Redesigned with custom premium dark stadium operations control command palettes
 # ─────────────────────────────────────────────────────────
 THEMES = {
     "Intro": {
-        "bg": "#1E293B", "sidebar": "#0F172A", "card": "#334155",
-        "accent": "#38BDF8", "accent_lt": "#475569", "accent2": "#93C5FD",
-        "text": "#FAFAFA", "text2": "#94A3B8", "border": "#475569",
-        "plot_bg": "#334155", "paper_bg": "#1E293B", "grid": "#475569",
-        "legend_rgba": "rgba(30,41,59,0.92)",
-        "palette": ["#38BDF8", "#0EA5E9", "#FBBF24", "#34D399", "#F87171", "#A78BFA"],
-        "crit_col": "#F87171", "warn_col": "#FBBF24", "ok_col": "#34D399", "info_col": "#38BDF8",
+        "bg": "#090D1A", "sidebar": "#050811", "card": "#121A2F",
+        "accent": "#00F0FF", "accent_lt": "rgba(0, 240, 255, 0.1)", "accent2": "#38BDF8",
+        "text": "#FAFAFA", "text2": "#94A3B8", "border": "#1E2942",
+        "plot_bg": "#121A2F", "paper_bg": "#090D1A", "grid": "#1E2942",
+        "legend_rgba": "rgba(9,13,26,0.92)",
+        "palette": ["#00F0FF", "#38BDF8", "#FBBF24", "#34D399", "#F87171", "#A78BFA"],
+        "crit_col": "#F43F5E", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#00F0FF",
     },
     "Overview": {
-        "bg": "#F8FAFC", "sidebar": "#F1F5F9", "card": "#FFFFFF",
-        "accent": "#4F46E5", "accent_lt": "#EEF2FF", "accent2": "#312E81",
-        "text": "#0F172A", "text2": "#64748B", "border": "#E2E8F0",
-        "plot_bg": "#FFFFFF", "paper_bg": "#F8FAFC", "grid": "#F1F5F9",
-        "legend_rgba": "rgba(248,250,252,0.92)",
-        "palette": ["#4F46E5", "#0ea5e9", "#F59E0B", "#10B981", "#EF4444", "#8B5CF6"],
-        "crit_col": "#EF4444", "warn_col": "#F59E0B", "ok_col": "#10B981", "info_col": "#4F46E5",
+        "bg": "#090D1A", "sidebar": "#050811", "card": "#121A2F",
+        "accent": "#00F0FF", "accent_lt": "rgba(0, 240, 255, 0.1)", "accent2": "#38BDF8",
+        "text": "#FAFAFA", "text2": "#94A3B8", "border": "#1E2942",
+        "plot_bg": "#121A2F", "paper_bg": "#090D1A", "grid": "#1E2942",
+        "legend_rgba": "rgba(9,13,26,0.92)",
+        "palette": ["#00F0FF", "#38BDF8", "#FBBF24", "#34D399", "#F87171", "#A78BFA"],
+        "crit_col": "#F43F5E", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#00F0FF",
     },
     "Crowd Flow": {
-        "bg": "#F0F9FF", "sidebar": "#E0F2FE", "card": "#FFFFFF",
-        "accent": "#0284C7", "accent_lt": "#F0F9FF", "accent2": "#0C4A6E",
-        "text": "#0F172A", "text2": "#64748B", "border": "#BAE6FD",
-        "plot_bg": "#FFFFFF", "paper_bg": "#F0F9FF", "grid": "#E0F2FE",
-        "legend_rgba": "rgba(240,249,255,0.92)",
-        "palette": ["#0284C7", "#38bdf8", "#F59E0B", "#10B981", "#8B5CF6", "#EF4444"],
-        "crit_col": "#EF4444", "warn_col": "#F59E0B", "ok_col": "#10B981", "info_col": "#0284C7",
+        "bg": "#090D1A", "sidebar": "#050811", "card": "#121A2F",
+        "accent": "#38BDF8", "accent_lt": "rgba(56, 189, 248, 0.1)", "accent2": "#0EA5E9",
+        "text": "#FAFAFA", "text2": "#94A3B8", "border": "#1E2942",
+        "plot_bg": "#121A2F", "paper_bg": "#090D1A", "grid": "#1E2942",
+        "legend_rgba": "rgba(9,13,26,0.92)",
+        "palette": ["#38BDF8", "#0ea5e9", "#FBBF24", "#10B981", "#8B5CF6", "#EF4444"],
+        "crit_col": "#EF4444", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#38BDF8",
     },
     "Medical & Heat": {
-        "bg": "#FFF5F5", "sidebar": "#FFE3E3", "card": "#FFFFFF",
-        "accent": "#E03131", "accent_lt": "#FFF5F5", "accent2": "#9C1C1C",
-        "text": "#2B1B1B", "text2": "#7A6565", "border": "#FFC9C9",
-        "plot_bg": "#FFFFFF", "paper_bg": "#FFF5F5", "grid": "#FFE3E3",
-        "legend_rgba": "rgba(255,245,245,0.92)",
-        "palette": ["#E03131", "#ff8787", "#F97316", "#8B5CF6", "#3B82F6", "#10B981"],
-        "crit_col": "#E03131", "warn_col": "#F97316", "ok_col": "#10B981", "info_col": "#8B5CF6",
+        "bg": "#090D1A", "sidebar": "#050811", "card": "#121A2F",
+        "accent": "#EF4444", "accent_lt": "rgba(239, 68, 68, 0.1)", "accent2": "#F43F5E",
+        "text": "#FAFAFA", "text2": "#94A3B8", "border": "#1E2942",
+        "plot_bg": "#121A2F", "paper_bg": "#090D1A", "grid": "#1E2942",
+        "legend_rgba": "rgba(9,13,26,0.92)",
+        "palette": ["#EF4444", "#F43F5E", "#F97316", "#8B5CF6", "#3B82F6", "#10B981"],
+        "crit_col": "#EF4444", "warn_col": "#F97316", "ok_col": "#10B981", "info_col": "#8B5CF6",
     },
     "Security": {
-        "bg": "#FFFBEB", "sidebar": "#FEF3C7", "card": "#FFFFFF",
-        "accent": "#D97706", "accent_lt": "#FEF3C7", "accent2": "#B45309",
-        "text": "#1C1007", "text2": "#6B7280", "border": "#FCD34D",
-        "plot_bg": "#FFFFFF", "paper_bg": "#FFFBEB", "grid": "#FFFCF0",
-        "legend_rgba": "rgba(255,251,235,0.92)",
-        "palette": ["#D97706", "#F59E0B", "#3B82F6", "#10B981", "#8B5CF6", "#EF4444"],
-        "crit_col": "#EF4444", "warn_col": "#D97706", "ok_col": "#10B981", "info_col": "#3B82F6",
+        "bg": "#090D1A", "sidebar": "#050811", "card": "#121A2F",
+        "accent": "#FBBF24", "accent_lt": "rgba(251, 191, 36, 0.1)", "accent2": "#B45309",
+        "text": "#FAFAFA", "text2": "#94A3B8", "border": "#1E2942",
+        "plot_bg": "#121A2F", "paper_bg": "#090D1A", "grid": "#1E2942",
+        "legend_rgba": "rgba(9,13,26,0.92)",
+        "palette": ["#FBBF24", "#F97316", "#3B82F6", "#10B981", "#8B5CF6", "#EF4444"],
+        "crit_col": "#EF4444", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#3B82F6",
     },
     "Resource Planning": {
-        "bg": "#F4FBF7", "sidebar": "#E6F4EA", "card": "#FFFFFF",
-        "accent": "#0F5132", "accent_lt": "#E6F4EA", "accent2": "#0A3622",
-        "text": "#1A2521", "text2": "#60716A", "border": "#C3E6CB",
-        "plot_bg": "#FFFFFF", "paper_bg": "#F4FBF7", "grid": "#E6F4EA",
-        "legend_rgba": "rgba(244,251,247,0.92)",
-        "palette": ["#0F5132", "#198754", "#8B5CF6", "#0ea5e9", "#F59E0B", "#EF4444"],
-        "crit_col": "#EF4444", "warn_col": "#F59E0B", "ok_col": "#0F5132", "info_col": "#0ea5e9",
+        "bg": "#090D1A", "sidebar": "#050811", "card": "#121A2F",
+        "accent": "#10B981", "accent_lt": "rgba(16, 185, 129, 0.1)", "accent2": "#047857",
+        "text": "#FAFAFA", "text2": "#94A3B8", "border": "#1E2942",
+        "plot_bg": "#121A2F", "paper_bg": "#090D1A", "grid": "#1E2942",
+        "legend_rgba": "rgba(9,13,26,0.92)",
+        "palette": ["#10B981", "#34D399", "#8B5CF6", "#0ea5e9", "#FBBF24", "#EF4444"],
+        "crit_col": "#EF4444", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#0ea5e9",
     },
     "Risk Matrix": {
-        "bg": "#FAFAFA", "sidebar": "#F4F4F5", "card": "#FFFFFF",
-        "accent": "#E03131", "accent_lt": "#FFE3E3", "accent2": "#9C1C1C",
-        "text": "#18181B", "text2": "#71717A", "border": "#E4E4E7",
-        "plot_bg": "#FFFFFF", "paper_bg": "#FAFAFA", "grid": "#F4F4F5",
-        "legend_rgba": "rgba(250,250,250,0.92)",
-        "palette": ["#E03131", "#F97316", "#FBBF24", "#10B981", "#3B82F6", "#8B5CF6"],
-        "crit_col": "#E03131", "warn_col": "#F97316", "ok_col": "#10B981", "info_col": "#3B82F6",
+        "bg": "#090D1A", "sidebar": "#050811", "card": "#121A2F",
+        "accent": "#EF4444", "accent_lt": "rgba(239, 68, 68, 0.1)", "accent2": "#9C1C1C",
+        "text": "#FAFAFA", "text2": "#94A3B8", "border": "#1E2942",
+        "plot_bg": "#121A2F", "paper_bg": "#090D1A", "grid": "#1E2942",
+        "legend_rgba": "rgba(9,13,26,0.92)",
+        "palette": ["#EF4444", "#F97316", "#FBBF24", "#10B981", "#3B82F6", "#8B5CF6"],
+        "crit_col": "#EF4444", "warn_col": "#F97316", "ok_col": "#10B981", "info_col": "#3B82F6",
     },
     "Ask AI": {
-        "bg": "#F9F8FF", "sidebar": "#F3F0FF", "card": "#FFFFFF",
-        "accent": "#735BF2", "accent_lt": "#F3F0FF", "accent2": "#3B2EA6",
-        "text": "#1E1743", "text2": "#7D759F", "border": "#E5E1FC",
-        "plot_bg": "#FFFFFF", "paper_bg": "#F9F8FF", "grid": "#F3F0FF",
-        "legend_rgba": "rgba(249,248,255,0.92)",
-        "palette": ["#735BF2", "#907EFC", "#F59E0B", "#10B981", "#EF4444", "#3B82F6"],
-        "crit_col": "#EF4444", "warn_col": "#F59E0B", "ok_col": "#10B981", "info_col": "#735BF2",
+        "bg": "#090D1A", "sidebar": "#050811", "card": "#121A2F",
+        "accent": "#818CF8", "accent_lt": "rgba(129, 140, 248, 0.1)", "accent2": "#A78BFA",
+        "text": "#FAFAFA", "text2": "#94A3B8", "border": "#1E2942",
+        "plot_bg": "#121A2F", "paper_bg": "#090D1A", "grid": "#1E2942",
+        "legend_rgba": "rgba(9,13,26,0.92)",
+        "palette": ["#818CF8", "#A78BFA", "#FBBF24", "#10B981", "#EF4444", "#3B82F6"],
+        "crit_col": "#EF4444", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#818CF8",
     },
 }
 
@@ -201,10 +200,10 @@ except Exception as e:
 # ─────────────────────────────────────────────────────────
 # CSS — with draggable sidebar resizer & centered Layout
 # ─────────────────────────────────────────────────────────
-def inject_css(t):
+def inject_css(t, active_idx=0):
     st.markdown(f"""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap');
 
 html, body, [class*="css"] {{ font-family: 'Plus Jakarta Sans', sans-serif; }}
 .stApp {{ background-color: {t['bg']}; color: {t['text']}; }}
@@ -233,20 +232,64 @@ section[data-testid="stSidebar"]::after {{
     opacity: 0.6;
 }}
 section[data-testid="stSidebar"] * {{ color: {t['text']} !important; }}
-section[data-testid="stSidebar"] .stButton > button {{
-    width: 100% !important; text-align: left !important;
-    background: {t['card']} !important; border: 1px solid {t['border']} !important;
-    border-radius: 12px !important; padding: 10px 14px !important;
-    font-size: 13px !important; font-weight: 700 !important;
-    color: {t['text']} !important; margin-bottom: 5px !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
-    transition: all 0.18s ease !important;
+
+/* Consistent height, padding, spacing, border-radius on buttons */
+section[data-testid="stSidebar"] [data-testid="stElementContainer"] {{
+    margin-bottom: 2px !important;
 }}
-section[data-testid="stSidebar"] .stButton > button:hover {{
-    background: {t['accent_lt']} !important;
+section[data-testid="stSidebar"] div.stButton > button {{
+    width: 100% !important;
+    height: 44px !important;
+    text-align: left !important;
+    background: rgba(18, 26, 47, 0.45) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 10px !important;
+    padding: 0 16px !important;
+    margin: 4px 0 !important;
+    box-shadow: none !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+}}
+section[data-testid="stSidebar"] div.stButton > button div[data-testid="stMarkdownContainer"] p {{
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    line-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    letter-spacing: 0.3px !important;
+    color: {t['text']} !important;
+    margin: 0 !important;
+}}
+/* Unified Equal-Sized Sidebar Navigation Icons */
+section[data-testid="stSidebar"] div.stButton > button div[data-testid="stMarkdownContainer"] p::first-letter {{
+    font-size: 18px !important;
+    display: inline-block !important;
+    width: 24px !important;
+    text-align: center !important;
+    margin-right: 12px !important;
+    flex-shrink: 0 !important;
+}}
+section[data-testid="stSidebar"] div.stButton > button:hover {{
+    background: rgba(255, 255, 255, 0.08) !important;
     border-color: {t['accent']} !important;
-    color: {t['accent2']} !important;
-    transform: translateX(2px) !important;
+    color: {t['text']} !important;
+    transform: translateX(4px) !important;
+}}
+
+/* Active Nav HIGHLIGHT (using target indexing based on PAGES sequence) */
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-container:nth-of-type({active_idx + 2}) .stButton > button {{
+    background: {t['accent']} !important;
+    border-color: {t['accent']} !important;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25) !important;
+    transform: translateX(4px) !important;
+}}
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div.element-container:nth-of-type({active_idx + 2}) .stButton > button div[data-testid="stMarkdownContainer"] p {{
+    color: {t['sidebar']} !important;
+    font-weight: 700 !important;
 }}
 
 /* ── Centered Page Header Layout ── */
@@ -309,7 +352,178 @@ section[data-testid="stSidebar"] .stButton > button:hover {{
     border-bottom: 2px solid {t['accent_lt']};
 }}
 
-/* ── AI Section Header & Banner (at the absolute bottom of each page) ── */
+/* ── Modern Executive Report Canvas ── */
+.report-container {{
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+}}
+.report-card {{
+    background: {t['card']} !important;
+    border: 1px solid {t['border']} !important;
+    border-radius: 16px !important;
+    padding: 22px 24px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
+    transition: all 0.22s ease !important;
+}}
+.report-card:hover {{
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+    border-color: {t['accent']} !important;
+}}
+.report-header-wrapper {{
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin-bottom: 14px !important;
+    padding-bottom: 10px !important;
+    border-bottom: 1px solid {t['border']} !important;
+}}
+.report-icon {{
+    font-size: 18px !important;
+    min-width: 36px !important;
+    height: 36px !important;
+    background: {t['accent_lt']} !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 10px !important;
+    color: {t['accent']} !important;
+}}
+.report-title {{
+    font-family: 'Sora', sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    color: {t['text']} !important;
+    margin: 0 !important;
+    letter-spacing: -0.1px !important;
+}}
+.report-body {{
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 13.5px !important;
+    line-height: 1.65 !important;
+    color: {t['text2']} !important;
+}}
+.report-body p {{
+    margin-bottom: 10px !important;
+    color: {t['text2']} !important;
+}}
+.report-list {{
+    list-style: none !important;
+    padding-left: 0 !important;
+    margin: 10px 0 0 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+}}
+.report-list-item {{
+    position: relative !important;
+    padding-left: 20px !important;
+    color: {t['text']} !important;
+    font-size: 13.5px !important;
+    line-height: 1.6 !important;
+}}
+.report-list-item::before {{
+    content: '▶' !important;
+    position: absolute !important;
+    left: 2px !important;
+    top: 3px !important;
+    color: {t['accent']} !important;
+    font-size: 9px !important;
+    opacity: 0.85 !important;
+}}
+
+/* ── Modern Premium Chat Interface  ── */
+.chat-window-container {{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 15px;
+}}
+.chat-history-scroller {{
+    max-height: 520px;
+    overflow-y: auto;
+    padding-right: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}}
+.chat-bubble-row {{
+    display: flex;
+    width: 100%;
+}}
+.bubble-row-user {{
+    justify-content: flex-end;
+}}
+.bubble-row-assistant {{
+    justify-content: flex-start;
+}}
+.chat-message-box {{
+    max-width: 80%;
+    display: flex;
+    flex-direction: column;
+}}
+.chat-msg-header {{
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+    padding: 0 4px;
+}}
+.msg-header-user {{
+    color: {t['accent']};
+    align-self: flex-end;
+}}
+.msg-header-assistant {{
+    color: {t['accent2']};
+    align-self: flex-start;
+}}
+.chat-msg-bubble {{
+    border-radius: 16px;
+    padding: 12px 18px;
+    font-size: 13.8px;
+    line-height: 1.55;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+}}
+.bubble-user {{
+    background: {t['accent']} !important;
+    color: {t['sidebar']} !important;
+    border-top-right-radius: 4px;
+}}
+.bubble-user * {{
+    color: {t['sidebar']} !important;
+}}
+.bubble-assistant {{
+    background: {t['card']} !important;
+    border: 1px solid {t['border']};
+    color: {t['text']} !important;
+    border-top-left-radius: 4px;
+}}
+.bubble-assistant * {{
+    color: {t['text']} !important;
+}}
+.chat-msg-footer {{
+    font-size: 9px;
+    color: {t['text2']};
+    margin-top: 4px;
+    padding: 0 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}}
+.msg-footer-user {{
+    align-self: flex-end;
+}}
+.msg-footer-assistant {{
+    align-self: flex-start;
+}}
+
+/* ── Legacy AI Styles Support ── */
 .ai-section-divider {{
     margin: 40px 0 16px 0;
     padding: 14px 20px;
@@ -340,7 +554,7 @@ section[data-testid="stSidebar"] .stButton > button:hover {{
     font-size: 11px; text-transform: uppercase; font-weight: 700;
     letter-spacing: 0.7px; color: {t["text2"]}; text-align: center;
 }}
-.ai-status-critical {{ color: #DC2626; font-weight: 700; font-size: 12px; text-align: center; }}
+.ai-status-critical {{ color: #EF4444; font-weight: 700; font-size: 12px; text-align: center; }}
 .ai-status-warning  {{ color: #F59E0B; font-weight: 700; font-size: 12px; text-align: center; }}
 .ai-status-good     {{ color: #10B981; font-weight: 700; font-size: 12px; text-align: center; }}
 
@@ -352,7 +566,7 @@ section[data-testid="stSidebar"] .stButton > button:hover {{
 
 div[data-testid="stPlotlyChart"] > div {{
     border-radius: 14px !important; border: 1px solid {t['border']} !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
 }}
 [data-testid="stDataFrame"] {{
     border-radius: 12px; border: 1px solid {t['border']}; overflow: hidden;
@@ -361,7 +575,7 @@ div[data-testid="stPlotlyChart"] > div {{
 ::-webkit-scrollbar {{ width: 5px; height: 5px; }}
 ::-webkit-scrollbar-track {{ background: {t['bg']}; }}
 ::-webkit-scrollbar-thumb {{ background: {t['border']}; border-radius: 3px; }}
-hr {{ border-color: {t['border']} !important; opacity: 0.6; }}
+hr {{ border-color: {t['border']} !important; opacity: 0.4; }}
 </style>
 
 <script>
@@ -378,6 +592,188 @@ hr {{ border-color: {t['border']} !important; opacity: 0.6; }}
     setTimeout(initSidebarResize, 800);
 }})();
 </script>
+""", unsafe_allow_html=True)
+
+
+# ─────────────────────────────────────────────────────────
+# EXECUTIVE AI REPORT PARSER
+# ─────────────────────────────────────────────────────────
+import re
+
+def render_ai_insight_report(text, t):
+    if not text:
+        return ""
+    
+    # Split text into lines
+    lines = text.strip().split("\n")
+    sections = []
+    current_section_title = "Executive Summary"
+    current_section_lines = []
+    
+    # Map section types to standard executive structures
+    header_meta = {
+        "summary": {"icon": "📋", "title": "Executive Summary", "border": t.get("accent", "#38BDF8")},
+        "insight": {"icon": "💡", "title": "Key Insights & Analytics", "border": t.get("accent2", "#0EA5E9")},
+        "risk": {"icon": "⚠️", "title": "Risk & Vulnerability Assessment", "border": t.get("crit_col", "#EF4444")},
+        "action": {"icon": "✅", "title": "Tactical Action Blueprint", "border": t.get("ok_col", "#10B981")},
+        "priority": {"icon": "🎯", "title": "Command & Control Priorities", "border": t.get("accent", "#8B5CF6")},
+    }
+    
+    def get_header_info(title_text):
+        normalized = title_text.lower()
+        if "summary" in normalized or "briefing" in normalized or "overview" in normalized:
+            return header_meta["summary"]
+        elif "insight" in normalized or "trend" in normalized or "analytics" in normalized:
+            return header_meta["insight"]
+        elif "risk" in normalized or "hotspot" in normalized or "threat" in normalized or "vulner" in normalized:
+            return header_meta["risk"]
+        elif "action" in normalized or "blueprint" in normalized or "recommend" in normalized or "tactical" in normalized:
+            return header_meta["action"]
+        elif "priority" in normalized or "task" in normalized or "allocation" in normalized or "control" in normalized:
+            return header_meta["priority"]
+        else:
+            return {"icon": "📊", "title": title_text, "border": t.get("accent", "#38BDF8")}
+
+    for line in lines:
+        line_strip = line.strip()
+        if not line_strip:
+            continue
+            
+        # Is it a header line? e.g. starts with #, ## or is a bold numbered title like "1. **Title**"
+        is_header = False
+        header_text = ""
+        
+        if line_strip.startswith("#"):
+            is_header = True
+            header_text = line_strip.lstrip("#").strip()
+        elif re.match(r'^\d+\.\s+\*\*(.*?)\*\*', line_strip):
+            is_header = True
+            header_text = re.sub(r'^\d+\.\s+\*\*(.*?)\*\*.*$', r'\1', line_strip)
+        elif line_strip.startswith("**") and line_strip.endswith("**") and len(line_strip) < 65:
+            is_header = True
+            header_text = line_strip.replace("**", "").strip()
+            
+        if is_header:
+            if current_section_lines:
+                sections.append((current_section_title, current_section_lines))
+                current_section_lines = []
+            # Strip common emoji prefixes
+            for emoji in ["📌", "⚠️", "✅", "📋", "🤖", "🧠", "🎯", "💡", "🛡️", "📊"]:
+                header_text = header_text.replace(emoji, "")
+            current_section_title = header_text.strip("*: \t")
+        else:
+            current_section_lines.append(line_strip)
+            
+    if current_section_lines or current_section_title:
+        sections.append((current_section_title, current_section_lines))
+        
+    html_out = ['<div class="report-container">']
+    
+    for sect_title, sect_lines in sections:
+        if not sect_lines:
+            continue
+            
+        meta = get_header_info(sect_title)
+        html_out.append(f"""
+        <div class="report-card" style="border-left: 5px solid {meta['border']} !important;">
+            <div class="report-header-wrapper">
+                <div class="report-icon">{meta['icon']}</div>
+                <h4 class="report-title">{meta['title']}</h4>
+            </div>
+            <div class="report-body">
+        """)
+        
+        in_list = False
+        for sl in sect_lines:
+            is_bullet = sl.startswith("-") or sl.startswith("*") or sl.startswith("•")
+            clean_line = sl
+            if is_bullet:
+                clean_line = re.sub(r'^[-*•]\s*', '', clean_line).strip()
+                
+            # Replace **bold** with custom colored bold indicators
+            def bold_replacer(match):
+                return f'<strong style="color: {t["text"]}; font-weight:700;">{match.group(1)}</strong>'
+            clean_line = re.sub(r'\*\*(.*?)\*\*', bold_replacer, clean_line)
+            
+            # Clean residual raw markdown indicators
+            clean_line = clean_line.replace("#", "")
+            
+            if is_bullet:
+                if not in_list:
+                    html_out.append('<ul class="report-list">')
+                    in_list = True
+                html_out.append(f'<li class="report-list-item">{clean_line}</li>')
+            else:
+                if in_list:
+                    html_out.append('</ul>')
+                    in_list = False
+                html_out.append(f'<p style="margin-bottom:10px;">{clean_line}</p>')
+                
+        if in_list:
+            html_out.append('</ul>')
+            
+        html_out.append("""
+            </div>
+        </div>
+        """)
+        
+    html_out.append('</div>')
+    return "\n".join(html_out)
+
+
+# ─────────────────────────────────────────────────────────
+# CHAT BUBBLE FORMATTER (ChatGPT Typography Style)
+# ─────────────────────────────────────────────────────────
+def format_chat_bubble_markdown(text, t):
+    if not text:
+        return ""
+    lines = text.split("\n")
+    formatted_lines = []
+    in_list = False
+    
+    for l in lines:
+        l_strip = l.strip()
+        if not l_strip:
+            if in_list:
+                formatted_lines.append("</ul>")
+                in_list = False
+            continue
+            
+        if l_strip.startswith("#"):
+            if in_list:
+                formatted_lines.append("</ul>")
+                in_list = False
+            hdr = l_strip.lstrip("#").strip()
+            formatted_lines.append(f'<h5 style="font-family:\'Sora\',sans-serif; font-size:14px; font-weight:700; color:{t["text"]}; margin: 12px 0 6px 0;">{hdr}</h5>')
+            continue
+            
+        is_bullet = l_strip.startswith("-") or l_strip.startswith("*") or l_strip.startswith("•")
+        clean_item = l_strip
+        if is_bullet:
+            clean_item = re.sub(r'^[-*•]\s*', '', clean_item).strip()
+            
+        def bold_replacer(match):
+            return f'<strong style="font-weight:700;">{match.group(1)}</strong>'
+        clean_item = re.sub(r'\*\*(.*?)\*\*', bold_replacer, clean_item)
+        
+        # Clean residual raw markdown indicators
+        clean_item = clean_item.replace("#", "")
+        
+        if is_bullet:
+            if not in_list:
+                formatted_lines.append('<ul style="margin: 6px 0; padding-left: 18px; list-style-type: disc;">')
+                in_list = True
+            formatted_lines.append(f'<li style="margin-bottom: 5px;">{clean_item}</li>')
+        else:
+            if in_list:
+                formatted_lines.append("</ul>")
+                in_list = False
+            formatted_lines.append(f'<p style="margin-bottom: 8px; line-height:1.5;">{clean_item}</p>')
+            
+    if in_list:
+        formatted_lines.append("</ul>")
+        
+    return "\n".join(formatted_lines)
 """, unsafe_allow_html=True)
 
 
@@ -663,9 +1059,8 @@ with st.sidebar:
 
     # Sidebar Page Selection Navigation
     for icon, name in PAGES:
-        # Give active tab visual feedback using static key and conditional label
-        is_active = (st.session_state.active_page == name)
-        label_text = f"{icon}  {name}   ◀" if is_active else f"{icon}  {name}"
+        # Clean uniform buttons. Active highlights are rendered via index-based CSS.
+        label_text = f"{icon}  {name}"
         if st.button(label_text, key=f"nav_{name}"):
             st.session_state.active_page = name
             st.rerun()
@@ -714,7 +1109,15 @@ with st.sidebar:
 # ─────────────────────────────────────────────────────────
 page = st.session_state.active_page
 t    = THEMES[page]
-inject_css(t)
+
+# Compute active page index for sidebar nav highlighting
+active_idx = 0
+for idx, (_, name) in enumerate(PAGES):
+    if name == page:
+        active_idx = idx
+        break
+
+inject_css(t, active_idx)
 
 # ═══════════════════════════════════════════════════════════
 # PAGE 0 — INTRO LANDING PAGE (Clean Intermediate Blue-Slate Theme)
@@ -1056,7 +1459,7 @@ if page == "Overview":
             st.session_state.overview_report = generate_cohere_insights(summary_text, "Overview Dashboard", ai_temperature, ai_max_tokens)
 
     if st.session_state.overview_report:
-        st.markdown(f'<div class="ai-card" style="border-left: 5px solid {t["accent"]};"><h3>📋 Executive Safety Report</h3>{st.session_state.overview_report.replace(chr(10), "<br>")}</div>', unsafe_allow_html=True)
+        st.markdown(render_ai_insight_report(st.session_state.overview_report, t), unsafe_allow_html=True)
 
 
 # ═══════════════════════════════════════════════════════════
@@ -1158,7 +1561,7 @@ TOP RISK OPERATION LOGS:
             st.session_state.cf_report = generate_cohere_insights(cf_context, "Crowd Flow & Gate Wait Dashboard", ai_temperature, ai_max_tokens)
         
     if st.session_state.cf_report:
-        st.markdown(f'<div class="ai-card" style="border-left: 5px solid {t["accent"]};"><h3>📋 Crowd Flow AI Insights</h3>{st.session_state.cf_report.replace(chr(10), "<br>")}</div>', unsafe_allow_html=True)
+        st.markdown(render_ai_insight_report(st.session_state.cf_report, t), unsafe_allow_html=True)
 
 
 # ═══════════════════════════════════════════════════════════
@@ -1257,7 +1660,7 @@ TOP RISK OPERATION LOGS:
             st.session_state.mh_report = generate_cohere_insights(mh_context, "Paramedic & Heat Stress Dashboard", ai_temperature, ai_max_tokens)
         
     if st.session_state.mh_report:
-        st.markdown(f'<div class="ai-card" style="border-left: 5px solid {t["accent"]};"><h3>📋 Medical Safety Insights</h3>{st.session_state.mh_report.replace(chr(10), "<br>")}</div>', unsafe_allow_html=True)
+        st.markdown(render_ai_insight_report(st.session_state.mh_report, t), unsafe_allow_html=True)
 
 
 # ═══════════════════════════════════════════════════════════
@@ -1340,7 +1743,7 @@ TOP RISK OPERATION LOGS:
             st.session_state.sec_report = generate_cohere_insights(sec_context, "Access Control & Gate Security Dashboard", ai_temperature, ai_max_tokens)
         
     if st.session_state.sec_report:
-        st.markdown(f'<div class="ai-card" style="border-left: 5px solid {t["accent"]};"><h3>📋 Security Audit Insights</h3>{st.session_state.sec_report.replace(chr(10), "<br>")}</div>', unsafe_allow_html=True)
+        st.markdown(render_ai_insight_report(st.session_state.sec_report, t), unsafe_allow_html=True)
 
 
 # ═══════════════════════════════════════════════════════════
@@ -1438,7 +1841,7 @@ TOP RISK OPERATION LOGS:
             st.session_state.rp_report = generate_cohere_insights(rp_context, "Resource & Scheduling Dashboard", ai_temperature, ai_max_tokens)
         
     if st.session_state.rp_report:
-        st.markdown(f'<div class="ai-card" style="border-left: 5px solid {t["accent"]};"><h3>📋 Logistics Optimization Insights</h3>{st.session_state.rp_report.replace(chr(10), "<br>")}</div>', unsafe_allow_html=True)
+        st.markdown(render_ai_insight_report(st.session_state.rp_report, t), unsafe_allow_html=True)
 
 
 # ═══════════════════════════════════════════════════════════
@@ -1515,7 +1918,7 @@ TOP HAZARD PRIORITY DATABASE RECORDS:
             st.session_state.rm_report = generate_cohere_insights(rm_context, "Advanced Risk & Anomaly Matrix Dashboard", ai_temperature, ai_max_tokens)
         
     if st.session_state.rm_report:
-        st.markdown(f'<div class="ai-card" style="border-left: 5px solid {t["accent"]};"><h3>📋 Command Matrix Insights</h3>{st.session_state.rm_report.replace(chr(10), "<br>")}</div>', unsafe_allow_html=True)
+        st.markdown(render_ai_insight_report(st.session_state.rm_report, t), unsafe_allow_html=True)
 
 
 # ═══════════════════════════════════════════════════════════
@@ -1526,6 +1929,8 @@ elif page == "Ask AI":
                 "Directly query the live stadium database, ask safety questions, and generate instant crowd control task plans.")
 
     # State controller initialization
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = []
     if "ai_question" not in st.session_state:
         st.session_state.ai_question = ""
     if "ai_answer" not in st.session_state:
@@ -1552,58 +1957,76 @@ elif page == "Ask AI":
         st.success("✅ **Cohere AI Command Service is connected.** Live operations advisors correspond beautifully.")
 
     st.write("")
-    sec_label("Suggested Quick Operations Questions")
+    
+    # Header and Chat control action buttons
+    c_hdr1, c_hdr2 = st.columns([3.5, 1.2])
+    with c_hdr1:
+        sec_label("Conversational AI Command History")
+    with c_hdr2:
+        st.write("")
+        st.write("")
+        if st.button("🧹 Clear Chat History Thread", use_container_width=True):
+            st.session_state.chat_history = []
+            st.rerun()
 
-    # Center buttons gracefully
+    # 1. Render Chattanooga-Style Scrolled Conversation Bubbles
+    if st.session_state.chat_history:
+        st.markdown('<div class="chat-window-container"><div class="chat-history-scroller">', unsafe_allow_html=True)
+        for msg in st.session_state.chat_history:
+            role_class = "user" if msg["role"] == "user" else "assistant"
+            header_text = "Command Director (You)" if msg["role"] == "user" else "AI Operational Advisor"
+            bubble_class = "bubble-user" if msg["role"] == "user" else "bubble-assistant"
+            
+            # Filter and parse bubble markdown to proper styled fonts
+            formatted_text = format_chat_bubble_markdown(msg["text"], t)
+            
+            st.markdown(f"""
+            <div class="chat-bubble-row bubble-row-{role_class}">
+                <div class="chat-message-box">
+                    <div class="chat-msg-header msg-header-{role_class}">{header_text}</div>
+                    <div class="chat-msg-bubble {bubble_class}">{formatted_text}</div>
+                    <div class="chat-msg-footer msg-footer-{role_class}">{msg["time"]}</div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        st.markdown('</div></div>', unsafe_allow_html=True)
+    else:
+        st.markdown(f"""
+        <div style="text-align:center; padding:40px 20px; background:{t['card']}; border:1px dashed {t['border']}; border-radius:14px; margin-bottom:20px;">
+            <p style="color:{t['text2']}; font-size:14px; margin:0;">
+                No command queries logged. Choose a suggested question below or type your operations query inside the chat bar.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    sec_label("Suggested Quick Operations Questions (Instant Query Trigger)")
+
+    # Suggested Instant questions buttons
+    clicked_q = ""
     q1, q2, q3 = st.columns(3)
     with q1:
-        if st.button("Which sectors need immediate help?", use_container_width=True):
-            st.session_state.ai_question = "Which stadium sectors need the most immediate crowd control help right now and why?"
-            st.session_state.ai_answer = ""
-            st.rerun()
+        if st.button("Which sectors need immediate help?", use_container_width=True, key="sq_1"):
+            clicked_q = "Which stadium sectors need the most immediate crowd control help right now and why?"
     with q2:
-        if st.button("Logistical first actions?", use_container_width=True):
-            st.session_state.ai_question = "Identify the top 3 logistical tasks the operations team should execute first."
-            st.session_state.ai_answer = ""
-            st.rerun()
+        if st.button("Logistical first actions?", use_container_width=True, key="sq_2"):
+            clicked_q = "Identify the top 3 logistical tasks the operations team should execute first."
     with q3:
-        if st.button("Explain dashboard results simply", use_container_width=True):
-            st.session_state.ai_question = "Translate this dashboard's core metrics into an easy, executive presentation summary."
-            st.session_state.ai_answer = ""
-            st.rerun()
+        if st.button("Explain dashboard results simply", use_container_width=True, key="sq_3"):
+            clicked_q = "Translate this dashboard's core metrics into an easy, executive presentation summary."
 
     q4, q5, q6 = st.columns(3)
     with q4:
-        if st.button("Identify high heat vulnerabilities", use_container_width=True):
-            st.session_state.ai_question = "Is heat risk a major threat here? What are the worst thermal coordinates and recommended actions?"
-            st.session_state.ai_answer = ""
-            st.rerun()
+        if st.button("Identify high heat vulnerabilities", use_container_width=True, key="sq_4"):
+            clicked_q = "Is heat risk a major threat here? What are the worst thermal coordinates and recommended actions?"
     with q5:
-        if st.button("Which phase represents the most threat?", use_container_width=True):
-            st.session_state.ai_question = "Which phase shows the most elevated safety and density threat? What are the corresponding control recommendations?"
-            st.session_state.ai_answer = ""
-            st.rerun()
+        if st.button("Which phase represents the most threat?", use_container_width=True, key="sq_5"):
+            clicked_q = "Which phase shows the most elevated safety and density threat? What are the corresponding control recommendations?"
     with q6:
-        if st.button("Give 5 project briefing points", use_container_width=True):
-            st.session_state.ai_question = "Compose 5 clear briefing points explanatory of this stadium crowd-safety dashboard project."
-            st.session_state.ai_answer = ""
-            st.rerun()
+        if st.button("Give 5 project briefing points", use_container_width=True, key="sq_6"):
+            clicked_q = "Compose 5 clear briefing points explanatory of this stadium crowd-safety dashboard project."
 
-    # Manual question entrance
-    user_question = st.text_area(
-        "Enter Your Custom operations Command Question",
-        value=st.session_state.ai_question,
-        placeholder="Example: Which stadium stands suffer from the highest bottleneck risk? What are the priority warden allocation tasks there?",
-        height=120, key="qa_text_area"
-    )
-
-    ask_btn = st.button("💬 Query Advisor Assistant", use_container_width=True)
-
-    if ask_btn:
-        if not user_question.strip():
-            st.warning("Please input or pick a card questions above first.")
-        else:
-            qa_context = f"""
+    # Process all queries in a unified context block
+    qa_context = f"""
 Live telemetry logs vectors passed:
 Overall stadium risk level: {overall_risk_score}
 Integrated crowd safety score: {safety_risk}
@@ -1634,19 +2057,80 @@ Worse risk priority matrix points logged:
 Upper percent alert anomaly listings:
 {anomaly_table.head(10).to_string(index=False)}
 """
-            with st.spinner("AI Operations Consultant is calculating response..."):
-                st.session_state.ai_answer = ask_ai_question(
-                    user_question, qa_context, temperature_value=0.3, token_value=750)
-                st.session_state.ai_question = user_question
-                st.rerun()
 
-    # Render Q&A outcome card
-    if st.session_state.ai_answer:
-        st.markdown(f"""
-        <div class="ai-card" style="border-left: 5px solid {t["accent"]};">
-        <h3>💬 AI Advisor Response</h3>
-        {st.session_state.ai_answer.replace(chr(10), "<br>")}
-        </div>""", unsafe_allow_html=True)
+    active_user_query = ""
+    if clicked_q:
+        active_user_query = clicked_q
+    
+    # Modern st.chat_input bar
+    input_question = st.chat_input("Ask field commander anything...")
+    if input_question:
+        active_user_query = input_question
+
+    if active_user_query:
+        from datetime import datetime
+        current_time = datetime.now().strftime("%H:%M")
+        
+        # 1. Add User query to chat scroller
+        st.session_state.chat_history.append({
+            "role": "user",
+            "text": active_user_query,
+            "time": current_time
+        })
+        
+        # 2. Extract recent query history context
+        history_str = ""
+        if len(st.session_state.chat_history) > 1:
+            history_str = "\n".join([
+                f"{'User' if m['role'] == 'user' else 'AI Advisor'}: {m['text']}"
+                for m in st.session_state.chat_history[-6:-1]
+            ])
+            
+        prompt = f"""
+You are a conversational AI Operations Advisor inside an IPL Crowd Safety Dashboard, similar to ChatGPT or Gemini.
+Ground your response heavily in the provided raw dataset context under STADIUM FIELD CONTEXT, combined with your expert domain knowledge of stadium crowd management.
+
+STADIUM FIELD CONTEXT:
+{qa_context}
+
+CONVERSATION HISTORY TRACE:
+{history_str}
+
+USER OPERATIONAL FOLLOW-UP QUESTION:
+{active_user_query}
+
+Provide action-backed, metrics-supported, and direct operations guidance. Keep responses natural, conversational, and comprehensive. Reference specific stands/metrics from the context if relevant. Do NOT use standard raw markdown symbols like hashtags, bullets, asterisks, structure with clean text and lists.
+"""
+        with st.spinner("AI Field Companion is calculating response channels..."):
+            api_key = get_cohere_key()
+            if not api_key:
+                reply = (
+                    "⚠️ **Cohere API key not configured.**\n\n"
+                    "To enable live Q&A responses, go to Streamlit Cloud Settings -> Secrets "
+                    "and secure your `COHERE_API_KEY`."
+                )
+            else:
+                try:
+                    co = cohere.Client(api_key)
+                    response = co.chat(
+                        model="command-r-plus-08-2024",
+                        message=prompt,
+                        temperature=ai_temperature,
+                        max_tokens=ai_max_tokens,
+                    )
+                    reply = extract_cohere_text(response)
+                except Exception as e:
+                    reply = f"❌ AI Assistant execution failed: {e}"
+            
+            # 3. Add Assistant response to chat scroller
+            st.session_state.chat_history.append({
+                "role": "assistant",
+                "text": reply,
+                "time": current_time
+            })
+            st.session_state.ai_question = active_user_query
+            st.session_state.ai_answer = reply
+            st.rerun()
 
     sec_label("Warden Database Matrices referenced by live AI Models")
     c1, c2 = st.columns(2)
