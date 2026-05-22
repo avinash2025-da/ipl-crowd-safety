@@ -774,7 +774,6 @@ def format_chat_bubble_markdown(text, t):
         formatted_lines.append("</ul>")
         
     return "\n".join(formatted_lines)
-""", unsafe_allow_html=True)
 
 
 # ─────────────────────────────────────────────────────────
