@@ -1427,28 +1427,43 @@ inject_css(t, active_idx)
 # PAGE: HOME PAGE
 # ═══════════════════════════════════════════════════════════
 if page == "Home Page":
-    page_header("🏟️", "IPL Crowd Safety Management Center", "Stadium Operations & Intelligence Control Suite")
-
-    # 1. Hero Section - Crisp & Simple English
+    # 1. Custom Integrated Hero Section - Combining Title, Quote & Clean Numbers-Only Telemetry Strip
     st.markdown(f"""
-<div class="intro-hero" style="background: linear-gradient(135deg, {t['bg']} 0%, {t['sidebar']} 100%); border: 1px solid {t['border']}; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border-radius: 20px; padding: 30px; margin-bottom: 25px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-  <div class="intro-badge" style="background: rgba(0, 240, 255, 0.15); border: 1px solid {t['accent']}; color: {t['accent']}; padding: 5px 12px; border-radius: 999px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">🏏 Operations Command Hub</div>
-  <h1 class="intro-title" style="color: {t['text']}; font-family: 'Sora', sans-serif; font-size: 30px; font-weight: 800; line-height: 1.25; margin-bottom: 10px;">IPL Stadium Safety Hub</h1>
-  <p class="intro-desc" style="color: {t['text2']}; max-width: 720px; font-size: 14px; line-height: 1.5; margin: 0 auto; font-style: normal; font-weight: 500;">
-    A modern dashboard to monitor safety compliance, crowd pressure boundaries, medical risks, and access security in real-time.
+<div class="intro-hero" style="background: linear-gradient(135deg, {t['bg']} 0%, {t['sidebar']} 100%); border: 1px solid {t['border']}; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border-radius: 20px; padding: 35px; margin-bottom: 25px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+  <div class="intro-badge" style="background: rgba(0, 240, 255, 0.15); border: 1px solid {t['accent']}; color: {t['accent']}; padding: 5px 14px; border-radius: 999px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 12px;">🏏 IPL Crowd Safety Center</div>
+  <h1 class="intro-title" style="color: {t['text']}; font-family: 'Sora', sans-serif; font-size: 32px; font-weight: 800; line-height: 1.2; margin: 0 0 10px 0;">Stadium Operations Intelligence Suite</h1>
+  <p class="intro-desc" style="color: {t['text2']}; max-width: 750px; font-size: 14.5px; line-height: 1.6; margin: 0 auto; font-weight: 500;">
+    An integrated operations suite to monitor seating capacity boundaries, queue wait vectors, micro-climate wet-bulb heat states, and paramedic dispatch allocations in real-time.
   </p>
+
+  <!-- 💡 Inspiring Centered Quote Block -->
+  <div style="font-family: 'Sora', sans-serif; font-style: italic; font-size: 15px; color: {t['accent']}; font-weight: 600; margin: 22px 0; max-width: 680px; text-align: center; border-top: 1px dashed {t['border']}; border-bottom: 1px dashed {t['border']}; padding: 12px 0;">
+    "Millions come to watch cricket. This platform helps ensure they return home safely."
+  </div>
+
+  <!-- 📊 Compact, Clean Numbers-Only Telemetry Strip -->
+  <div style="margin-top: 10px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; width: 100%; max-width: 820px; border-top: 1px solid {t['border']}; padding-top: 22px;">
+    <div style="text-align: center;">
+      <div style="font-family: 'Sora', sans-serif; font-size: 30px; font-weight: 800; color: {t['text']}; line-height: 1;">5</div>
+      <div style="font-size: 11px; color: {t['text2']}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 6px;">Active Arenas</div>
+    </div>
+    <div style="text-align: center; border-left: 1px solid {t['border']};">
+      <div style="font-family: 'Sora', sans-serif; font-size: 30px; font-weight: 800; color: {t['text']}; line-height: 1;">14.5m</div>
+      <div style="font-size: 11px; color: {t['text2']}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 6px;">Avg Queue Wait</div>
+    </div>
+    <div style="text-align: center; border-left: 1px solid {t['border']};">
+      <div style="font-family: 'Sora', sans-serif; font-size: 30px; font-weight: 800; color: {t['warn_col']}; line-height: 1;">Moderate</div>
+      <div style="font-size: 11px; color: {t['text2']}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 6px;">Security Level</div>
+    </div>
+    <div style="text-align: center; border-left: 1px solid {t['border']};">
+      <div style="font-family: 'Sora', sans-serif; font-size: 30px; font-weight: 800; color: {t['ok_col']}; line-height: 1;">&lt; 8m</div>
+      <div style="font-size: 11px; color: {t['text2']}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 6px;">EMT Transit Goal</div>
+    </div>
+  </div>
 </div>
 """, unsafe_allow_html=True)
 
-    # 2. Key Stats Highlights (Simple and helpful - no raw audit counts)
-    sec_label("Command Status Highlights")
-    hk1, hk2, hk3, hk4 = st.columns(4)
-    with hk1: kpi_card("Active Arenas", "5 Stadiums", "info", "M. Chinnaswamy, Wankhede, etc.")
-    with hk2: kpi_card("Avg Queue Wait", "14.5 Mins", "ok", "Within acceptable threshold")
-    with hk3: kpi_card("Capacity Alert Level", "Moderate Risk", "crit", "Historical loading outliers")
-    with hk4: kpi_card("EMT Transit Goal", "Under 8 Mins", "warn", "Paramedic target latency")
-
-    # 3. Interactive Project Overview & Lessons (Clickable Tabs for Neat Layout)
+    # 2. Interactive Project Overview & Lessons (Clickable Tabs for Neat Layout)
     sec_label("Learn & Explore the Hub")
     tab_overview, tab_challenges, tab_users = st.tabs([
         "🎯 Hub Overview", 
