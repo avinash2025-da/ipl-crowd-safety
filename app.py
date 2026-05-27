@@ -30,6 +30,15 @@ PHASE_ORDER = ["Pre-match", "First innings", "Break", "Second innings", "Exit ph
 # THEMES — Redesigned with custom premium dark/light stadium operations control command palettes
 # ─────────────────────────────────────────────────────────
 THEMES_DARK = {
+    "Home Page": {
+        "bg": "#0B101E", "sidebar": "#070B14", "card": "#131C33",
+        "border": "#212F4F", "accent": "#00F0FF", "accent_lt": "rgba(0, 240, 255, 0.12)", "accent2": "#38BDF8",
+        "text": "#FAFAFA", "text2": "#94A3B8",
+        "plot_bg": "#121A2F", "paper_bg": "#090D1A", "grid": "#212F4F",
+        "legend_rgba": "rgba(11,16,30,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
+        "palette": ["#00F0FF", "#38BDF8", "#FBBF24", "#34D399", "#F87171", "#A78BFA"],
+        "crit_col": "#F43F5E", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#00F0FF",
+    },
     "Intro": {
         "bg": "#0B101E", "sidebar": "#070B14", "card": "#131C33",
         "border": "#212F4F", "accent": "#00F0FF", "accent_lt": "rgba(0, 240, 255, 0.12)", "accent2": "#38BDF8",
@@ -102,9 +111,27 @@ THEMES_DARK = {
         "palette": ["#818CF8", "#A78BFA", "#FBBF24", "#10B981", "#EF4444", "#3B82F6"],
         "crit_col": "#EF4444", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#818CF8",
     },
+    "About App": {
+        "bg": "#100C26", "sidebar": "#0A0819", "card": "#1D1845",
+        "border": "#312B6E", "accent": "#818CF8", "accent_lt": "rgba(129, 140, 248, 0.12)", "accent2": "#A78BFA",
+        "text": "#FAFAFA", "text2": "#94A3B8",
+        "plot_bg": "#1D1845", "paper_bg": "#100C26", "grid": "#271E57",
+        "legend_rgba": "rgba(16,12,38,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
+        "palette": ["#818CF8", "#A78BFA", "#FBBF24", "#10B981", "#EF4444", "#3B82F6"],
+        "crit_col": "#EF4444", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#818CF8",
+    },
 }
 
 THEMES_LIGHT = {
+    "Home Page": {
+        "bg": "#F2F5FB", "sidebar": "#E5ECF6", "card": "#FFFFFF",
+        "border": "#CBD6E4", "accent": "#008CA8", "accent_lt": "rgba(0, 140, 168, 0.08)", "accent2": "#0ea5e9",
+        "text": "#0F172A", "text2": "#475569",
+        "plot_bg": "#FFFFFF", "paper_bg": "#F2F5FB", "grid": "#E2E8F0",
+        "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
+        "palette": ["#008CA8", "#0ea5e9", "#D97706", "#059669", "#DC2626", "#7C3AED"],
+        "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#008CA8",
+    },
     "Intro": {
         "bg": "#F2F5FB", "sidebar": "#E5ECF6", "card": "#FFFFFF",
         "border": "#CBD6E4", "accent": "#008CA8", "accent_lt": "rgba(0, 140, 168, 0.08)", "accent2": "#0ea5e9",
@@ -177,9 +204,19 @@ THEMES_LIGHT = {
         "palette": ["#5A2EDB", "#6366F1", "#D97706", "#059669", "#DC2626", "#1D4ED8"],
         "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#5A2EDB",
     },
+    "About App": {
+        "bg": "#F6F5FC", "sidebar": "#ECE9FC", "card": "#FFFFFF",
+        "border": "#D7D2FB", "accent": "#5A2EDB", "accent_lt": "rgba(90, 46, 219, 0.08)", "accent2": "#6366F1",
+        "text": "#0F172A", "text2": "#475569",
+        "plot_bg": "#FFFFFF", "paper_bg": "#F6F5FC", "grid": "#E2E8F0",
+        "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
+        "palette": ["#5A2EDB", "#6366F1", "#D97706", "#059669", "#DC2626", "#1D4ED8"],
+        "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#5A2EDB",
+    },
 }
 
 PAGES = [
+    ("🏟️", "Home Page"),
     ("🚀", "Intro"),
     ("🏠", "Overview"),
     ("🌊", "Crowd Flow"),
@@ -188,11 +225,12 @@ PAGES = [
     ("📦", "Resource Planning"),
     ("🚨", "Risk Matrix"),
     ("💬", "Ask AI"),
+    ("ℹ️", "About App"),
 ]
 
 # Initialize active page state and theme mode
 if "active_page" not in st.session_state:
-    st.session_state.active_page = "Intro"
+    st.session_state.active_page = "Home Page"
 if "theme_mode" not in st.session_state:
     st.session_state.theme_mode = "dark"
 
@@ -1385,6 +1423,322 @@ for idx, (_, name) in enumerate(PAGES):
         break
 
 inject_css(t, active_idx)
+
+# ═══════════════════════════════════════════════════════════
+# PAGE: HOME PAGE
+# ═══════════════════════════════════════════════════════════
+if page == "Home Page":
+    page_header("🏟️", "IPL Crowd Safety Management Center", "Stadium Operations & Intelligence Control Suite")
+
+    # Hero Banner
+    st.markdown(f"""
+<div class="intro-hero" style="background: linear-gradient(135deg, {t['bg']} 0%, {t['sidebar']} 100%); border: 1px solid {t['border']}; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border-radius: 24px; padding: 40px; margin-bottom: 30px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+  <div class="intro-badge" style="background: rgba(0, 240, 255, 0.15); border: 1px solid {t['accent']}; color: {t['accent']}; padding: 6px 14px; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 18px;">🏏 State-of-the-Art Venue Command Suite</div>
+  <h1 class="intro-title" style="color: {t['text']}; font-family: 'Sora', sans-serif; font-size: 34px; font-weight: 800; line-height: 1.25; margin-bottom: 12px;">Real-Time Stadium Operations<br><span style="color: {t['accent']}; font-weight: 800;">Command & Control Hub</span></h1>
+  <p class="intro-desc" style="color: {t['text2']}; max-width: 820px; font-size: 14px; line-height: 1.6; margin: 0 auto;">
+    Welcome to the IPL Crowd Safety Management Center. This executive command-center suite aggregates multi-season ticketing, density sensors, paramedic squad timelines, thermal stress trackers, and boundary-access points to empower tournament commanders with unified live telemetry. Fix security vulnerabilities, streamline transit routes, and deploy protective marshals dynamically.
+  </p>
+</div>
+""", unsafe_allow_html=True)
+
+    sec_label("Command Centre Live Telemetry Glimpse")
+    
+    # KPI highlights section
+    hk1, hk2, hk3, hk4 = st.columns(4)
+    with hk1: kpi_card("Active Venues", "5 Major Stadiums", "info", "M. Chinnaswamy, Wankhede, etc.")
+    with hk2: kpi_card("Telemetry Records", "33,750 Audit Points", "ok", "Comprehensive historic databases")
+    with hk3: kpi_card("Alert Severity Rate", "56% Capacity Breach State", "crit", "Historical loading outliers")
+    with hk4: kpi_card("Medical Support Need", "69 Per 1,000 Spectators", "warn", "Paramedic case frequency")
+
+    # Platform Overview Section
+    sec_label("1. Platform Operational Overview")
+    
+    col_l, col_r = st.columns(2)
+    with col_l:
+        st.markdown(f"""
+        <div class="report-card" style="border-left: 5px solid {t['accent']} !important; min-height: 320px; box-sizing: border-box; padding: 20px; margin-bottom: 16px;">
+            <div class="report-header-wrapper" style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                <div class="report-icon" style="font-size: 24px;">🛠️</div>
+                <h4 class="report-title" style="font-family: 'Sora', sans-serif; font-size: 16px; font-weight: 800; color: {t['text']}; margin: 0;">Why the Platform Was Built</h4>
+            </div>
+            <div class="report-body" style="font-size: 13px; color: {t['text2']}; line-height: 1.6;">
+                <p style="margin-bottom: 12px;">Large-scale sporting events present formidable crowd-control, emergency medical, and tactical logistical challenges. The <b>IPL Crowd Safety Management Center</b> was engineered to resolve critical vulnerabilities in venue coordination:</p>
+                <ul class="report-list" style="padding-left: 18px; margin: 0;">
+                    <li class="report-list-item" style="margin-bottom: 6px;"><b>High-Density Congestion</b>: Isolates bottlenecks before entry gates experience dangerous surges.</li>
+                    <li style="margin-bottom: 6px;"><b>Ambulance Transit Gaps</b>: Pinpoints stands where paramedic teams face access pathway delays.</li>
+                    <li style="margin-bottom: 6px;"><b>Thermal Incidents</b>: Screens areas with severe wet-bulb heat scores that trigger heat stress.</li>
+                    <li style="margin-bottom: 6px;"><b>Boundary Access Breaches</b>: Tracks counterfeit tickets and perimeter fence breaches.</li>
+                </ul>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with col_r:
+        st.markdown(f"""
+        <div class="report-card" style="border-left: 5px solid {t['accent2']} !important; min-height: 320px; box-sizing: border-box; padding: 20px; margin-bottom: 16px;">
+            <div class="report-header-wrapper" style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                <div class="report-icon" style="font-size: 24px;">🤝</div>
+                <h4 class="report-title" style="font-family: 'Sora', sans-serif; font-size: 16px; font-weight: 800; color: {t['text']}; margin: 0;">Who Uses the Platform & What It Solves</h4>
+            </div>
+            <div class="report-body" style="font-size: 13px; color: {t['text2']}; line-height: 1.6;">
+                <p style="margin-bottom: 12px;">This platform provides a shared, interactive operating perspective across several key professional stakeholder teams to guarantee zero-incident outcomes:</p>
+                <ul class="report-list" style="padding-left: 18px; margin: 0;">
+                    <li class="report-list-item" style="margin-bottom: 6px;"><b>Stadium Managers & Directors</b>: Balance turnout distribution and access gate loading margins.</li>
+                    <li style="margin-bottom: 6px;"><b>Police & Law Enforcement</b>: Strategically deploy barricades and control gate egress flows.</li>
+                    <li style="margin-bottom: 6px;"><b>Medical Command Crews</b>: Monitor stand hydration points, wet-bulb indices, and paramedic response lags.</li>
+                    <li style="margin-bottom: 6px;"><b>Security Coordinators & Marshals</b>: Defend physical gates against unauthorized forced entries and counterfeit passes.</li>
+                </ul>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # Key Capabilities Section
+    sec_label("2. Key Capabilities & Analytical Modules")
+    
+    mc1, mc2, mc3 = st.columns(3)
+    with mc1:
+        st.markdown(f"""
+        <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 18px; padding: 22px 20px; min-height: 190px;">
+            <span style="font-size: 28px; margin-bottom: 10px; display: block;">🏠</span>
+            <div style="font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 800; color: {t['text']}; margin-bottom: 8px;">Executive Overview</div>
+            <div style="font-size: 12px; color: {t['text2']}; line-height: 1.6;">Aggregates combined threat ratings, capacity breach flags, response curves, and live outlier alert priority tables in one master dashboard.</div>
+        </div>
+        """, unsafe_allow_html=True)
+        st.write("")
+        st.markdown(f"""
+        <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 18px; padding: 22px 20px; min-height: 190px;">
+            <span style="font-size: 28px; margin-bottom: 10px; display: block;">🔒</span>
+            <div style="font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 800; color: {t['text']}; margin-bottom: 8px;">Security Access & Policing</div>
+            <div style="font-size: 12px; color: {t['text2']}; line-height: 1.6;">Audits perimeter safety violations, fake ticket counts, forced entry attempts, pitch invasions, and crowd-dispersal statistics.</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with mc2:
+        st.markdown(f"""
+        <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 18px; padding: 22px 20px; min-height: 190px;">
+            <span style="font-size: 28px; margin-bottom: 10px; display: block;">🌊</span>
+            <div style="font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 800; color: {t['text']}; margin-bottom: 8px;">Crowd Flow & Congestion</div>
+            <div style="font-size: 12px; color: {t['text2']}; line-height: 1.6;">Maps spectator density, turnstile queue times, and bottleneck scores from early gate openings to post-game stadium evacuation phases.</div>
+        </div>
+        """, unsafe_allow_html=True)
+        st.write("")
+        st.markdown(f"""
+        <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 18px; padding: 22px 20px; min-height: 190px;">
+            <span style="font-size: 28px; margin-bottom: 10px; display: block;">📦</span>
+            <div style="font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 800; color: {t['text']}; margin-bottom: 8px;">Logistical Resource Planner</div>
+            <div style="font-size: 12px; color: {t['text2']}; line-height: 1.6;">Schedules required staffing quotients, temporary physical fencing assets, and active paramedic squad teams according to risk bands.</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with mc3:
+        st.markdown(f"""
+        <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 18px; padding: 22px 20px; min-height: 190px;">
+            <span style="font-size: 28px; margin-bottom: 10px; display: block;">🏥</span>
+            <div style="font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 800; color: {t['text']}; margin-bottom: 8px;">Medical & Heat Stress</div>
+            <div style="font-size: 12px; color: {t['text2']}; line-height: 1.6;">Tracks thermal discomfort index bands (combining temp & humidity), medical incidence rates, and emergency response speeds.</div>
+        </div>
+        """, unsafe_allow_html=True)
+        st.write("")
+        st.markdown(f"""
+        <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 18px; padding: 22px 20px; min-height: 190px;">
+            <span style="font-size: 28px; margin-bottom: 10px; display: block;">🚨</span>
+            <div style="font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 800; color: {t['text']}; margin-bottom: 8px;">Risk Decision Matrix & AI</div>
+            <div style="font-size: 12px; color: {t['text2']}; line-height: 1.6;">Applies weighted scoring algorithms to prioritize top threat stand segments and harnesses Cohere LLM models for interactive operational advisory.</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # Operational Impact Section
+    sec_label("3. High-Impact Strategic Stakeholder Benefits")
+    
+    st.markdown(f"""
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 24px;">
+        <div style="background: rgba(56, 189, 248, 0.05); border: 1px solid {t['border']}; border-radius: 14px; padding: 18px; text-align: left;">
+            <h5 style="font-family: 'Sora', sans-serif; font-size: 14px; font-weight: 700; color: {t['accent']}; margin-top: 0; margin-bottom: 6px;">Stadium Management</h5>
+            <p style="font-size: 12px; color: {t['text2']}; line-height: 1.5; margin: 0;">Optimizes ticket gates and stand food courts based on peak crowd vectors to eliminate friction and improve spectator satisfaction.</p>
+        </div>
+        <div style="background: rgba(251, 191, 36, 0.05); border: 1px solid {t['border']}; border-radius: 14px; padding: 18px; text-align: left;">
+            <h5 style="font-family: 'Sora', sans-serif; font-size: 14px; font-weight: 700; color: #FBBF24; margin-top: 0; margin-bottom: 6px;">Police & Control Teams</h5>
+            <p style="font-size: 12px; color: {t['text2']}; line-height: 1.5; margin: 0;">Facilitates proactive planning of crowd division fences to redirect egress queues during high-stress game segments.</p>
+        </div>
+        <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid {t['border']}; border-radius: 14px; padding: 18px; text-align: left;">
+            <h5 style="font-family: 'Sora', sans-serif; font-size: 14px; font-weight: 700; color: #10B981; margin-top: 0; margin-bottom: 6px;">Security & Access Staff</h5>
+            <p style="font-size: 12px; color: {t['text2']}; line-height: 1.5; margin: 0;">Maintains perimeter control with automated duplication pattern alerts and scans for localized spectator disturbances.</p>
+        </div>
+        <div style="background: rgba(244, 63, 94, 0.05); border: 1px solid {t['border']}; border-radius: 14px; padding: 18px; text-align: left;">
+            <h5 style="font-family: 'Sora', sans-serif; font-size: 14px; font-weight: 700; color: #F43F5E; margin-top: 0; margin-bottom: 6px;">Paramedic & Medical Teams</h5>
+            <p style="font-size: 12px; color: {t['text2']}; line-height: 1.5; margin: 0;">Drives faster dispatch transit loops to thermal hotspots and automates emergency paramedic team rosters.</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Call to action section
+    sec_label("4. Enter Tactical Command Room")
+    
+    st.markdown(f"""
+    <div style="background: linear-gradient(135deg, {t['accent_lt']}, rgba(11,16,30,0.8)); border: 1px solid {t['accent']}; border-radius: 20px; padding: 32px; text-align: center; box-shadow: {t['shadow']};">
+        <div style="font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 800; color: {t['text']}; margin-bottom: 8px;">📢 Ready to Assume Operational Command?</div>
+        <p style="font-size: 13.5px; color: {t['text2']}; max-width: 780px; margin: 0 auto 20px auto; line-height: 1.6;">
+            Access direct filtering mechanisms, explore specific crowd bottlenecks, audit precinct security alerts, review tactical staffing recommendations, or query the command AI advisor.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Let's put beautiful action buttons to redirect the user!
+    bcol1, bcol2, bcol3 = st.columns([1, 1.4, 1])
+    with bcol2:
+        if st.button("🚀 LAUNCH MASTER OVERVIEW DASHBOARD", use_container_width=True, type="primary"):
+            st.session_state.active_page = "Overview"
+            st.rerun()
+
+    st.stop()
+
+
+# ═══════════════════════════════════════════════════════════
+# PAGE: ABOUT APP
+# ═══════════════════════════════════════════════════════════
+if page == "About App":
+    page_header("ℹ️", "About IPL Crowd Safety Management Center", "Detailed project architectural logs, business problem statements, and system objectives.")
+
+    st.markdown(f"""
+<div class="intro-hero" style="background: linear-gradient(135deg, {t['bg']} 0%, {t['sidebar']} 100%); border: 1px solid {t['border']}; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border-radius: 24px; padding: 40px; margin-bottom: 30px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+  <div class="intro-badge" style="background: rgba(129, 140, 248, 0.15); border: 1px solid {t['accent']}; color: {t['accent']}; padding: 6px 14px; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 18px;">📋 Comprehensive Project Dossier</div>
+  <h1 class="intro-title" style="color: {t['text']}; font-family: 'Sora', sans-serif; font-size: 34px; font-weight: 800; line-height: 1.25; margin-bottom: 12px;">Strategic Project Overview<br><span style="color: {t['accent']}; font-weight: 800;">Architectural Design & Impact Log</span></h1>
+</div>
+""", unsafe_allow_html=True)
+
+    col_l2, col_r2 = st.columns(2)
+    with col_l2:
+        st.markdown(f"""
+        <div class="report-card" style="border-left: 5px solid {t['accent']} !important; min-height: 400px; margin-bottom: 16px; box-sizing: border-box; padding: 20px;">
+            <div class="report-header-wrapper" style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                <div class="report-icon" style="font-size: 24px;">🎯</div>
+                <h4 class="report-title" style="font-family: 'Sora', sans-serif; font-size: 16px; font-weight: 800; color: {t['text']}; margin: 0;">Mission, Vision & Core Purpose</h4>
+            </div>
+            <div class="report-body" style="font-size: 13px; color: {t['text2']}; line-height: 1.6;">
+                <p style="margin-bottom: 12px;"><b>Our Mission</b> is to preserve physical crowd safety limits at high-volume sports tournaments by utilizing predictive telemetry grids, cutting-edge hazard calculation equations, and real-time medical-logistical syncs.</p>
+                <p style="margin-bottom: 12px;"><b>Our Vision</b> is to set a global benchmark for safe stadium operations where sports passion and flawless logistics converge perfectly.</p>
+                <p style="margin-bottom: 0;"><b>Why This Matters</b>: A single gate bottleneck or delayed response in a heat risk stand can disrupt spectator enjoyment and present serious health risks. Combining crowd pressure insights, ambulance tracking, and boundary access status into one platform prevents coordination failures and ensures rapid response times.</p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="report-card" style="border-left: 5px solid {t['crit_col']} !important; min-height: 380px; margin-bottom: 16px; box-sizing: border-box; padding: 20px;">
+            <div class="report-header-wrapper" style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                <div class="report-icon" style="font-size: 24px;">⚠️</div>
+                <h4 class="report-title" style="font-family: 'Sora', sans-serif; font-size: 16px; font-weight: 800; color: {t['text']}; margin: 0;">The Business Problem Statement</h4>
+            </div>
+            <div class="report-body" style="font-size: 13px; color: {t['text2']}; line-height: 1.6;">
+                <p style="margin-bottom: 12px;">In high-stakes sports environments like the IPL, stadium operators traditionally rely on fragmented legacy frameworks. Radio, gates ticketing, on-site medics, and local police teams work in functional silos:</p>
+                <ul class="report-list" style="padding-left: 18px; margin: 0;">
+                    <li class="report-list-item" style="margin-bottom: 6px;"><b>Information Gaps</b>: Crowd management teams are blind to sudden ingress surges until they reach entry gates.</li>
+                    <li style="margin-bottom: 6px;"><b>Delayed Response Tracks</b>: Ambulance logistics are slowed by dynamic bottleneck clusters inside and outside the arena.</li>
+                    <li style="margin-bottom: 6px;"><b>Untracked Outliers</b>: Severe localized thermal indices and gate breach abnormalities go unnoticed without unified alerts.</li>
+                </ul>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with col_r2:
+        st.markdown(f"""
+        <div class="report-card" style="border-left: 5px solid {t['ok_col']} !important; min-height: 400px; margin-bottom: 16px; box-sizing: border-box; padding: 20px;">
+            <div class="report-header-wrapper" style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                <div class="report-icon" style="font-size: 24px;">📊</div>
+                <h4 class="report-title" style="font-family: 'Sora', sans-serif; font-size: 16px; font-weight: 800; color: {t['text']}; margin: 0;">Strategic Objectives & Milestones</h4>
+            </div>
+            <div class="report-body" style="font-size: 13px; color: {t['text2']}; line-height: 1.6;">
+                <p style="margin-bottom: 12px;">This crowd safety console delivers operational control through distinct, quantifiable targets:</p>
+                <ul class="report-list" style="padding-left: 18px; margin: 0;">
+                    <li style="margin-bottom: 6px;"><b>Isolate High Bottlenecks</b>: Limit all gate turnstile queue surges below 10 minutes.</li>
+                    <li style="margin-bottom: 6px;"><b>Accelerate Medic Dispatch</b>: Decrease ambulance transit lags to heat risk stands to under 8 minutes.</li>
+                    <li style="margin-bottom: 6px;"><b>Unify Tactical Rostering</b>: Allocate warden schedules in full alignment with live zone threat ratings.</li>
+                    <li style="margin-bottom: 6px;"><b>Resolve Access Frauds</b>: Detect fake passes and entry-point breach attempts immediately.</li>
+                </ul>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown(f"""
+        <div class="report-card" style="border-left: 5px solid {t['warn_col']} !important; min-height: 380px; margin-bottom: 16px; box-sizing: border-box; padding: 20px;">
+            <div class="report-header-wrapper" style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                <div class="report-icon" style="font-size: 24px;">⚙️</div>
+                <h4 class="report-title" style="font-family: 'Sora', sans-serif; font-size: 16px; font-weight: 800; color: {t['text']}; margin: 0;">Advanced Analytics & AI Approach</h4>
+            </div>
+            <div class="report-body" style="font-size: 13px; color: {t['text2']}; line-height: 1.6;">
+                <p style="margin-bottom: 12px;">Our dashboard integrates historical logs with expert tactical calculations:</p>
+                <ul class="report-list" style="padding-left: 18px; margin: 0;">
+                    <li style="margin-bottom: 6px;"><b>Multi-Factor Risk Scores</b>: Advanced scaling algorithm combines Bottleneck Risk (25%), Dynamic Crowd Pressure (25%), Ambulance Delay (15%), Queue Wait (15%), Heat Risk (10%), and Security Incidents (10%).</li>
+                    <li style="margin-bottom: 6px;"><b>Anomalous Outlier Scanner</b>: Auto-detects stands exceeding 90th percentile thresholds.</li>
+                    <li style="margin-bottom: 6px;"><b>Cohere Command-R Integration</b>: Converts compound dashboard state context into clear tactical task briefs.</li>
+                </ul>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    sec_label("Technology Stack & Platform Assets")
+    
+    st.markdown(f"""
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;">
+        <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 12px; padding: 16px; text-align: center;">
+            <div style="font-size: 24px; margin-bottom: 6px;">🐍</div>
+            <div style="font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 700; color: {t['text']};">Python 3.11</div>
+            <div style="font-size: 11px; color: {t['text2']}; margin-top: 4px;">Data engineering core</div>
+        </div>
+        <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 12px; padding: 16px; text-align: center;">
+            <div style="font-size: 24px; margin-bottom: 6px;">⚡</div>
+            <div style="font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 700; color: {t['text']};">Streamlit Custom</div>
+            <div style="font-size: 11px; color: {t['text2']}; margin-top: 4px;">UI Engine with CSS binds</div>
+        </div>
+        <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 12px; padding: 16px; text-align: center;">
+            <div style="font-size: 24px; margin-bottom: 6px;">📈</div>
+            <div style="font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 700; color: {t['text']};">Plotly & Pandas</div>
+            <div style="font-size: 11px; color: {t['text2']}; margin-top: 4px;">Interactivity & vectors</div>
+        </div>
+        <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 12px; padding: 16px; text-align: center;">
+            <div style="font-size: 24px; margin-bottom: 6px;">🗣️</div>
+            <div style="font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 700; color: {t['text']};">Cohere Command R+</div>
+            <div style="font-size: 11px; color: {t['text2']}; margin-top: 4px;">Operations command LLM</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    sec_label("Expected Business Impact & Future Enhancements")
+    col_impact_l, col_impact_r = st.columns(2)
+    with col_impact_l:
+        st.markdown(f"""
+        <div class="report-card" style="border-left: 5px solid {t['accent']} !important; min-height: 240px; box-sizing: border-box; padding: 20px;">
+            <div class="report-header-wrapper" style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                <div class="report-icon" style="font-size: 24px;">📈</div>
+                <h4 class="report-title" style="font-family: 'Sora', sans-serif; font-size: 16px; font-weight: 800; color: {t['text']}; margin: 0;">Projected Strategic Impact</h4>
+            </div>
+            <div class="report-body" style="font-size: 13px; color: {t['text2']}; line-height: 1.6;">
+                <ul class="report-list" style="padding-left: 18px; margin: 0;">
+                    <li style="margin-bottom: 6px;"><b>30% Faster Response Loops</b>: Dynamic route suggestions improve emergency vehicle response times.</li>
+                    <li style="margin-bottom: 6px;"><b>25% Cost Efficiency</b>: Optimizes security staff placement based on real-time crowd densities.</li>
+                    <li style="margin-bottom: 6px;"><b>Enhanced Guest Experience</b>: Keeps ticket queues moving smoothly to maximize stadium concession sales.</li>
+                </ul>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with col_impact_r:
+        st.markdown(f"""
+        <div class="report-card" style="border-left: 5px solid {t['accent2']} !important; min-height: 240px; box-sizing: border-box; padding: 20px;">
+            <div class="report-header-wrapper" style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                <div class="report-icon" style="font-size: 24px;">🚀</div>
+                <h4 class="report-title" style="font-family: 'Sora', sans-serif; font-size: 16px; font-weight: 800; color: {t['text']}; margin: 0;">Future Product Milestones</h4>
+            </div>
+            <div class="report-body" style="font-size: 13px; color: {t['text2']}; line-height: 1.6;">
+                <ul class="report-list" style="padding-left: 18px; margin: 0;">
+                    <li style="margin-bottom: 6px;"><b>Computer Vision Integration</b>: Processes camera feeds to detect entry breaches automatically.</li>
+                    <li style="margin-bottom: 6px;"><b>Ticketing Integration</b>: Verifies suspect ticket barcodes with official booking platforms.</li>
+                    <li style="margin-bottom: 6px;"><b>Wearable Bio-Sensors</b>: Syncs with paramedic health indicators to track weather distress automatically.</li>
+                </ul>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.write("")
+    st.write("")
+    st.stop()
+
 
 # ═══════════════════════════════════════════════════════════
 # PAGE 0 — INTRO LANDING PAGE (Clean Intermediate Blue-Slate Theme)
