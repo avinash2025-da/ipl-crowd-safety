@@ -233,6 +233,9 @@ THEMES_LIGHT = {
     },
 }
 
+THEMES_DARK["Admin Dashboard"] = THEMES_DARK["User Portal"]
+THEMES_LIGHT["Admin Dashboard"] = THEMES_LIGHT["User Portal"]
+
 PAGES = [
     ("🏟️", "Home Page"),
     ("👤", "User Portal"),
@@ -315,6 +318,54 @@ if "serial_id" not in st.session_state:
     st.session_state.serial_id = "IPL-SPEC-1083"
 if "payment_processing" not in st.session_state:
     st.session_state.payment_processing = False
+
+if "subscription_payments" not in st.session_state:
+    st.session_state.subscription_payments = [
+        {
+            "username": "avinash",
+            "name": "Avinash",
+            "role": "stadium_ops",
+            "plan": "₹999 INR / 12 months Season",
+            "amount": 999,
+            "term": "12 months",
+            "date": "2026-05-15 14:32:10",
+            "method": "UPI: avinash@okaxis",
+            "transaction_id": "TXN94817491"
+        },
+        {
+            "username": "madhukar",
+            "name": "Madhukar",
+            "role": "stadium_ops",
+            "plan": "₹599 INR / 6 months Half-Year",
+            "amount": 599,
+            "term": "6 months",
+            "date": "2026-05-20 09:12:45",
+            "method": "Card: **** **** **** 4321",
+            "transaction_id": "TXN73812948"
+        },
+        {
+            "username": "sharon",
+            "name": "Sharon",
+            "role": "stadium_ops",
+            "plan": "₹999 INR / 12 months Season",
+            "amount": 999,
+            "term": "12 months",
+            "date": "2026-05-22 18:45:30",
+            "method": "UPI: sharon@okicici",
+            "transaction_id": "TXN82301982"
+        },
+        {
+            "username": "deepak",
+            "name": "Deepak",
+            "role": "stadium_ops",
+            "plan": "₹399 INR / 3 months Quarter",
+            "amount": 399,
+            "term": "3 months",
+            "date": "2026-06-01 11:24:15",
+            "method": "UPI: deepak@okhdfc",
+            "transaction_id": "TXN49302847"
+        },
+    ]
 
 # Define the dynamic active theme t based on active mode & page
 page = st.session_state.active_page
@@ -411,7 +462,9 @@ except Exception as e:
 def inject_css(t, active_idx=0):
     mode = st.session_state.get("theme_mode", "dark")
     page_buttons_css = ""
-    for idx, (_, name) in enumerate(PAGES):
+    is_admin = st.session_state.get("is_logged_in", False) and st.session_state.get("user_name", "").strip().lower() in ["avinash", "madhukar", "sharon", "deepak"]
+    pages_to_loop = PAGES + [("👑", "Admin Dashboard")] if is_admin else PAGES
+    for idx, (_, name) in enumerate(pages_to_loop):
         p_theme = THEMES_DARK[name] if mode == "dark" else THEMES_LIGHT[name]
         p_accent = p_theme["accent"]
         p_accent_lt = p_theme["accent_lt"]
@@ -1681,47 +1734,6 @@ if not st.session_state.is_logged_in:
                             time.sleep(1.5)
                             st.rerun()
                     
-    st.stop() free_bypass = True
-                    elif st_official_selection == "Yes - Police & Security Marshal Unit":
-                        assigned_role = "police_security"
-                        computed_serial = f"IPL-SEC-{reg_department_id.strip().upper()}"
-                        free_bypass = True
-                    elif st_official_selection == "Yes - Emergency Medical Paramedic Unit":
-                        assigned_role = "medical_team"
-                        computed_serial = f"IPL-EMT-{reg_department_id.strip().upper()}"
-                        free_bypass = True
-                    else:
-                        assigned_role = "general_user"
-                        import random
-                        computed_serial = f"IPL-SPEC-{random.randint(1001, 9999)}"
-                        free_bypass = False
-                        
-                    # Save user details
-                    st.session_state.registered_users[lookup_lower] = {
-                        "name": cleaned_name,
-                        "password": reg_password,
-                        "phone": reg_phone.strip(),
-                        "age": int(reg_age),
-                        "gender": reg_gender,
-                        "role": assigned_role,
-                        "serial_id": computed_serial,
-                        "is_subscribed": free_bypass,
-                        "is_creator": False
-                    }
-                    
-                    # Store login states
-                    st.session_state.is_logged_in = True
-                    st.session_state.user_name = cleaned_name
-                    st.session_state.user_role = assigned_role
-                    st.session_state.serial_id = computed_serial
-                    st.session_state.is_subscribed = free_bypass
-                    
-                    st.success("🎉 Registration complete! Node serialized successfully.")
-                    st.toast(f"✅ Welcome to the Centre, {cleaned_name}!")
-                    import time
-                    time.sleep(1.0)
-                    st.rerun()
-                    
     st.stop()
 
 
@@ -1741,7 +1753,9 @@ with st.sidebar:
 </div>""", unsafe_allow_html=True)
 
     # Sidebar Page Selection Navigation
-    for icon, name in PAGES:
+    is_admin = st.session_state.get("is_logged_in", False) and st.session_state.get("user_name", "").strip().lower() in ["avinash", "madhukar", "sharon", "deepak"]
+    pages_to_loop = PAGES + [("👑", "Admin Dashboard")] if is_admin else PAGES
+    for icon, name in pages_to_loop:
         # Clean uniform buttons. Active highlights are rendered via index-based CSS.
         label_text = f"{icon}  {name}"
         if st.button(label_text, key=f"nav_{name}"):
@@ -1824,7 +1838,9 @@ t    = THEMES_DARK[page] if mode == "dark" else THEMES_LIGHT[page]
 
 # Compute active page index for sidebar nav highlighting
 active_idx = 0
-for idx, (_, name) in enumerate(PAGES):
+is_admin = st.session_state.get("is_logged_in", False) and st.session_state.get("user_name", "").strip().lower() in ["avinash", "madhukar", "sharon", "deepak"]
+pages_to_loop = PAGES + [("👑", "Admin Dashboard")] if is_admin else PAGES
+for idx, (_, name) in enumerate(pages_to_loop):
     if name == page:
         active_idx = idx
         break
@@ -1855,7 +1871,7 @@ if is_gated_page and not st.session_state.is_subscribed and not has_priority_byp
             <div style="background: {t['accent_lt']}; border: 1px dashed {t['accent']}50; border-radius: 12px; padding: 18px; margin-bottom: 30px; text-align: left;">
                 <span style="font-size: 11px; font-weight: 800; color:{t['accent']}; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px;">🔐 Choose Your Access Solution:</span>
                 <div style="font-size: 13px; color: {t['text2']}; line-height: 1.6;">
-                    🇮🇳 <strong>1. Purchase Season Ticket Pass:</strong> Get complete 2026 Season copilot access for just <strong>₹299 INR</strong>.<br>
+                    🇮🇳 <strong>1. Purchase Spectator Access Pass:</strong> Get premium co-pilot access starting from just <strong>₹299 INR</strong> with flexible monthly, quarterly, and annual plans.<br>
                     🛡️ <strong>2. Official Duty Clearance:</strong> Active Stadium Managers, Police, and Medical responders bypass charges with a duty ID registration.
                 </div>
             </div>
@@ -1869,7 +1885,7 @@ if is_gated_page and not st.session_state.is_subscribed and not has_priority_byp
                 st.session_state.active_page = "User Portal"
                 st.rerun()
         with col_act2:
-            if st.button("💳 Purchase ₹299 INR Season Ticket Pass", key="lock_go_purchase", type="primary", use_container_width=True):
+            if st.button("💳 View Subscription Term Plans (from ₹299)", key="lock_go_purchase", type="primary", use_container_width=True):
                 st.session_state.active_page = "User Portal"
                 st.session_state.payment_processing = True
                 st.rerun()
@@ -2146,15 +2162,36 @@ if page == "User Portal":
             </div>
             """, unsafe_allow_html=True)
         elif st.session_state.is_subscribed:
+            # Look up which plan they subscribed to
+            active_plan_info = "₹299 INR / 1 month Starter"
+            active_plan_cost = "₹299"
+            active_plan_term = "1 month"
+            lookup_user = st.session_state.user_name.strip().lower()
+            
+            # Find in list of payments
+            user_txn = None
+            for txn in reversed(st.session_state.subscription_payments):
+                if txn["username"] == lookup_user:
+                    user_txn = txn
+                    break
+                    
+            if user_txn:
+                active_plan_info = user_txn["plan"]
+                active_plan_cost = f"₹{user_txn['amount']}"
+                active_plan_term = user_txn["term"]
+                
             st.markdown(f"""
             <div style="background: rgba(129, 140, 248, 0.08); border: 1px solid {t['accent']}50; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 20px;">
-                <h4 style="color: {t['accent']}; margin-top: 0; font-family: 'Sora', sans-serif; font-size:16px;">🎉 Season Pass Active</h4>
+                <h4 style="color: {t['accent']}; margin-top: 0; font-family: 'Sora', sans-serif; font-size:16px;">🎉 Spectator Pass Active</h4>
                 <p style="font-size: 13px; color: {t['text2']}; line-height: 1.5; margin-bottom: 15px;">
-                    Your Season Spectator Pass is fully activated. You have premium command privileges!
+                    Your premium <strong>{active_plan_term}</strong> spectator pass is active. Welcome to senior analytical access!
                 </p>
-                <div style="display: flex; justify-content: center; gap: 10px;">
-                    <span style="background: {t['accent_lt']}; color: {t['accent']}; border: 1px solid {t['accent']}40; padding: 4px 10.5px; border-radius: 6px; font-size: 11px; font-weight: 700;">₹299 INR Paid</span>
-                    <span style="background: rgba(16,185,129,0.1); color: #10B981; border: 1px solid #10B98140; padding: 4px 10.5px; border-radius: 6px; font-size: 11px; font-weight: 700;">Valid 2026 Season</span>
+                <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 10px;">
+                    <span style="background: {t['accent_lt']}; color: {t['accent']}; border: 1px solid {t['accent']}40; padding: 4px 10.5px; border-radius: 6px; font-size: 11px; font-weight: 700;">Paid {active_plan_cost}</span>
+                    <span style="background: rgba(16,185,129,0.1); color: #10B981; border: 1px solid #10B98140; padding: 4px 10.5px; border-radius: 6px; font-size: 11px; font-weight: 700;">Valid: {active_plan_term}</span>
+                </div>
+                <div style="font-size: 11px; color: {t['text2']}; font-style: italic; opacity:0.8;">
+                    Plan: {active_plan_info}
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -2166,9 +2203,9 @@ if page == "User Portal":
             <div style="background: {t['card']}; border: 1px dashed {t['border']}; border-radius: 12px; padding: 22px; margin-bottom: 20px;">
                 <h4 style="margin-top:0; font-family:'Sora',sans-serif; color:{t['text']}; font-size:15px;">🔓 Unlock Senior Analytical Modules</h4>
                 <p style="font-size:12.5px; color:{t['text2']}; line-height:1.6; margin-bottom:12px;">
-                    General Spectators are gated from critical features. Unlock standard access with a <strong>₹299 INR Season Pass</strong>:
+                    General Spectators are gated from critical features. Select your preferred subscription term plan below and unlock standard access:
                 </p>
-                <ul style="font-size:12px; color:{t['text2']}; padding-left:18px; line-height:1.8; margin-bottom:18px;">
+                <ul style="font-size:12px; color:{t['text2']}; padding-left:18px; line-height:1.8; margin-bottom:0;">
                     <li><strong>Command Assistance (Ask AI Interface)</strong></li>
                     <li><strong>Continuous Generative Risk Forecasting</strong></li>
                     <li><strong>Full Interoperability Hazard Indices</strong></li>
@@ -2176,16 +2213,37 @@ if page == "User Portal":
             </div>
             """, unsafe_allow_html=True)
 
+            plans_under_selection = [
+                {"label": "₹299 INR / 1 month Starter", "amount": 299, "term": "1 Month", "desc": "Great for a single-match operations trial"},
+                {"label": "₹399 INR / 3 months Quarter", "amount": 399, "term": "3 Months", "desc": "Covers core match schedules completely"},
+                {"label": "₹599 INR / 6 months Half-Year", "amount": 599, "term": "6 Months", "desc": "Extended security and operations metrics logs"},
+                {"label": "₹999 INR / 12 months Season", "amount": 999, "term": "12 Months", "desc": "Complete Year-Round Command Suite access"}
+            ]
+
             if not st.session_state.payment_processing:
-                if st.button("💳 Purchase ₹299 INR Season Ticket Pass", key="buy_pass_btn_portal", type="primary", use_container_width=True):
+                # Let user configure their plan
+                selected_plan_idx = st.radio(
+                    "Choose Subscription Term Plan:",
+                    options=[0, 1, 2, 3],
+                    format_func=lambda idx: f"{plans_under_selection[idx]['label']} ({plans_under_selection[idx]['desc']})",
+                    key="portal_plan_idx_radio"
+                )
+                chosen_plan = plans_under_selection[selected_plan_idx]
+                
+                st.write("")
+                if st.button(f"💳 Purchase {chosen_plan['term']} Pass — ₹{chosen_plan['amount']}", key="buy_pass_btn_portal", type="primary", use_container_width=True):
+                    st.session_state.chosen_plan_dict = chosen_plan
                     st.session_state.payment_processing = True
                     st.rerun()
             else:
+                # Read selected plan from dict or fall back
+                chosen_plan = st.session_state.get("chosen_plan_dict", plans_under_selection[0])
+                
                 st.markdown(f"""
                 <div style="background: {t['sidebar']}; border: 2px solid {t['accent']}80; border-radius: 12px; padding: 18px; margin-bottom: 15px;">
                     <span style="font-size: 11.5px; font-weight: 700; color: {t['accent']}; text-transform: uppercase; letter-spacing: 0.8px; display: block; margin-bottom: 4px;">💳 Secure PayGuard Gateway</span>
                     <p style="font-size: 12px; color: {t['text2']}; margin: 0; line-height: 1.4;">
-                        Select checkout method to process premium ₹299 INR activation safely. Note that as a returning spectator, payment confirmation will update your session deck automatically.
+                        Checkout method to process <strong>{chosen_plan['label']}</strong>. Payment completes your session setup automatically.
                     </p>
                 </div>
                 """, unsafe_allow_html=True)
@@ -2208,13 +2266,33 @@ if page == "User Portal":
                                 with st.spinner("⏳ Broadcasting authorization push request to UPI application..."):
                                     import time
                                     time.sleep(2.0)
+                                    
+                                # Record payment
+                                import random
+                                from datetime import datetime
+                                txn_id = f"TXN{random.randint(10000000, 99999999)}"
+                                date_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                
+                                lookup = st.session_state.user_name.strip().lower()
+                                st.session_state.subscription_payments.append({
+                                    "username": lookup,
+                                    "name": st.session_state.user_name.strip(),
+                                    "role": st.session_state.user_role,
+                                    "plan": chosen_plan["label"],
+                                    "amount": chosen_plan["amount"],
+                                    "term": chosen_plan["term"],
+                                    "date": date_str,
+                                    "method": f"UPI: {upi_id}",
+                                    "transaction_id": txn_id
+                                })
+                                
                                 st.session_state.is_subscribed = True
                                 st.session_state.payment_processing = False
-                                # update user's subscription state in registered list
-                                lookup = st.session_state.user_name.strip().lower()
                                 if lookup in st.session_state.registered_users:
                                     st.session_state.registered_users[lookup]["is_subscribed"] = True
-                                st.success("✅ Payment Authorized! Season Ticket Pass activated.")
+                                    st.session_state.registered_users[lookup]["active_plan"] = chosen_plan["label"]
+                                    
+                                st.success(f"✅ Payment Authorized! {chosen_plan['term']} Spectator Pass activated.")
                                 st.toast("🎉 Subscription Successful!")
                                 time.sleep(1.0)
                                 st.rerun()
@@ -2238,24 +2316,412 @@ if page == "User Portal":
                             if not clean_card.isdigit() or len(clean_card) != 16:
                                 st.error("⚠️ Invalid Card Number configuration. Must be 16 digits.")
                             elif "/" not in card_exp or len(card_exp) != 5:
-                                shadow_exp = card_exp
-                                st.error("⚠️ Invalid Expiration. Use standard MM/YY configuration.")
+                                st.error("⚠️ Invalid Expiration. Use MM/YY MM/YY configuration.")
                             elif not card_cvv.isdigit() or len(card_cvv) != 3:
                                 st.error("⚠️ Secure CVV is invalid. Must be 3 numeric characters.")
                             else:
                                 with st.spinner("⏳ Submitting secure transaction token to gateway system..."):
                                     import time
                                     time.sleep(2.2)
+                                    
+                                # Record payment
+                                import random
+                                from datetime import datetime
+                                txn_id = f"TXN{random.randint(10000000, 99999999)}"
+                                date_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                                
+                                lookup = st.session_state.user_name.strip().lower()
+                                st.session_state.subscription_payments.append({
+                                    "username": lookup,
+                                    "name": st.session_state.user_name.strip(),
+                                    "role": st.session_state.user_role,
+                                    "plan": chosen_plan["label"],
+                                    "amount": chosen_plan["amount"],
+                                    "term": chosen_plan["term"],
+                                    "date": date_str,
+                                    "method": f"Card: **** **** **** {clean_card[-4:] if len(clean_card) >=4 else '9999'}",
+                                    "transaction_id": txn_id
+                                })
+                                
                                 st.session_state.is_subscribed = True
                                 st.session_state.payment_processing = False
-                                # update user's subscription state in registered list
-                                lookup = st.session_state.user_name.strip().lower()
                                 if lookup in st.session_state.registered_users:
                                     st.session_state.registered_users[lookup]["is_subscribed"] = True
-                                st.success("✅ Card Transaction Authorized! Season Ticket Pass activated.")
+                                    st.session_state.registered_users[lookup]["active_plan"] = chosen_plan["label"]
+                                    
+                                st.success(f"✅ Card Transaction Authorized! {chosen_plan['term']} Spectator Pass activated.")
                                 st.toast("🎉 Subscription Successful!")
                                 time.sleep(1.0)
                                 st.rerun()
+
+    st.stop()
+
+
+# ═══════════════════════════════════════════════════════════
+# PAGE: ADMIN DASHBOARD
+# ═══════════════════════════════════════════════════════════
+if page == "Admin Dashboard":
+    page_header("👑", "IPL Operations Admin Financial Dashboard", 
+                "Corporate and financial operations oversight. View real-time subscription revenues, active spectator plans, and system billing transaction logs.")
+                
+    # Double-check security
+    is_admin = st.session_state.get("is_logged_in", False) and st.session_state.get("user_name", "").strip().lower() in ["avinash", "madhukar", "sharon", "deepak"]
+    if not is_admin:
+        st.error("❌ ACCESS DENIED: Critical authorization failure. This financial monitor workspace is reserved exclusively for system administrators.")
+        st.stop()
+
+    # Calculate real statistics from ledger
+    payments_list = st.session_state.get("subscription_payments", [])
+    total_subscribers = len(set(p["username"] for p in payments_list))
+    total_revenue = sum(p["amount"] for p in payments_list)
+    
+    plan_metrics = {
+        "1 Month": {"count": 0, "revenue": 0},
+        "3 Months": {"count": 0, "revenue": 0},
+        "6 Months": {"count": 0, "revenue": 0},
+        "12 Months": {"count": 0, "revenue": 0}
+    }
+    
+    for p in payments_list:
+        term = p["term"]
+        if "1 month" in term.lower():
+            plan_metrics["1 Month"]["count"] += 1
+            plan_metrics["1 Month"]["revenue"] += p["amount"]
+        elif "3 month" in term.lower():
+            plan_metrics["3 Months"]["count"] += 1
+            plan_metrics["3 Months"]["revenue"] += p["amount"]
+        elif "6 month" in term.lower():
+            plan_metrics["6 Months"]["count"] += 1
+            plan_metrics["6 Months"]["revenue"] += p["amount"]
+        elif "12 month" in term.lower() or "season" in term.lower():
+            plan_metrics["12 Months"]["count"] += 1
+            plan_metrics["12 Months"]["revenue"] += p["amount"]
+
+    # Top KPI Metrics row
+    st.markdown(f'<p style="font-size:16px; font-weight:800; color:{t["accent"]}; margin-bottom:12px;">📊 GENERAL FINANCIAL SUMMARY</p>', unsafe_allow_html=True)
+    k1, k2, k3, k4 = st.columns(4)
+    
+    with k1:
+        st.markdown(f"""
+        <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 12px; padding: 20px; box-shadow: {t['shadow']};">
+            <span style="font-size: 11px; font-weight: 700; color: {t['text2']}; text-transform: uppercase; letter-spacing: 0.8px;">💰 TOTAL REVENUE</span>
+            <div style="font-size: 28px; font-weight: 800; color: #10B981; font-family: 'Sora', sans-serif; margin-top: 6px;">₹{total_revenue:,} INR</div>
+            <p style="font-size: 11px; color: {t['text2']}; margin: 4px 0 0 0;">Gross collections from subscriptions</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    with k2:
+        st.markdown(f"""
+        <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 12px; padding: 20px; box-shadow: {t['shadow']};">
+            <span style="font-size: 11px; font-weight: 700; color: {t['text2']}; text-transform: uppercase; letter-spacing: 0.8px;">👥 ACTIVE SUBSCRIBERS</span>
+            <div style="font-size: 28px; font-weight: 800; color: {t['accent']}; font-family: 'Sora', sans-serif; margin-top: 6px;">{total_subscribers} Users</div>
+            <p style="font-size: 11px; color: {t['text2']}; margin: 4px 0 0 0;">Spectators with activated command passes</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    with k3:
+        avg_value = round(total_revenue / total_subscribers, 1) if total_subscribers > 0 else 0
+        st.markdown(f"""
+        <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 12px; padding: 20px; box-shadow: {t['shadow']};">
+            <span style="font-size: 11px; font-weight: 700; color: {t['text2']}; text-transform: uppercase; letter-spacing: 0.8px;">📈 AVERAGE ARPU</span>
+            <div style="font-size: 28px; font-weight: 800; color: #FBBF24; font-family: 'Sora', sans-serif; margin-top: 6px;">₹{avg_value:,} INR</div>
+            <p style="font-size: 11px; color: {t['text2']}; margin: 4px 0 0 0;">Average Revenue Per Subscribed User</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    with k4:
+        best_plan = "12 Months"
+        max_c = -1
+        for key_t, val_t in plan_metrics.items():
+            if val_t["count"] > max_c:
+                max_c = val_t["count"]
+                best_plan = key_t
+        st.markdown(f"""
+        <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 12px; padding: 20px; box-shadow: {t['shadow']};">
+            <span style="font-size: 11px; font-weight: 700; color: {t['text2']}; text-transform: uppercase; letter-spacing: 0.8px;">👑 TOP SELLING TIER</span>
+            <div style="font-size: 20px; font-weight: 800; color: #A78BFA; font-family: 'Sora', sans-serif; margin-top: 14px;">{best_plan} Pass</div>
+            <p style="font-size: 11px; color: {t['text2']}; margin: 8px 0 0 0;">Highest quantity sold across users</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.write("")
+    
+    # Financial breakdown visually via Plotly
+    c_split1, c_split2 = st.columns(2)
+    with c_split1:
+        st.markdown(f'<p style="font-size:14px; font-weight:700; color:{t["text"]}; margin-bottom:8px;">📈 Subscriber Plan Distribution</p>', unsafe_allow_html=True)
+        df_plans = pd.DataFrame([
+            {"Plan Tier": k, "Subscribers Included": v["count"], "Revenue (INR)": v["revenue"]}
+            for k, v in plan_metrics.items()
+        ])
+        
+        fig_pie = px.pie(
+            df_plans, 
+            values="Subscribers Included", 
+            names="Plan Tier", 
+            hole=0.4,
+            color_discrete_sequence=["#818CF8", "#A78BFA", "#38BDF8", "#FBBF24"]
+        )
+        fig_pie.update_layout(
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            font_color=t["text"],
+            showlegend=True,
+            margin=dict(t=10, b=10, l=10, r=10),
+            height=260
+        )
+        st.plotly_chart(fig_pie, use_container_width=True)
+        
+    with c_split2:
+        st.markdown(f'<p style="font-size:14px; font-weight:700; color:{t["text"]}; margin-bottom:8px;">💰 Revenue Breakdown per Subscription Tier</p>', unsafe_allow_html=True)
+        fig_bar = px.bar(
+            df_plans,
+            x="Plan Tier",
+            y="Revenue (INR)",
+            color="Plan Tier",
+            color_discrete_sequence=["#818CF8", "#A78BFA", "#38BDF8", "#FBBF24"]
+        )
+        fig_bar.update_layout(
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            font_color=t["text"],
+            xaxis=dict(showgrid=False),
+            yaxis=dict(gridcolor=t["border"]),
+            margin=dict(t=15, b=15, l=10, r=10),
+            height=260,
+            showlegend=False
+        )
+        st.plotly_chart(fig_bar, use_container_width=True)
+
+    st.write("")
+
+    # Real time interactive transaction ledger
+    st.markdown(f'<p style="font-size:16px; font-weight:800; color:{t["accent"]}; margin-bottom:12px;">📑 REAL-TIME TRANSACTION LEDGER</p>', unsafe_allow_html=True)
+    
+    ledger_data = []
+    for p in payments_list:
+        ledger_data.append({
+            "Transaction ID": p["transaction_id"],
+            "User Name": p["name"],
+            "System Username": p["username"],
+            "Authority Role": p["role"].replace("_", " ").title(),
+            "Selected Tier": p["plan"],
+            "Amount Paid": f"₹{p['amount']}",
+            "Payment Date": p["date"],
+            "Payment Method": p["method"],
+            "System Status": "🟢 COMPLETED"
+        })
+    df_ledger = pd.DataFrame(ledger_data)
+    
+    st.dataframe(
+        df_ledger, 
+        use_container_width=True, 
+        hide_index=True,
+        column_config={
+            "Transaction ID": st.column_config.TextColumn("Txn ID", width="small"),
+            "User Name": st.column_config.TextColumn("User Full Name"),
+            "System Status": st.column_config.TextColumn("Status", width="small"),
+            "Payment Date": st.column_config.TextColumn("Timestamp"),
+        }
+    )
+    
+    # Download buffer for ledger csv
+    col_dl, col_blank = st.columns([1, 2])
+    with col_dl:
+        csv_buffer = io.StringIO()
+        df_ledger.to_csv(csv_buffer, index=False)
+        st.download_button(
+            label="📥 Download Payment Ledger CSV",
+            data=csv_buffer.getvalue(),
+            file_name="ipl_command_financial_ledger.csv",
+            mime="text/csv",
+            use_container_width=True
+        )
+
+    st.markdown("<hr style='margin:28px 0; opacity:0.15;'>", unsafe_allow_html=True)
+
+    # Management Terminal Options (Complimentary activation & synthetic transaction simulations)
+    adm_col1, adm_col2 = st.columns(2)
+    with adm_col1:
+        st.markdown(f'<p style="font-size:14px; font-weight:700; color:{t["text"]}; margin-bottom:8px;">🎟️ Grant Complimentary Subscription pass</p>', unsafe_allow_html=True)
+        st.markdown(f"""
+        <p style="font-size: 11.5px; color: {t['text2']}; margin-top:0;">
+            Administrators can manually bypass the payment gate and issue an official complimentary analytical pass to spectators.
+        </p>
+        """, unsafe_allow_html=True)
+        
+        registered_u = st.session_state.get("registered_users", {})
+        non_sub_users = []
+        for uname, udata in registered_u.items():
+            if not udata.get("is_subscribed", False) and udata.get("role") == "general_user":
+                non_sub_users.append((uname, udata.get("name", uname)))
+                
+        if not non_sub_users:
+            st.info("ℹ️ All registered spectator accounts currently have active premium passes.")
+        else:
+            comp_idx = st.selectbox(
+                "Select Eligible Spectator Account",
+                options=range(len(non_sub_users)),
+                format_func=lambda i: f"{non_sub_users[i][1]} ({non_sub_users[i][0]})",
+                key="admin_comp_selectbox"
+            )
+            
+            comp_plan_idx = st.selectbox(
+                "Plan Tier to Assign",
+                options=[0, 1, 2, 3],
+                format_func=lambda idx: ["₹299 / 1 Month Starter", "₹399 / 3 Months Quarter", "₹599 / 6 Months Half-Year", "₹999 / 12 Months Season"][idx],
+                key="admin_comp_plan_selectbox"
+            )
+            
+            comp_reason = st.text_input("Issuing Authorization Reason", "Official complimentary testing license", key="admin_comp_reason_field")
+            
+            if st.button("👑 Generate License Pass Securely", key="admin_generate_pass_btn", type="primary", use_container_width=True):
+                target_user_name, target_display_name = non_sub_users[comp_idx]
+                plan_details = [
+                    {"label": "₹299 INR / 1 month Starter", "amount": 299, "term": "1 Month"},
+                    {"label": "₹399 INR / 3 months Quarter", "amount": 399, "term": "3 Months"},
+                    {"label": "₹599 INR / 6 months Half-Year", "amount": 599, "term": "6 Months"},
+                    {"label": "₹999 INR / 12 months Season", "amount": 999, "term": "12 Months"}
+                ][comp_plan_idx]
+                
+                # record complimentary pass
+                import random
+                from datetime import datetime
+                txn_id = f"COM{random.randint(10000000, 99999999)}"
+                date_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                
+                st.session_state.subscription_payments.append({
+                    "username": target_user_name,
+                    "name": target_display_name,
+                    "role": registered_u[target_user_name].get("role", "general_user"),
+                    "plan": plan_details["label"],
+                    "amount": plan_details["amount"],
+                    "term": plan_details["term"],
+                    "date": date_str,
+                    "method": f"System Comp: {comp_reason}",
+                    "transaction_id": txn_id
+                })
+                
+                st.session_state.registered_users[target_user_name]["is_subscribed"] = True
+                st.session_state.registered_users[target_user_name]["active_plan"] = plan_details["label"]
+                
+                st.success(f"🎨 Successfully granted premium {plan_details['term']} license to {target_display_name}!")
+                st.toast("👑 Complimentary pass issued successfully!")
+                import time
+                time.sleep(1.0)
+                st.rerun()
+                
+    with adm_col2:
+        st.markdown(f'<p style="font-size:14px; font-weight:700; color:{t["text"]}; margin-bottom:8px;">🛠️ Corporate System Audit Commands</p>', unsafe_allow_html=True)
+        st.markdown(f"""
+        <p style="font-size: 11.5px; color: {t['text2']}; margin-top:0;">
+            Simulate synthetic transaction logs for load testing or clean the live sessions back to system seed states.
+        </p>
+        """, unsafe_allow_html=True)
+        st.write("")
+        
+        # Test transaction simulator button
+        if st.button("⚡ Simulate Random Spectator Subscription Transaction", key="admin_simulate_txn_btn", use_container_width=True):
+            import random
+            from datetime import datetime
+            
+            names_candidates = [
+                ("Ramesh Kumar", "ramesh_k"), ("Siddharth Sharma", "sid_s"),
+                ("Priya Patel", "priya_p"), ("Anjali Verma", "anjali_v"),
+                ("Vikram Singh", "vikram_s"), ("Sneha Reddy", "sneha_r")
+            ]
+            cand = random.choice(names_candidates)
+            plans_c = [
+                {"label": "₹299 INR / 1 month Starter", "amount": 299, "term": "1 Month"},
+                {"label": "₹399 INR / 3 months Quarter", "amount": 399, "term": "3 Months"},
+                {"label": "₹599 INR / 6 months Half-Year", "amount": 599, "term": "6 Months"},
+                {"label": "₹999 INR / 12 months Season", "amount": 999, "term": "12 Months"}
+            ]
+            sel_plan = random.choice(plans_c)
+            txn_id = f"SIM{random.randint(10000000, 99999999)}"
+            date_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            methods_c = [
+                "UPI: rando_user@okaxis", "UPI: tester@okhdfc", 
+                "Card: **** **** **** 8821", "Card: **** **** **** 2947"
+            ]
+            
+            st.session_state.subscription_payments.append({
+                "username": cand[1],
+                "name": cand[0],
+                "role": "general_user",
+                "plan": sel_plan["label"],
+                "amount": sel_plan["amount"],
+                "term": sel_plan["term"],
+                "date": date_str,
+                "method": random.choice(methods_c),
+                "transaction_id": txn_id
+            })
+            
+            # If target user in registry, update subscription state
+            if cand[1] in st.session_state.registered_users:
+                st.session_state.registered_users[cand[1]]["is_subscribed"] = True
+                st.session_state.registered_users[cand[1]]["active_plan"] = sel_plan["label"]
+            
+            st.success(f"⚡ Simulated subscription transaction for {cand[0]} — ₹{sel_plan['amount']}.")
+            st.toast("⚡ Synthetic transaction logged!")
+            import time
+            time.sleep(1.0)
+            st.rerun()
+
+        st.write("")
+        # Reset default seeds
+        if st.button("🗑️ Reset Transaction Ledger to Seed Defaults", key="admin_clear_ledger_btn", type="secondary", use_container_width=True):
+            st.session_state.subscription_payments = [
+                {
+                    "username": "avinash",
+                    "name": "Avinash",
+                    "role": "stadium_ops",
+                    "plan": "₹999 INR / 12 months Season",
+                    "amount": 999,
+                    "term": "12 months",
+                    "date": "2026-05-15 14:32:10",
+                    "method": "UPI: avinash@okaxis",
+                    "transaction_id": "TXN94817491"
+                },
+                {
+                    "username": "madhukar",
+                    "name": "Madhukar",
+                    "role": "stadium_ops",
+                    "plan": "₹599 INR / 6 months Half-Year",
+                    "amount": 599,
+                    "term": "6 months",
+                    "date": "2026-05-20 09:12:45",
+                    "method": "Card: **** **** **** 4321",
+                    "transaction_id": "TXN73812948"
+                },
+                {
+                    "username": "sharon",
+                    "name": "Sharon",
+                    "role": "stadium_ops",
+                    "plan": "₹999 INR / 12 months Season",
+                    "amount": 999,
+                    "term": "12 months",
+                    "date": "2026-05-22 18:45:30",
+                    "method": "UPI: sharon@okicici",
+                    "transaction_id": "TXN82301982"
+                },
+                {
+                    "username": "deepak",
+                    "name": "Deepak",
+                    "role": "stadium_ops",
+                    "plan": "₹399 INR / 3 months Quarter",
+                    "amount": 399,
+                    "term": "3 months",
+                    "date": "2026-06-01 11:24:15",
+                    "method": "UPI: deepak@okhdfc",
+                    "transaction_id": "TXN49302847"
+                }
+            ]
+            st.success("🗑️ Cleared transactional ledger and restored system defaults.")
+            st.toast("🗑️ Ledger reset completed.")
+            import time
+            time.sleep(1.0)
+            st.rerun()
 
     st.stop()
 
