@@ -270,6 +270,8 @@ if "registered_users" not in st.session_state:
             "role": "stadium_ops",
             "serial_id": "IPL-OPS-9942",
             "is_subscribed": True,
+            "is_premium_subscribed": True,
+            "is_pro_subscribed": True,
             "is_creator": True
         },
         "madhukar": {
@@ -281,6 +283,8 @@ if "registered_users" not in st.session_state:
             "role": "stadium_ops",
             "serial_id": "IPL-OPS-9943",
             "is_subscribed": True,
+            "is_premium_subscribed": True,
+            "is_pro_subscribed": True,
             "is_creator": True
         },
         "sharon": {
@@ -292,6 +296,8 @@ if "registered_users" not in st.session_state:
             "role": "stadium_ops",
             "serial_id": "IPL-OPS-9944",
             "is_subscribed": True,
+            "is_premium_subscribed": True,
+            "is_pro_subscribed": True,
             "is_creator": True
         },
         "deepak": {
@@ -303,7 +309,81 @@ if "registered_users" not in st.session_state:
             "role": "stadium_ops",
             "serial_id": "IPL-OPS-9945",
             "is_subscribed": True,
+            "is_premium_subscribed": True,
+            "is_pro_subscribed": True,
             "is_creator": True
+        },
+        "che_admin01": {
+            "name": "CHE_Admin01",
+            "password": "Chep@uk#2026!",
+            "phone": "9999999901",
+            "age": 35,
+            "gender": "Male",
+            "role": "stadium_ops",
+            "serial_id": "STAD-CHE-001",
+            "is_subscribed": False,
+            "is_premium_subscribed": False,
+            "is_pro_subscribed": False
+        },
+        "chin_admin01": {
+            "name": "CHIN_Admin01",
+            "password": "Ch!nn@2026#RCB",
+            "phone": "9999999902",
+            "age": 36,
+            "gender": "Male",
+            "role": "stadium_ops",
+            "serial_id": "STAD-CHIN-002",
+            "is_subscribed": False,
+            "is_premium_subscribed": False,
+            "is_pro_subscribed": False
+        },
+        "eden_admin01": {
+            "name": "EDEN_Admin01",
+            "password": "Ed3n@KKR#2026!",
+            "phone": "9999999903",
+            "age": 34,
+            "gender": "Female",
+            "role": "stadium_ops",
+            "serial_id": "STAD-EDEN-003",
+            "is_subscribed": False,
+            "is_premium_subscribed": False,
+            "is_pro_subscribed": False
+        },
+        "uppal_admin01": {
+            "name": "UPPAL_Admin01",
+            "password": "Upp@l#SRH2026!",
+            "phone": "9999999904",
+            "age": 40,
+            "gender": "Male",
+            "role": "stadium_ops",
+            "serial_id": "STAD-UPP-004",
+            "is_subscribed": False,
+            "is_premium_subscribed": False,
+            "is_pro_subscribed": False
+        },
+        "wank_admin01": {
+            "name": "WANK_Admin01",
+            "password": "W@nkh3de#2026!",
+            "phone": "9999999905",
+            "age": 38,
+            "gender": "Male",
+            "role": "stadium_ops",
+            "serial_id": "STAD-WAN-005",
+            "is_subscribed": False,
+            "is_premium_subscribed": False,
+            "is_pro_subscribed": False
+        },
+        "dummy@we01": {
+            "name": "DuMMy@we01",
+            "password": "we01@DuMMy",
+            "phone": "9999999999",
+            "age": 30,
+            "gender": "Non-binary",
+            "role": "dummy_all_access",
+            "serial_id": "DUMMY-001",
+            "is_subscribed": True,
+            "is_premium_subscribed": True,
+            "is_pro_subscribed": True
         }
     }
 
@@ -312,6 +392,14 @@ if "user_role" not in st.session_state:
     st.session_state.user_role = "general_user"
 if "is_subscribed" not in st.session_state:
     st.session_state.is_subscribed = False
+if "is_premium_subscribed" not in st.session_state:
+    st.session_state.is_premium_subscribed = False
+if "is_pro_subscribed" not in st.session_state:
+    st.session_state.is_pro_subscribed = False
+if "app_usage_day" not in st.session_state:
+    st.session_state.app_usage_day = "Day 1"
+if "username_key" not in st.session_state:
+    st.session_state.username_key = ""
 if "user_name" not in st.session_state:
     st.session_state.user_name = "Guest Spectator"
 if "serial_id" not in st.session_state:
@@ -463,7 +551,8 @@ def inject_css(t, active_idx=0):
     mode = st.session_state.get("theme_mode", "dark")
     page_buttons_css = ""
     is_admin = st.session_state.get("is_logged_in", False) and st.session_state.get("user_name", "").strip().lower() in ["avinash", "madhukar", "sharon", "deepak"]
-    pages_to_loop = PAGES + [("👑", "Admin Dashboard")] if is_admin else PAGES
+    is_dummy = st.session_state.get("is_logged_in", False) and st.session_state.get("user_name", "").strip().lower() == "dummy@we01"
+    pages_to_loop = PAGES + [("👑", "Admin Dashboard")] if (is_admin or is_dummy) else PAGES
     for idx, (_, name) in enumerate(pages_to_loop):
         p_theme = THEMES_DARK[name] if mode == "dark" else THEMES_LIGHT[name]
         p_accent = p_theme["accent"]
@@ -1520,13 +1609,13 @@ if not st.session_state.is_logged_in:
                         st.session_state.user_name = record["name"]
                         st.session_state.user_role = record["role"]
                         st.session_state.serial_id = record["serial_id"]
+                        st.session_state.username_key = target_key
                         
-                        # Set subscription state
-                        if record.get("is_creator", False) or record["role"] in ["stadium_ops", "police_security", "medical_team"]:
-                            st.session_state.is_subscribed = True
-                        else:
-                            st.session_state.is_subscribed = record.get("is_subscribed", False)
-                            
+                        # Set subscription states on login
+                        st.session_state.is_premium_subscribed = record.get("is_premium_subscribed", False)
+                        st.session_state.is_pro_subscribed = record.get("is_pro_subscribed", False)
+                        st.session_state.is_subscribed = record.get("is_premium_subscribed", False) or record.get("is_subscribed", False)
+                        
                         st.toast(f"✅ Welcome back, Admin/User {record['name']}! Login successful.")
                         import time
                         time.sleep(0.5)
@@ -1571,9 +1660,7 @@ if not st.session_state.is_logged_in:
             st_official_selection = st.selectbox(
                 "Are you an active operations responder or administrator?",
                 ["No - I am a General Stadium Spectator / Visitor",
-                 "Yes - Stadium Operations Commander",
-                 "Yes - Police & Security Marshal Unit",
-                 "Yes - Emergency Medical Paramedic Unit"],
+                 "Yes - Stadium Operations Commander"],
                 key="reg_official_mode_select"
             )
             
@@ -1610,20 +1697,10 @@ if not st.session_state.is_logged_in:
                     if st_official_selection == "Yes - Stadium Operations Commander":
                         assigned_role = "stadium_ops"
                         computed_serial = f"IPL-OPS-{reg_department_id.strip().upper()}"
-                        free_bypass = True
-                    elif st_official_selection == "Yes - Police & Security Marshal Unit":
-                        assigned_role = "police_security"
-                        computed_serial = f"IPL-SEC-{reg_department_id.strip().upper()}"
-                        free_bypass = True
-                    elif st_official_selection == "Yes - Emergency Medical Paramedic Unit":
-                        assigned_role = "medical_team"
-                        computed_serial = f"IPL-EMT-{reg_department_id.strip().upper()}"
-                        free_bypass = True
                     else:
                         assigned_role = "general_user"
                         import random
                         computed_serial = f"IPL-SPEC-{random.randint(1001, 9999)}"
-                        free_bypass = False
                         
                     # Save user details
                     st.session_state.registered_users[lookup_lower] = {
@@ -1634,7 +1711,9 @@ if not st.session_state.is_logged_in:
                         "gender": reg_gender,
                         "role": assigned_role,
                         "serial_id": computed_serial,
-                        "is_subscribed": free_bypass,
+                        "is_subscribed": False,
+                        "is_premium_subscribed": False,
+                        "is_pro_subscribed": False,
                         "is_creator": False
                     }
                     
@@ -1643,7 +1722,10 @@ if not st.session_state.is_logged_in:
                     st.session_state.user_name = cleaned_name
                     st.session_state.user_role = assigned_role
                     st.session_state.serial_id = computed_serial
-                    st.session_state.is_subscribed = free_bypass
+                    st.session_state.username_key = lookup_lower
+                    st.session_state.is_subscribed = False
+                    st.session_state.is_premium_subscribed = False
+                    st.session_state.is_pro_subscribed = False
                     
                     st.success("🎉 Registration complete! Node serialized successfully.")
                     st.toast(f"✅ Welcome to the Centre, {cleaned_name}!")
@@ -1754,7 +1836,8 @@ with st.sidebar:
 
     # Sidebar Page Selection Navigation
     is_admin = st.session_state.get("is_logged_in", False) and st.session_state.get("user_name", "").strip().lower() in ["avinash", "madhukar", "sharon", "deepak"]
-    pages_to_loop = PAGES + [("👑", "Admin Dashboard")] if is_admin else PAGES
+    is_dummy = st.session_state.get("is_logged_in", False) and st.session_state.get("user_name", "").strip().lower() == "dummy@we01"
+    pages_to_loop = PAGES + [("👑", "Admin Dashboard")] if (is_admin or is_dummy) else PAGES
     for icon, name in pages_to_loop:
         # Clean uniform buttons. Active highlights are rendered via index-based CSS.
         label_text = f"{icon}  {name}"
@@ -1769,9 +1852,30 @@ with st.sidebar:
         '<p style="font-size:10px;font-weight:800;letter-spacing:1px;margin:0 0 10px 0;color:#94A3B8;text-transform:uppercase;">FILTER TELEMETRY</p>',
         unsafe_allow_html=True)
 
-    all_stadiums = sorted(ops["stadium_name"].dropna().unique())
-    sel_stadium_val = st.selectbox("Stadium Venue", ["All Stadiums"] + list(all_stadiums), key="f_stad")
-    sel_stadium = list(all_stadiums) if sel_stadium_val == "All Stadiums" else [sel_stadium_val]
+    # Locked stadium contexts mapping
+    STADIUM_MAPPING = {
+        "che_admin01": "Chepauk",
+        "chin_admin01": "Chinnaswamy",
+        "eden_admin01": "Eden Gardens",
+        "uppal_admin01": "Uppal",
+        "wank_admin01": "Wankhede",
+    }
+    username_lower = st.session_state.get("username_key", "").strip().lower()
+    is_stadium_manager = username_lower in STADIUM_MAPPING
+
+    if is_stadium_manager:
+        designated_stadium = STADIUM_MAPPING[username_lower]
+        st.markdown(f"""
+        <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid #10B981; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+            <p style="font-size:10px; font-weight:800; color:#10B981; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">📍 LOCKED STADIUM CONTEXT</p>
+            <p style="font-size:13.5px; color:#FFFFFF; margin:0; font-weight:700;">{designated_stadium}</p>
+        </div>
+        """, unsafe_allow_html=True)
+        sel_stadium = [designated_stadium]
+    else:
+        all_stadiums = sorted(ops["stadium_name"].dropna().unique())
+        sel_stadium_val = st.selectbox("Stadium Venue", ["All Stadiums"] + list(all_stadiums), key="f_stad")
+        sel_stadium = list(all_stadiums) if sel_stadium_val == "All Stadiums" else [sel_stadium_val]
 
     sel_phase_val = st.selectbox("Match Phase", ["All Phases"] + list(PHASE_ORDER), key="f_ph")
     sel_phase = list(PHASE_ORDER) if sel_phase_val == "All Phases" else [sel_phase_val]
@@ -1794,6 +1898,16 @@ with st.sidebar:
         unsafe_allow_html=True)
     ai_temperature = st.slider("Model Temperature", 0.0, 1.0, 0.4, 0.1)
     ai_max_tokens  = st.slider("Max Response Tokens", 100, 2000, 750, 100)
+
+    # Usage Day Simulator
+    st.markdown("<hr style='margin:16px 0; opacity:0.15;'>", unsafe_allow_html=True)
+    st.markdown(
+        f'<p style="font-size:10px;font-weight:800;letter-spacing:1px;margin:0 0 10px 0;color:#94A3B8;text-transform:uppercase;">⏳ USAGE DAY SIMULATION</p>',
+        unsafe_allow_html=True
+    )
+    sim_opts = ["Day 1", "Day 2+"]
+    curr_sim_day = st.radio("Active App Day Context", sim_opts, index=0 if st.session_state.app_usage_day == "Day 1" else 1, horizontal=True, key="sim_day_radio_sidebar")
+    st.session_state.app_usage_day = curr_sim_day
 
     # Modern dynamic theme toggle at bottom of sidebar
     st.markdown("<hr style='margin:16px 0; opacity:0.15;'>", unsafe_allow_html=True)
@@ -1822,6 +1936,9 @@ with st.sidebar:
         st.session_state.user_role = "general_user"
         st.session_state.serial_id = "IPL-SPEC-1083"
         st.session_state.is_subscribed = False
+        st.session_state.is_premium_subscribed = False
+        st.session_state.is_pro_subscribed = False
+        st.session_state.username_key = ""
         st.session_state.payment_processing = False
         st.toast("🚪 Logged out securely.")
         import time
@@ -1848,48 +1965,141 @@ for idx, (_, name) in enumerate(pages_to_loop):
 inject_css(t, active_idx)
 
 # ─────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────
 # SUBSCRIPTION & OPERATIONS BYPASS GATE
 # ─────────────────────────────────────────────────────────
-gated_premium_pages = ["Crowd Flow", "Medical & Heat", "Security", "Resource Planning", "Risk Matrix", "Ask AI"]
-has_priority_bypass = st.session_state.user_role in ["stadium_ops", "police_security", "medical_team"]
-is_gated_page = page in gated_premium_pages
-
-if is_gated_page and not st.session_state.is_subscribed and not has_priority_bypass:
-    # Render premium lock wall
-    page_header("🔒", "Subscription Access Lock Required", 
-                "Higher level operational analytics indices and co-pilot co-ordination tools are reserved for duty officers and subscribed pass holders.")
+# Define helper function to display pricing table
+def render_pricing_plans():
+    st.markdown("### 💎 Choose Your Upgrade Plan")
+    col1, col2 = st.columns(2)
     
-    lock_col1, lock_col2, lock_col3 = st.columns([1, 4, 1])
-    with lock_col2:
+    with col1:
         st.markdown(f"""
-        <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 16px; padding: 32px; text-align: center; box-shadow: {t['shadow']}; margin-top: 30px;">
-            <div style="font-size: 64px; margin-bottom: 20px;">🔒</div>
-            <h3 style="font-family: 'Sora', sans-serif; color: {t['text']}; font-size: 22px; font-weight: 800; margin: 0 0 10px 0; letter-spacing: -0.5px;">Premium Operational View Locked</h3>
-            <p style="color: {t['text2']}; font-size: 14px; line-height: 1.6; margin-bottom: 25px; max-width: 500px; margin-left: auto; margin-right: auto;">
-                The <strong>{page}</strong> workspace contains professional utility maps, real-time security alerts, and AI command modules. Spectators can activate full suite rights immediately.
-            </p>
-            <div style="background: {t['accent_lt']}; border: 1px dashed {t['accent']}50; border-radius: 12px; padding: 18px; margin-bottom: 30px; text-align: left;">
-                <span style="font-size: 11px; font-weight: 800; color:{t['accent']}; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px;">🔐 Choose Your Access Solution:</span>
-                <div style="font-size: 13px; color: {t['text2']}; line-height: 1.6;">
-                    🇮🇳 <strong>1. Purchase Spectator Access Pass:</strong> Get premium co-pilot access starting from just <strong>₹299 INR</strong> with flexible monthly, quarterly, and annual plans.<br>
-                    🛡️ <strong>2. Official Duty Clearance:</strong> Active Stadium Managers, Police, and Medical responders bypass charges with a duty ID registration.
-                </div>
+        <div style="background: rgba(56, 189, 248, 0.08); border: 2px solid #38BDF8; border-radius: 12px; padding: 20px; height: 350px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+                <h3 style="color:#38BDF8; margin-top:0; font-family:'Sora',sans-serif; font-size:18px;">✨ Premium Plan</h3>
+                <p style="font-size:12.5px; opacity:0.8; margin-bottom:15px; color:#E2E8F0;">Unlock all safety visuals, plots, KPI metrics, raw tables, and anomaly charts on every Master Dashboard.</p>
+                <hr style="opacity:0.2; margin:10px 0;">
+                <p style="font-weight:700; font-size:12px; margin-bottom:4px; color:#94A3B8;">⏱️ CHOOSE TERM PLAN:</p>
             </div>
-        </div>
         """, unsafe_allow_html=True)
+        premium_options = [
+            ("₹299 INR / 1 Month", 299, "1 month"),
+            ("₹399 INR / 3 Months", 399, "3 months"),
+            ("₹599 INR / 6 Months", 599, "6 months"),
+            ("₹999 INR / 12 Months", 999, "12 months")
+        ]
+        sel_prem = st.selectbox("Premium Duration Option", options=range(len(premium_options)), format_func=lambda i: premium_options[i][0], key="gated_prem_select")
+        prem_plan = premium_options[sel_prem]
         
-        st.write("")
-        col_act1, col_act2 = st.columns(2)
-        with col_act1:
-            if st.button("👥 Setup Duty Credentials / Register ID", key="lock_go_register", use_container_width=True):
-                st.session_state.active_page = "User Portal"
-                st.rerun()
-        with col_act2:
-            if st.button("💳 View Subscription Term Plans (from ₹299)", key="lock_go_purchase", type="primary", use_container_width=True):
-                st.session_state.active_page = "User Portal"
+        curr_user = st.session_state.get("user_name", "").strip().lower()
+        is_cre = curr_user in ["avinash", "madhukar", "sharon", "deepak"]
+        is_dum = curr_user == "dummy@we01"
+        is_prem_subscribed = st.session_state.get("is_premium_subscribed", False) or is_cre or is_dum
+        
+        if is_prem_subscribed:
+            st.success("✅ Premium Plan Active")
+        else:
+            if st.button(f"💳 Purchase Premium - {prem_plan[0].split(' / ')[0]}", key="pay_prem_gate_btn", type="primary", use_container_width=True):
+                st.session_state.billing_type = "premium"
+                st.session_state.billing_plan = prem_plan
                 st.session_state.payment_processing = True
+                st.session_state.active_page = "User Portal"
                 st.rerun()
-                
+        st.markdown("</div>", unsafe_allow_html=True)
+        
+    with col2:
+        st.markdown(f"""
+        <div style="background: rgba(129, 140, 248, 0.08); border: 2px solid #818CF8; border-radius: 12px; padding: 20px; height: 350px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+                <h3 style="color:#818CF8; margin-top:0; font-family:'Sora',sans-serif; font-size:18px;">🚀 Pro Plan</h3>
+                <p style="font-size:12.5px; opacity:0.8; margin-bottom:15px; color:#E2E8F0;">Unlock unlimited Cohere AI command chat, interactive custom database queries, and crowd dispatch control.</p>
+                <hr style="opacity:0.2; margin:10px 0;">
+                <p style="font-weight:700; font-size:12px; margin-bottom:4px; color:#94A3B8;">⏱️ CHOOSE TERM PLAN:</p>
+            </div>
+        """, unsafe_allow_html=True)
+        pro_options = [
+            ("₹399 INR / 1 Month", 399, "1 month"),
+            ("₹549 INR / 3 Months", 549, "3 months"),
+            ("₹799 INR / 6 Months", 799, "6 months"),
+            ("₹999 INR / 12 Months", 999, "12 months")
+        ]
+        sel_pro_val = st.selectbox("Pro Duration Option", options=range(len(pro_options)), format_func=lambda i: pro_options[i][0], key="gated_pro_select")
+        pro_plan = pro_options[sel_pro_val]
+        
+        is_pro_subscribed = st.session_state.get("is_pro_subscribed", False) or is_cre or is_dum
+        
+        if is_pro_subscribed:
+            st.success("✅ Pro Plan Active")
+        else:
+            if st.button(f"💳 Purchase Pro - {pro_plan[0].split(' / ')[0]}", key="pay_pro_gate_btn", type="primary", use_container_width=True):
+                st.session_state.billing_type = "pro"
+                st.session_state.billing_plan = pro_plan
+                st.session_state.payment_processing = True
+                st.session_state.active_page = "User Portal"
+                st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
+
+curr_user_lower = st.session_state.get("user_name", "").strip().lower()
+is_creator_admin = curr_user_lower in ["avinash", "madhukar", "sharon", "deepak"]
+is_dummy_user = curr_user_lower == "dummy@we01"
+has_unlimited_bypass = is_creator_admin or is_dummy_user
+
+# Global subscription and trial checks
+is_day_1 = st.session_state.get("app_usage_day", "Day 1") == "Day 1"
+has_premium_access = st.session_state.get("is_premium_subscribed", False) or has_unlimited_bypass
+has_pro_access = st.session_state.get("is_pro_subscribed", False) or has_unlimited_bypass
+
+is_gated_page = page in gated_premium_pages
+is_analytical_page = page in ["Overview", "Crowd Flow", "Medical & Heat", "Security", "Resource Planning", "Risk Matrix"]
+
+# Ask AI Page Gating (Always requires Pro Access for everyone except creator/dummy)
+if page == "Ask AI" and not has_pro_access:
+    page_header("💬", "AI Command Chat locked", "The interactive Ask AI operations co-pilot chat is a Pro Plan exclusive feature.")
+    st.markdown(f"""
+    <div style="background: rgba(29, 39, 59, 0.95); border: 2px solid #818CF8; border-radius: 16px; padding: 30px; text-align: center; margin-bottom: 30px; margin-top:20px; box-shadow: {t['shadow']};">
+        <h3 style="color: #818CF8; margin-top:0; font-family: 'Sora', sans-serif; font-size:20px;">🤖 Pro AI Command Chat Co-Pilot</h3>
+        <p style="font-size:13px; color:#94A3B8; margin-bottom:20px; line-height:1.6;">
+            Get immediate feedback, query custom data queries, and command crowd dispatch resources with Cohere AI. Upgrade to the Pro Plan to activate the Ask AI co-pilot block.
+        </p>
+        <div style="display: flex; justify-content: center; gap: 12px; margin-bottom: 20px;">
+            <span style="background: rgba(129, 140, 248, 0.15); color: #818CF8; padding: 6px 12px; border-radius: 6px; font-size: 11.5px; font-weight:700;">₹399 / mo Starter</span>
+            <span style="background: rgba(16, 185, 129, 0.15); color: #10B981; padding: 6px 12px; border-radius: 6px; font-size: 11.5px; font-weight:700;">Instant Activation</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    render_pricing_plans()
+    st.stop()
+
+# Day 2+ Analytical Pages Gating (Visuals Blurred, requires Premium Access)
+if is_analytical_page and not is_day_1 and not has_premium_access:
+    # Render blurred overlay
+    st.markdown(f"""
+    <style>
+    /* Physically blur ALL streamlit visual elements on the page except header */
+    div[data-testid="stKPI"], 
+    div[data-testid="stMetricValue"],
+    div[data-testid="stArrowDataFrame"],
+    div[data-testid="stPlotlyChart"],
+    div.element-container:not(:nth-child(-n+5)) {{
+        filter: blur(8px) grayscale(45%);
+        pointer-events: none;
+        user-select: none;
+        opacity: 0.82;
+    }}
+    </style>
+    """, unsafe_allow_html=True)
+    
+    st.markdown(f"""
+    <div style="background: rgba(30, 41, 59, 0.95); border: 2px solid #38BDF8; border-radius: 12px; padding: 32px; text-align: center; margin-bottom: 30px; margin-top: 20px; box-shadow: {t['shadow']};">
+        <div style="font-size: 50px; margin-bottom: 12px;">🔒</div>
+        <h3 style="font-family: 'Sora', sans-serif; color: #38BDF8; font-size: 22px; font-weight: 800; margin: 0 0 8px 0; letter-spacing: -0.5px;">Premium Operational View Locked (Day 2+)</h3>
+        <p style="color: {t['text2']}; font-size: 14px; line-height: 1.6; margin-bottom: 20px; max-width: 600px; margin-left: auto; margin-right: auto;">
+            Your 1-day free-trial period has expired. The live visualizations, KPIs, risk prioritizations, and anomaly matrices for <strong>{page}</strong> are blurred. Upgrade to the Premium Plan to lift the blur immediately.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    render_pricing_plans()
     st.stop()
 
 
@@ -2148,211 +2358,261 @@ if page == "User Portal":
         """, unsafe_allow_html=True)
 
     with col2:
-        st.markdown(f'<p style="font-size:16px; font-weight:800; color:{t["accent"]}; margin-bottom:12px;">🎟️ SPECTATOR SEASON COPILOT SUBSCRIPTION</p>', unsafe_allow_html=True)
+        st.markdown(f'<p style="font-size:16px; font-weight:800; color:{t["accent"]}; margin-bottom:12px;">🎟️ SYSTEM SUBSCRIPTION GATEWAY</p>', unsafe_allow_html=True)
         
-        has_priority_bypass = st.session_state.user_role in ["stadium_ops", "police_security", "medical_team"]
+        curr_user_lower = st.session_state.get("user_name", "").strip().lower()
+        is_creator = curr_user_lower in ["avinash", "madhukar", "sharon", "deepak"]
+        is_dummy_user = curr_user_lower == "dummy@we01"
+        has_unlimited_bypass = is_creator or is_dummy_user
         
-        if has_priority_bypass:
+        # Determine specific subscription active states
+        is_prem_active = st.session_state.get("is_premium_subscribed", False) or has_unlimited_bypass
+        is_pro_active = st.session_state.get("is_pro_subscribed", False) or has_unlimited_bypass
+        
+        if has_unlimited_bypass:
             st.markdown(f"""
             <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid #10B98150; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 20px;">
-                <h4 style="color: #10B981; margin-top: 0; font-family: 'Sora', sans-serif; font-size:16px;">🔑 Agency Whitelist Active</h4>
+                <h4 style="color: #10B981; margin-top: 0; font-family: 'Sora', sans-serif; font-size:16px;">👑 Admin / Creator Whitelist</h4>
                 <p style="font-size: 13px; color: {t['text2']}; line-height: 1.5; margin-bottom: 0;">
-                    Your active role as an official commander or responder grants you <strong>full whitelisting bypass</strong> to access all pages.
+                    Your account details grant you infinite bypass permissions. All Premium safety visuals and Pro AI features are unlocked automatically.
                 </p>
             </div>
             """, unsafe_allow_html=True)
-        elif st.session_state.is_subscribed:
-            # Look up which plan they subscribed to
-            active_plan_info = "₹299 INR / 1 month Starter"
-            active_plan_cost = "₹299"
-            active_plan_term = "1 month"
-            lookup_user = st.session_state.user_name.strip().lower()
             
-            # Find in list of payments
-            user_txn = None
-            for txn in reversed(st.session_state.subscription_payments):
-                if txn["username"] == lookup_user:
-                    user_txn = txn
-                    break
-                    
-            if user_txn:
-                active_plan_info = user_txn["plan"]
-                active_plan_cost = f"₹{user_txn['amount']}"
-                active_plan_term = user_txn["term"]
-                
+        # Display elegant plan status cards side by side
+        st.markdown("### 🎫 Active Pass Subscriptions")
+        
+        prem_bg = "rgba(56, 189, 248, 0.08)" if is_prem_active else "rgba(220, 38, 38, 0.05)"
+        prem_border = "#38BDF8" if is_prem_active else "#dc2626"
+        prem_status = "🟢 Active (Unlocked)" if is_prem_active else "🔴 Locked (Purchase Required)"
+        
+        pro_bg = "rgba(129, 140, 248, 0.08)" if is_pro_active else "rgba(220, 38, 38, 0.05)"
+        pro_border = "#818CF8" if is_pro_active else "#dc2626"
+        pro_status = "🔮 Active (Unlocked)" if is_pro_active else "🔴 Locked (Purchase Required)"
+        
+        col_st_p, col_st_o = st.columns(2)
+        with col_st_p:
             st.markdown(f"""
-            <div style="background: rgba(129, 140, 248, 0.08); border: 1px solid {t['accent']}50; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 20px;">
-                <h4 style="color: {t['accent']}; margin-top: 0; font-family: 'Sora', sans-serif; font-size:16px;">🎉 Spectator Pass Active</h4>
-                <p style="font-size: 13px; color: {t['text2']}; line-height: 1.5; margin-bottom: 15px;">
-                    Your premium <strong>{active_plan_term}</strong> spectator pass is active. Welcome to senior analytical access!
-                </p>
-                <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 10px;">
-                    <span style="background: {t['accent_lt']}; color: {t['accent']}; border: 1px solid {t['accent']}40; padding: 4px 10.5px; border-radius: 6px; font-size: 11px; font-weight: 700;">Paid {active_plan_cost}</span>
-                    <span style="background: rgba(16,185,129,0.1); color: #10B981; border: 1px solid #10B98140; padding: 4px 10.5px; border-radius: 6px; font-size: 11px; font-weight: 700;">Valid: {active_plan_term}</span>
-                </div>
-                <div style="font-size: 11px; color: {t['text2']}; font-style: italic; opacity:0.8;">
-                    Plan: {active_plan_info}
-                </div>
+            <div style="background: {prem_bg}; border: 1px solid {prem_border}50; border-radius: 12px; padding: 15px; text-align: center;">
+                <p style="font-size: 10px; color: {t['text2']}; font-weight: 800; text-transform: uppercase; margin: 0 0 4px 0;">✨ PREMIUM ACCESS</p>
+                <div style="font-size: 13px; font-weight: 700; color: {prem_border};">{prem_status}</div>
             </div>
             """, unsafe_allow_html=True)
-            if st.button("Disable Season Pass (Testing Lock States)", key="test_disable_sub_btn"):
-                st.session_state.is_subscribed = False
-                st.rerun()
-        else:
+        with col_st_o:
             st.markdown(f"""
-            <div style="background: {t['card']}; border: 1px dashed {t['border']}; border-radius: 12px; padding: 22px; margin-bottom: 20px;">
-                <h4 style="margin-top:0; font-family:'Sora',sans-serif; color:{t['text']}; font-size:15px;">🔓 Unlock Senior Analytical Modules</h4>
-                <p style="font-size:12.5px; color:{t['text2']}; line-height:1.6; margin-bottom:12px;">
-                    General Spectators are gated from critical features. Select your preferred subscription term plan below and unlock standard access:
-                </p>
-                <ul style="font-size:12px; color:{t['text2']}; padding-left:18px; line-height:1.8; margin-bottom:0;">
-                    <li><strong>Command Assistance (Ask AI Interface)</strong></li>
-                    <li><strong>Continuous Generative Risk Forecasting</strong></li>
-                    <li><strong>Full Interoperability Hazard Indices</strong></li>
-                </ul>
+            <div style="background: {pro_bg}; border: 1px solid {pro_border}50; border-radius: 12px; padding: 15px; text-align: center;">
+                <p style="font-size: 10px; color: {t['text2']}; font-weight: 800; text-transform: uppercase; margin: 0 0 4px 0;">🚀 PRO ACCESS</p>
+                <div style="font-size: 13px; font-weight: 700; color: {pro_border};">{pro_status}</div>
             </div>
             """, unsafe_allow_html=True)
-
-            plans_under_selection = [
-                {"label": "₹299 INR / 1 month Starter", "amount": 299, "term": "1 Month", "desc": "Great for a single-match operations trial"},
-                {"label": "₹399 INR / 3 months Quarter", "amount": 399, "term": "3 Months", "desc": "Covers core match schedules completely"},
-                {"label": "₹599 INR / 6 months Half-Year", "amount": 599, "term": "6 Months", "desc": "Extended security and operations metrics logs"},
-                {"label": "₹999 INR / 12 months Season", "amount": 999, "term": "12 Months", "desc": "Complete Year-Round Command Suite access"}
-            ]
-
-            if not st.session_state.payment_processing:
-                # Let user configure their plan
-                selected_plan_idx = st.radio(
-                    "Choose Subscription Term Plan:",
-                    options=[0, 1, 2, 3],
-                    format_func=lambda idx: f"{plans_under_selection[idx]['label']} ({plans_under_selection[idx]['desc']})",
-                    key="portal_plan_idx_radio"
-                )
-                chosen_plan = plans_under_selection[selected_plan_idx]
+            
+        st.markdown("<hr style='margin:16px 0; opacity:0.15;'>", unsafe_allow_html=True)
+        
+        # Payment checkout gateway is active
+        if st.session_state.payment_processing:
+            # We are currently in Payment process
+            billing_type = st.session_state.get("billing_type", "premium")
+            billing_plan = st.session_state.get("billing_plan", ("₹299 INR / 1 Month", 299, "1 Month"))
+            
+            st.markdown(f"""
+            <div style="background: {t['sidebar']}; border: 2px solid {t['accent']}80; border-radius: 12px; padding: 18px; margin-bottom: 15px;">
+                <span style="font-size: 11.5px; font-weight: 700; color: {t['accent']}; text-transform: uppercase; letter-spacing: 0.8px; display: block; margin-bottom: 4px;">💳 Secure PayGuard Gateway</span>
+                <p style="font-size: 12px; color: {t['text2']}; margin: 0; line-height: 1.4;">
+                    Checkout method to process <strong>{billing_type.upper()} ({billing_plan[0]})</strong>. Payment completes your session setup automatically.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            pay_method = st.radio("Choose Pay Mode", ["UPI Transfer (Instant)", "Credit / Debit / ATM Card"], key="portal_pay_method_radio")
+            
+            if pay_method == "UPI Transfer (Instant)":
+                upi_id = st.text_input("UPI Address ID", placeholder="e.g. upi_user@okicici", key="portal_upi_address_field")
+                st.write("")
+                col_p1, col_p2 = st.columns(2)
+                with col_p1:
+                    if st.button("❌ Terminate Purchase", key="portal_cancel_u", use_container_width=True):
+                        st.session_state.payment_processing = False
+                        st.rerun()
+                with col_p2:
+                    if st.button("🔒 Confirm UPI Payment", key="portal_confirm_pay_u", type="primary", use_container_width=True):
+                        if "@" not in upi_id or len(upi_id) < 5:
+                            st.error("⚠️ Invalid UPI address structure (missing '@' handle).")
+                        else:
+                            with st.spinner("⏳ Broadcasting authorization push request to UPI application..."):
+                                import time
+                                time.sleep(1.5)
+                                
+                            # Record payment
+                            import random
+                            from datetime import datetime
+                            txn_id = f"TXN{random.randint(10000000, 99999999)}"
+                            date_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                            
+                            lookup = st.session_state.get("username_key", "").strip().lower()
+                            if not lookup:
+                                lookup = st.session_state.user_name.strip().lower()
+                                
+                            new_txn = {
+                                "username": lookup,
+                                "name": st.session_state.user_name.strip(),
+                                "role": st.session_state.user_role,
+                                "plan": f"{billing_type.upper()}: {billing_plan[0]}",
+                                "amount": billing_plan[1],
+                                "term": billing_plan[2],
+                                "date": date_str,
+                                "method": f"UPI: {upi_id}",
+                                "transaction_id": txn_id
+                            }
+                            st.session_state.subscription_payments.append(new_txn)
+                            
+                            st.session_state.is_subscribed = True
+                            if billing_type == "premium":
+                                st.session_state.is_premium_subscribed = True
+                            else:
+                                st.session_state.is_pro_subscribed = True
+                                
+                            st.session_state.payment_processing = False
+                            
+                            if lookup in st.session_state.registered_users:
+                                st.session_state.registered_users[lookup]["is_subscribed"] = True
+                                if billing_type == "premium":
+                                    st.session_state.registered_users[lookup]["is_premium_subscribed"] = True
+                                else:
+                                    st.session_state.registered_users[lookup]["is_pro_subscribed"] = True
+                                st.session_state.registered_users[lookup]["active_plan"] = billing_plan[0]
+                                
+                            st.success(f"✅ Payment Authorized! {billing_type.upper()} {billing_plan[2]} Pass activated.")
+                            st.toast("🎉 Subscription Successful!")
+                            st.rerun()
+                            
+            else:
+                card_num = st.text_input("16-Digit Card Credentials", placeholder="xxxx xxxx xxxx xxxx", key="portal_card_credentials_field")
+                col_card1, col_card2 = st.columns(2)
+                with col_card1:
+                    card_exp = st.text_input("Expiration MM/YY", placeholder="01/29", key="portal_card_exp_field")
+                with col_card2:
+                    card_cvv = st.text_input("Secure CVV Code", type="password", placeholder="***", key="portal_card_cvv_field")
                 
                 st.write("")
-                if st.button(f"💳 Purchase {chosen_plan['term']} Pass — ₹{chosen_plan['amount']}", key="buy_pass_btn_portal", type="primary", use_container_width=True):
-                    st.session_state.chosen_plan_dict = chosen_plan
-                    st.session_state.payment_processing = True
+                col_p1, col_p2 = st.columns(2)
+                with col_p1:
+                    if st.button("❌ Terminate Purchase", key="portal_cancel_c", use_container_width=True):
+                        st.session_state.payment_processing = False
+                        st.rerun()
+                with col_p2:
+                    if st.button("🔒 Authorize Card Securely", key="portal_confirm_pay_c", type="primary", use_container_width=True):
+                        clean_card = card_num.replace(" ", "")
+                        if not clean_card.isdigit() or len(clean_card) != 16:
+                            st.error("⚠️ Invalid Card Number configuration. Must be 16 digits.")
+                        elif "/" not in card_exp or len(card_exp) != 5:
+                            st.error("⚠️ Invalid Expiration. Use MM/YY MM/YY configuration.")
+                        elif not card_cvv.isdigit() or len(card_cvv) != 3:
+                            st.error("⚠️ Secure CVV is invalid. Must be 3 numeric characters.")
+                        else:
+                            with st.spinner("⏳ Submitting secure transaction token to gateway system..."):
+                                import time
+                                time.sleep(1.5)
+                                
+                            # Record payment
+                            import random
+                            from datetime import datetime
+                            txn_id = f"TXN{random.randint(10000000, 99999999)}"
+                            date_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                            
+                            lookup = st.session_state.get("username_key", "").strip().lower()
+                            if not lookup:
+                                lookup = st.session_state.user_name.strip().lower()
+                                
+                            new_txn = {
+                                "username": lookup,
+                                "name": st.session_state.user_name.strip(),
+                                "role": st.session_state.user_role,
+                                "plan": f"{billing_type.upper()}: {billing_plan[0]}",
+                                "amount": billing_plan[1],
+                                "term": billing_plan[2],
+                                "date": date_str,
+                                "method": f"Card: **** **** **** {clean_card[-4:] if len(clean_card) >=4 else '9999'}",
+                                "transaction_id": txn_id
+                            }
+                            st.session_state.subscription_payments.append(new_txn)
+                            
+                            st.session_state.is_subscribed = True
+                            if billing_type == "premium":
+                                st.session_state.is_premium_subscribed = True
+                            else:
+                                st.session_state.is_pro_subscribed = True
+                                
+                            st.session_state.payment_processing = False
+                            
+                            if lookup in st.session_state.registered_users:
+                                st.session_state.registered_users[lookup]["is_subscribed"] = True
+                                if billing_type == "premium":
+                                    st.session_state.registered_users[lookup]["is_premium_subscribed"] = True
+                                else:
+                                    st.session_state.registered_users[lookup]["is_pro_subscribed"] = True
+                                st.session_state.registered_users[lookup]["active_plan"] = billing_plan[0]
+                                
+                            st.success(f"✅ Card Transaction Authorized! {billing_type.upper()} {billing_plan[2]} Pass activated.")
+                            st.toast("🎉 Subscription Successful!")
+                            st.rerun()
+        else:
+            # Plan Selection Options UI
+            st.markdown("### ✨ Upgrade to Premium Plan")
+            st.markdown(f"""
+            <p style="font-size:12px; color:{t['text2']}; line-height:1.55; margin-bottom:8px;">
+                Unlocks real-time seat crowd maps, paramedics response logs, anomaly charts, and all high-fidelity telemetry metrics across all analytical pages.
+            </p>
+            """, unsafe_allow_html=True)
+            
+            p_opts = [
+                ("₹299 INR / 1 Month", 299, "1 month"),
+                ("₹399 INR / 3 Months", 399, "3 months"),
+                ("₹599 INR / 6 Months", 599, "6 months"),
+                ("₹999 INR / 12 Months", 999, "12 months")
+            ]
+            sel_p_idx = st.selectbox("Select Season Premium Term", options=range(4), format_func=lambda i: p_opts[i][0], key="portal_p_select")
+            p_plan = p_opts[sel_p_idx]
+            
+            p_btn_label = f"⚡ Activate Premium Plan — {p_plan[0].split(' / ')[0]}" if not is_prem_active else "🟢 Premium Active (Paid)"
+            if st.button(p_btn_label, key="portal_buy_prem_btn", type="primary", use_container_width=True, disabled=is_prem_active):
+                st.session_state.billing_type = "premium"
+                st.session_state.billing_plan = p_plan
+                st.session_state.payment_processing = True
+                st.rerun()
+                
+            st.markdown("<hr style='margin:18px 0; opacity:0.1;'>", unsafe_allow_html=True)
+            
+            st.markdown("### 🚀 Upgrade to Pro Plan")
+            st.markdown(f"""
+            <p style="font-size:12px; color:{t['text2']}; line-height:1.55; margin-bottom:8px;">
+                Unlocks direct natural-language dispatch queries, stadium occupancy projections, warden controls, and all interactive co-pilot features.
+            </p>
+            """, unsafe_allow_html=True)
+            
+            o_opts = [
+                ("₹399 INR / 1 Month", 399, "1 month"),
+                ("₹549 INR / 3 Months", 549, "3 months"),
+                ("₹799 INR / 6 Months", 799, "6 months"),
+                ("₹999 INR / 12 Months", 999, "12 months")
+            ]
+            sel_o_idx = st.selectbox("Select Season Pro Term", options=range(4), format_func=lambda i: o_opts[i][0], key="portal_o_select")
+            o_plan = o_opts[sel_o_idx]
+            
+            o_btn_label = f"⚡ Activate Pro Plan — {o_plan[0].split(' / ')[0]}" if not is_pro_active else "🔮 Pro Active (Paid)"
+            if st.button(o_btn_label, key="portal_buy_pro_btn", type="primary", use_container_width=True, disabled=is_pro_active):
+                st.session_state.billing_type = "pro"
+                st.session_state.billing_plan = o_plan
+                st.session_state.payment_processing = True
+                st.rerun()
+                
+            # If subscribed (and not creator/dummy bypass), show a toggle to test disabling
+            if not has_unlimited_bypass and (st.session_state.get("is_premium_subscribed") or st.session_state.get("is_pro_subscribed")):
+                st.markdown("<hr style='margin:18px 0; opacity:0.1;'>", unsafe_allow_html=True)
+                if st.button("❌ Disable Active Passes (Test Lock)", key="clear_sub_test_btn", use_container_width=True):
+                    st.session_state.is_premium_subscribed = False
+                    st.session_state.is_pro_subscribed = False
+                    st.session_state.is_subscribed = False
                     st.rerun()
-            else:
-                # Read selected plan from dict or fall back
-                chosen_plan = st.session_state.get("chosen_plan_dict", plans_under_selection[0])
-                
-                st.markdown(f"""
-                <div style="background: {t['sidebar']}; border: 2px solid {t['accent']}80; border-radius: 12px; padding: 18px; margin-bottom: 15px;">
-                    <span style="font-size: 11.5px; font-weight: 700; color: {t['accent']}; text-transform: uppercase; letter-spacing: 0.8px; display: block; margin-bottom: 4px;">💳 Secure PayGuard Gateway</span>
-                    <p style="font-size: 12px; color: {t['text2']}; margin: 0; line-height: 1.4;">
-                        Checkout method to process <strong>{chosen_plan['label']}</strong>. Payment completes your session setup automatically.
-                    </p>
-                </div>
-                """, unsafe_allow_html=True)
-                
-                pay_method = st.radio("Choose Pay Mode", ["UPI Transfer (Instant)", "Credit / Debit / ATM Card"], key="portal_pay_method_radio")
-                
-                if pay_method == "UPI Transfer (Instant)":
-                    upi_id = st.text_input("UPI Address ID", placeholder="e.g. upi_user@okicici", key="portal_upi_address_field")
-                    st.write("")
-                    col_p1, col_p2 = st.columns(2)
-                    with col_p1:
-                        if st.button("❌ Terminate Purchase", key="portal_cancel_u", use_container_width=True):
-                            st.session_state.payment_processing = False
-                            st.rerun()
-                    with col_p2:
-                        if st.button("🔒 Confirm UPI Payment", key="portal_confirm_pay_u", type="primary", use_container_width=True):
-                            if "@" not in upi_id or len(upi_id) < 5:
-                                st.error("⚠️ Invalid UPI address structure (missing '@' handle).")
-                            else:
-                                with st.spinner("⏳ Broadcasting authorization push request to UPI application..."):
-                                    import time
-                                    time.sleep(2.0)
-                                    
-                                # Record payment
-                                import random
-                                from datetime import datetime
-                                txn_id = f"TXN{random.randint(10000000, 99999999)}"
-                                date_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                                
-                                lookup = st.session_state.user_name.strip().lower()
-                                st.session_state.subscription_payments.append({
-                                    "username": lookup,
-                                    "name": st.session_state.user_name.strip(),
-                                    "role": st.session_state.user_role,
-                                    "plan": chosen_plan["label"],
-                                    "amount": chosen_plan["amount"],
-                                    "term": chosen_plan["term"],
-                                    "date": date_str,
-                                    "method": f"UPI: {upi_id}",
-                                    "transaction_id": txn_id
-                                })
-                                
-                                st.session_state.is_subscribed = True
-                                st.session_state.payment_processing = False
-                                if lookup in st.session_state.registered_users:
-                                    st.session_state.registered_users[lookup]["is_subscribed"] = True
-                                    st.session_state.registered_users[lookup]["active_plan"] = chosen_plan["label"]
-                                    
-                                st.success(f"✅ Payment Authorized! {chosen_plan['term']} Spectator Pass activated.")
-                                st.toast("🎉 Subscription Successful!")
-                                time.sleep(1.0)
-                                st.rerun()
-                else:
-                    card_num = st.text_input("16-Digit Card Credentials", placeholder="xxxx xxxx xxxx xxxx", key="portal_card_credentials_field")
-                    col_card1, col_card2 = st.columns(2)
-                    with col_card1:
-                        card_exp = st.text_input("Expiration MM/YY", placeholder="01/29", key="portal_card_exp_field")
-                    with col_card2:
-                        card_cvv = st.text_input("Secure CVV Code", type="password", placeholder="***", key="portal_card_cvv_field")
-                    
-                    st.write("")
-                    col_p1, col_p2 = st.columns(2)
-                    with col_p1:
-                        if st.button("❌ Terminate Purchase", key="portal_cancel_c", use_container_width=True):
-                            st.session_state.payment_processing = False
-                            st.rerun()
-                    with col_p2:
-                        if st.button("🔒 Authorize Card Securely", key="portal_confirm_pay_c", type="primary", use_container_width=True):
-                            clean_card = card_num.replace(" ", "")
-                            if not clean_card.isdigit() or len(clean_card) != 16:
-                                st.error("⚠️ Invalid Card Number configuration. Must be 16 digits.")
-                            elif "/" not in card_exp or len(card_exp) != 5:
-                                st.error("⚠️ Invalid Expiration. Use MM/YY MM/YY configuration.")
-                            elif not card_cvv.isdigit() or len(card_cvv) != 3:
-                                st.error("⚠️ Secure CVV is invalid. Must be 3 numeric characters.")
-                            else:
-                                with st.spinner("⏳ Submitting secure transaction token to gateway system..."):
-                                    import time
-                                    time.sleep(2.2)
-                                    
-                                # Record payment
-                                import random
-                                from datetime import datetime
-                                txn_id = f"TXN{random.randint(10000000, 99999999)}"
-                                date_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                                
-                                lookup = st.session_state.user_name.strip().lower()
-                                st.session_state.subscription_payments.append({
-                                    "username": lookup,
-                                    "name": st.session_state.user_name.strip(),
-                                    "role": st.session_state.user_role,
-                                    "plan": chosen_plan["label"],
-                                    "amount": chosen_plan["amount"],
-                                    "term": chosen_plan["term"],
-                                    "date": date_str,
-                                    "method": f"Card: **** **** **** {clean_card[-4:] if len(clean_card) >=4 else '9999'}",
-                                    "transaction_id": txn_id
-                                })
-                                
-                                st.session_state.is_subscribed = True
-                                st.session_state.payment_processing = False
-                                if lookup in st.session_state.registered_users:
-                                    st.session_state.registered_users[lookup]["is_subscribed"] = True
-                                    st.session_state.registered_users[lookup]["active_plan"] = chosen_plan["label"]
-                                    
-                                st.success(f"✅ Card Transaction Authorized! {chosen_plan['term']} Spectator Pass activated.")
-                                st.toast("🎉 Subscription Successful!")
-                                time.sleep(1.0)
-                                st.rerun()
 
     st.stop()
 
