@@ -1451,21 +1451,7 @@ if not st.session_state.is_logged_in:
             
             st.write("")
             
-            # Creator access cheat sheet block
-            st.markdown(f"""
-            <div style="background: {t['accent_lt']}; border: 1px dashed {t['accent']}60; border-radius: 10px; padding: 14px; margin-bottom: 20px;">
-                <span style="font-size: 11.5px; font-weight: 800; color: {t['accent']}; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px;">🌟 Official App Creator Bypass Directory</span>
-                <p style="font-size: 11.5px; color: {t['text2']}; margin: 0 0 10px 0; line-height: 1.4;">
-                    Creators bypass subscription gates. Log in as any of the following creators to test with maximum operations authorization:
-                </p>
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: {t['text2']};">
-                    <div>🧑‍💻 <strong>Avinash</strong><br><span style="color:{t['accent']}">030262@avi</span></div>
-                    <div>🧑‍💻 <strong>Madhukar</strong><br><span style="color:{t['accent']}">Madhukar@13</span></div>
-                    <div>🧑‍💻 <strong>Sharon</strong><br><span style="color:{t['accent']}">sharon@06</span></div>
-                    <div>🧑‍💻 <strong>Deepak</strong><br><span style="color:{t['accent']}">Dee@452003</span></div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+
             
             if st.button("🚀 Authorize & Enter Dashboard", key="login_submit_btn", type="primary", use_container_width=True):
                 target_key = login_name.strip().lower()
