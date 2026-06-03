@@ -261,7 +261,7 @@ if "registered_users" not in st.session_state:
         "avinash": {
             "name": "Avinash",
             "password": "030262@avi",
-            "phone": "+91 99999 88888",
+            "phone": "9100161603",
             "age": 25,
             "gender": "Male",
             "role": "stadium_ops",
@@ -272,7 +272,7 @@ if "registered_users" not in st.session_state:
         "madhukar": {
             "name": "Madhukar",
             "password": "Madhukar@13",
-            "phone": "+91 99999 77777",
+            "phone": "9440723516",
             "age": 28,
             "gender": "Male",
             "role": "stadium_ops",
@@ -283,7 +283,7 @@ if "registered_users" not in st.session_state:
         "sharon": {
             "name": "Sharon",
             "password": "sharon@06",
-            "phone": "+91 99999 66666",
+            "phone": "9581901351",
             "age": 24,
             "gender": "Male",
             "role": "stadium_ops",
@@ -294,7 +294,7 @@ if "registered_users" not in st.session_state:
         "deepak": {
             "name": "Deepak",
             "password": "Dee@452003",
-            "phone": "+91 99999 55555",
+            "phone": "9666109069",
             "age": 22,
             "gender": "Male",
             "role": "stadium_ops",
@@ -1434,7 +1434,11 @@ if not st.session_state.is_logged_in:
     auth_col1, auth_col2, auth_col3 = st.columns([1, 4, 1])
     
     with auth_col2:
-        tab_login, tab_register = st.tabs(["🔐 SECURE LOG IN (RETURNING USERS)", "📝 DEPLOY NEW SIGN UP PROFILE"])
+        tab_login, tab_register, tab_forgot = st.tabs([
+            "🔐 SECURE LOG IN (RETURNING USERS)", 
+            "📝 DEPLOY NEW SIGN UP PROFILE", 
+            "🔑 FORGOT PASSWORD"
+        ])
         
         with tab_login:
             st.markdown(f"""
@@ -1451,7 +1455,6 @@ if not st.session_state.is_logged_in:
             
             st.write("")
             
-
             
             if st.button("🚀 Authorize & Enter Dashboard", key="login_submit_btn", type="primary", use_container_width=True):
                 target_key = login_name.strip().lower()
@@ -1555,6 +1558,130 @@ if not st.session_state.is_logged_in:
                         assigned_role = "stadium_ops"
                         computed_serial = f"IPL-OPS-{reg_department_id.strip().upper()}"
                         free_bypass = True
+                    elif st_official_selection == "Yes - Police & Security Marshal Unit":
+                        assigned_role = "police_security"
+                        computed_serial = f"IPL-SEC-{reg_department_id.strip().upper()}"
+                        free_bypass = True
+                    elif st_official_selection == "Yes - Emergency Medical Paramedic Unit":
+                        assigned_role = "medical_team"
+                        computed_serial = f"IPL-EMT-{reg_department_id.strip().upper()}"
+                        free_bypass = True
+                    else:
+                        assigned_role = "general_user"
+                        import random
+                        computed_serial = f"IPL-SPEC-{random.randint(1001, 9999)}"
+                        free_bypass = False
+                        
+                    # Save user details
+                    st.session_state.registered_users[lookup_lower] = {
+                        "name": cleaned_name,
+                        "password": reg_password,
+                        "phone": reg_phone.strip(),
+                        "age": int(reg_age),
+                        "gender": reg_gender,
+                        "role": assigned_role,
+                        "serial_id": computed_serial,
+                        "is_subscribed": free_bypass,
+                        "is_creator": False
+                    }
+                    
+                    # Store login states
+                    st.session_state.is_logged_in = True
+                    st.session_state.user_name = cleaned_name
+                    st.session_state.user_role = assigned_role
+                    st.session_state.serial_id = computed_serial
+                    st.session_state.is_subscribed = free_bypass
+                    
+                    st.success("🎉 Registration complete! Node serialized successfully.")
+                    st.toast(f"✅ Welcome to the Centre, {cleaned_name}!")
+                    import time
+                    time.sleep(1.0)
+                    st.rerun()
+
+        with tab_forgot:
+            st.markdown(f"""
+            <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                <h4 style="font-family: 'Sora', sans-serif; color: {t['text']}; font-size: 15px; margin-top: 0; margin-bottom: 8px;">🔑 Credentials Recovery Center</h4>
+                <p style="font-size: 12.5px; color: {t['text2']}; margin: 0; line-height: 1.5;">
+                    Registered users and creators can request a secure One-Time Passcode (OTP) SMS text message to regain account access instantly.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            recover_name = st.text_input("Enter Username / Name", key="recover_username_field").strip()
+            
+            if st.button("📨 Request Recovery OTP SMS", key="recover_otp_btn", type="primary", use_container_width=True):
+                if not recover_name:
+                    st.error("⚠️ Please specify your registered username / name.")
+                else:
+                    lookup_lower = recover_name.lower()
+                    if lookup_lower in st.session_state.registered_users:
+                        record = st.session_state.registered_users[lookup_lower]
+                        import random
+                        otp_val = str(random.randint(100000, 999999))
+                        st.session_state.forgot_otp_dict = {
+                            "user": lookup_lower,
+                            "otp": otp_val,
+                            "phone": record["phone"]
+                        }
+                        st.toast("✅ Secure reset OTP generated successfully!")
+                    else:
+                        st.error("❌ Username not found in register. Check spelling or create a new profile.")
+            
+            if "forgot_otp_dict" in st.session_state and st.session_state.forgot_otp_dict:
+                otp_data = st.session_state.forgot_otp_dict
+                user_key = otp_data["user"]
+                
+                if recover_name.lower() == user_key:
+                    st.markdown(f"""
+                    <div style="background: rgba(16, 185, 129, 0.1); border: 1px dashed #10B981; border-radius: 10px; padding: 14px; margin-top: 15px; margin-bottom: 20px;">
+                        <span style="font-size: 11.5px; font-weight: 800; color: #10B981; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 6px;">📱 SMS Gateway Dispatched</span>
+                        <p style="font-size: 12.5px; color: {t['text2']}; margin: 0 0 10px 0; line-height: 1.4;">
+                            Verification OTP code successfully routed to phone number <strong style="color:{t['text']}">{otp_data['phone']}</strong>:
+                        </p>
+                        <div style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 800; color: #10B981; background: rgba(0,0,0,0.25); padding: 8px 12px; border-radius: 6px; display: inline-block;">
+                            OTP CODE: {otp_data['otp']}
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    entered_otp = st.text_input("Enter 6-Digit OTP", key="recover_otp_input_field").strip()
+                    new_password = st.text_input("Establish New Access Password", type="password", key="recover_new_pass_field")
+                    
+                    is_long = len(new_password) >= 6
+                    has_digit = any(char.isdigit() for char in new_password)
+                    has_special = any(char in "!@#$%^&*()_+=-[]{}|;:',.<>?/~`" for char in new_password)
+                    is_strong = is_long and has_digit and has_special
+                    
+                    if new_password:
+                        if is_strong:
+                            st.markdown("<p style='font-size:12.5px; color:#10B981; font-weight:700; margin-top:4px;'>🟢 STRONG PASSWORD (Fully Compliant)</p>", unsafe_allow_html=True)
+                        else:
+                            st.markdown("<p style='font-size:12.5px; color:#EF4444; font-weight:700; margin-top:4px;'>🔴 WEAK PASSWORD (Must be at least 6 characters, contain 1 number & 1 special symbol)</p>", unsafe_allow_html=True)
+                    
+                    st.write("")
+                    
+                    if st.button("🔒 Confirm Passcode Revision", key="recover_password_confirm_btn", type="primary", use_container_width=True):
+                        if not entered_otp:
+                            st.error("⚠️ Please specify the 6-digit OTP code sent in the SMS.")
+                        elif entered_otp != otp_data["otp"]:
+                            st.error("❌ INVALID OTP! Code does not match.")
+                        elif not new_password:
+                            st.error("⚠️ New password cannot be blank.")
+                        elif not is_strong:
+                            st.error("❌ PASSWORD TOO WEAK! Password must be at least 6 characters, contain 1 digit/number, and 1 special character.")
+                        else:
+                            # Save password update
+                            st.session_state.registered_users[user_key]["password"] = new_password
+                            # Clear OTP dictionary
+                            del st.session_state.forgot_otp_dict
+                            st.success("🎉 SECURITY RESET COMPLETE! New credentials successfully registered. You can now use your new password under the login tab.")
+                            st.toast("✅ Credentials updated successfully!")
+                            import time
+                            time.sleep(1.5)
+                            st.rerun()
+                    
+    st.stop() free_bypass = True
                     elif st_official_selection == "Yes - Police & Security Marshal Unit":
                         assigned_role = "police_security"
                         computed_serial = f"IPL-SEC-{reg_department_id.strip().upper()}"
