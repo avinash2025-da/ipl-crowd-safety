@@ -249,6 +249,16 @@ PAGES = [
     ("ℹ️", "About App"),
 ]
 
+def get_pages_to_loop():
+    is_admin = st.session_state.get("is_logged_in", False) and st.session_state.get("user_name", "").strip().lower() in ["avinash", "madhukar", "sharon", "deepak"]
+    is_dummy = st.session_state.get("is_logged_in", False) and st.session_state.get("user_name", "").strip().lower() == "dummy@we01"
+    if is_admin:
+        return [("👑", "Admin Dashboard")]
+    elif is_dummy:
+        return PAGES + [("👑", "Admin Dashboard")]
+    else:
+        return PAGES
+
 # Initialize active page state and theme mode
 if "active_page" not in st.session_state:
     st.session_state.active_page = "Home Page"
@@ -260,132 +270,139 @@ if "is_logged_in" not in st.session_state:
     st.session_state.is_logged_in = False
 
 if "registered_users" not in st.session_state:
-    st.session_state.registered_users = {
-        "avinash": {
-            "name": "Avinash",
-            "password": "030262@avi",
-            "phone": "9100161603",
-            "age": 25,
-            "gender": "Male",
-            "role": "stadium_ops",
-            "serial_id": "IPL-OPS-9942",
-            "is_subscribed": True,
-            "is_premium_subscribed": True,
-            "is_pro_subscribed": True,
-            "is_creator": True
-        },
-        "madhukar": {
-            "name": "Madhukar",
-            "password": "Madhukar@13",
-            "phone": "9440723516",
-            "age": 28,
-            "gender": "Male",
-            "role": "stadium_ops",
-            "serial_id": "IPL-OPS-9943",
-            "is_subscribed": True,
-            "is_premium_subscribed": True,
-            "is_pro_subscribed": True,
-            "is_creator": True
-        },
-        "sharon": {
-            "name": "Sharon",
-            "password": "sharon@06",
-            "phone": "9581901351",
-            "age": 24,
-            "gender": "Male",
-            "role": "stadium_ops",
-            "serial_id": "IPL-OPS-9944",
-            "is_subscribed": True,
-            "is_premium_subscribed": True,
-            "is_pro_subscribed": True,
-            "is_creator": True
-        },
-        "deepak": {
-            "name": "Deepak",
-            "password": "Dee@452003",
-            "phone": "9666109069",
-            "age": 22,
-            "gender": "Male",
-            "role": "stadium_ops",
-            "serial_id": "IPL-OPS-9945",
-            "is_subscribed": True,
-            "is_premium_subscribed": True,
-            "is_pro_subscribed": True,
-            "is_creator": True
-        },
-        "che_admin01": {
-            "name": "CHE_Admin01",
-            "password": "Chep@uk#2026!",
-            "phone": "9999999901",
-            "age": 35,
-            "gender": "Male",
-            "role": "stadium_ops",
-            "serial_id": "STAD-CHE-001",
-            "is_subscribed": False,
-            "is_premium_subscribed": False,
-            "is_pro_subscribed": False
-        },
-        "chin_admin01": {
-            "name": "CHIN_Admin01",
-            "password": "Ch!nn@2026#RCB",
-            "phone": "9999999902",
-            "age": 36,
-            "gender": "Male",
-            "role": "stadium_ops",
-            "serial_id": "STAD-CHIN-002",
-            "is_subscribed": False,
-            "is_premium_subscribed": False,
-            "is_pro_subscribed": False
-        },
-        "eden_admin01": {
-            "name": "EDEN_Admin01",
-            "password": "Ed3n@KKR#2026!",
-            "phone": "9999999903",
-            "age": 34,
-            "gender": "Female",
-            "role": "stadium_ops",
-            "serial_id": "STAD-EDEN-003",
-            "is_subscribed": False,
-            "is_premium_subscribed": False,
-            "is_pro_subscribed": False
-        },
-        "uppal_admin01": {
-            "name": "UPPAL_Admin01",
-            "password": "Upp@l#SRH2026!",
-            "phone": "9999999904",
-            "age": 40,
-            "gender": "Male",
-            "role": "stadium_ops",
-            "serial_id": "STAD-UPP-004",
-            "is_subscribed": False,
-            "is_premium_subscribed": False,
-            "is_pro_subscribed": False
-        },
-        "wank_admin01": {
-            "name": "WANK_Admin01",
-            "password": "W@nkh3de#2026!",
-            "phone": "9999999905",
-            "age": 38,
-            "gender": "Male",
-            "role": "stadium_ops",
-            "serial_id": "STAD-WAN-005",
-            "is_subscribed": False,
-            "is_premium_subscribed": False,
-            "is_pro_subscribed": False
-        },
-        "dummy@we01": {
-            "name": "DuMMy@we01",
-            "password": "we01@DuMMy",
-            "phone": "9999999999",
-            "age": 30,
-            "gender": "Non-binary",
-            "role": "dummy_all_access",
-            "serial_id": "DUMMY-001",
-            "is_subscribed": True,
-            "is_premium_subscribed": True,
-            "is_pro_subscribed": True
-        }
+    st.session_state.registered_users = {}
+
+# Ensure standard stadium managers, creator/admins, and dummy credentials are case/whitespace insensitive & always available
+default_accounts = {
+    "avinash": {
+        "name": "Avinash",
+        "password": "030262@avi",
+        "phone": "9100161603",
+        "age": 25,
+        "gender": "Male",
+        "role": "stadium_ops",
+        "serial_id": "IPL-OPS-9942",
+        "is_subscribed": True,
+        "is_premium_subscribed": True,
+        "is_pro_subscribed": True,
+        "is_creator": True
+    },
+    "madhukar": {
+        "name": "Madhukar",
+        "password": "Madhukar@13",
+        "phone": "9440723516",
+        "age": 28,
+        "gender": "Male",
+        "role": "stadium_ops",
+        "serial_id": "IPL-OPS-9943",
+        "is_subscribed": True,
+        "is_premium_subscribed": True,
+        "is_pro_subscribed": True,
+        "is_creator": True
+    },
+    "sharon": {
+        "name": "Sharon",
+        "password": "sharon@06",
+        "phone": "9581901351",
+        "age": 24,
+        "gender": "Male",
+        "role": "stadium_ops",
+        "serial_id": "IPL-OPS-9944",
+        "is_subscribed": True,
+        "is_premium_subscribed": True,
+        "is_pro_subscribed": True,
+        "is_creator": True
+    },
+    "deepak": {
+        "name": "Deepak",
+        "password": "Dee@452003",
+        "phone": "9666109069",
+        "age": 22,
+        "gender": "Male",
+        "role": "stadium_ops",
+        "serial_id": "IPL-OPS-9945",
+        "is_subscribed": True,
+        "is_premium_subscribed": True,
+        "is_pro_subscribed": True,
+        "is_creator": True
+    },
+    "che_admin01": {
+        "name": "CHE_Admin01",
+        "password": "Chep@uk#2026!",
+        "phone": "9999999901",
+        "age": 35,
+        "gender": "Male",
+        "role": "stadium_ops",
+        "serial_id": "STAD-CHE-001",
+        "is_subscribed": False,
+        "is_premium_subscribed": False,
+        "is_pro_subscribed": False
+    },
+    "chin_admin01": {
+        "name": "CHIN_Admin01",
+        "password": "Ch!nn@2026#RCB",
+        "phone": "9999999902",
+        "age": 36,
+        "gender": "Male",
+        "role": "stadium_ops",
+        "serial_id": "STAD-CHIN-002",
+        "is_subscribed": False,
+        "is_premium_subscribed": False,
+        "is_pro_subscribed": False
+    },
+    "eden_admin01": {
+        "name": "EDEN_Admin01",
+        "password": "Ed3n@KKR#2026!",
+        "phone": "9999999903",
+        "age": 34,
+        "gender": "Female",
+        "role": "stadium_ops",
+        "serial_id": "STAD-EDEN-003",
+        "is_subscribed": False,
+        "is_premium_subscribed": False,
+        "is_pro_subscribed": False
+    },
+    "uppal_admin01": {
+        "name": "UPPAL_Admin01",
+        "password": "Upp@l#SRH2026!",
+        "phone": "9999999904",
+        "age": 40,
+        "gender": "Male",
+        "role": "stadium_ops",
+        "serial_id": "STAD-UPP-004",
+        "is_subscribed": False,
+        "is_premium_subscribed": False,
+        "is_pro_subscribed": False
+    },
+    "wank_admin01": {
+        "name": "WANK_Admin01",
+        "password": "W@nkh3de#2026!",
+        "phone": "9999999905",
+        "age": 38,
+        "gender": "Male",
+        "role": "stadium_ops",
+        "serial_id": "STAD-WAN-005",
+        "is_subscribed": False,
+        "is_premium_subscribed": False,
+        "is_pro_subscribed": False
+    },
+    "dummy@we01": {
+        "name": "DuMMy@we01",
+        "password": "we01@DuMMy",
+        "phone": "9999999999",
+        "age": 30,
+        "gender": "Non-binary",
+        "role": "dummy_all_access",
+        "serial_id": "DUMMY-001",
+        "is_subscribed": True,
+        "is_premium_subscribed": True,
+        "is_pro_subscribed": True
     }
+}
+
+for k_def, v_def in default_accounts.items():
+    if k_def not in st.session_state.registered_users or st.session_state.registered_users[k_def]["password"] != v_def["password"]:
+        st.session_state.registered_users[k_def] = v_def
 
 # User registration & subscriptive states matching dynamic React profile
 if "user_role" not in st.session_state:
@@ -550,9 +567,7 @@ except Exception as e:
 def inject_css(t, active_idx=0):
     mode = st.session_state.get("theme_mode", "dark")
     page_buttons_css = ""
-    is_admin = st.session_state.get("is_logged_in", False) and st.session_state.get("user_name", "").strip().lower() in ["avinash", "madhukar", "sharon", "deepak"]
-    is_dummy = st.session_state.get("is_logged_in", False) and st.session_state.get("user_name", "").strip().lower() == "dummy@we01"
-    pages_to_loop = PAGES + [("👑", "Admin Dashboard")] if (is_admin or is_dummy) else PAGES
+    pages_to_loop = get_pages_to_loop()
     for idx, (_, name) in enumerate(pages_to_loop):
         p_theme = THEMES_DARK[name] if mode == "dark" else THEMES_LIGHT[name]
         p_accent = p_theme["accent"]
@@ -1616,6 +1631,12 @@ if not st.session_state.is_logged_in:
                         st.session_state.is_pro_subscribed = record.get("is_pro_subscribed", False)
                         st.session_state.is_subscribed = record.get("is_premium_subscribed", False) or record.get("is_subscribed", False)
                         
+                        # Admin vs General User automatic routing
+                        if target_key in ["avinash", "madhukar", "sharon", "deepak"]:
+                            st.session_state.active_page = "Admin Dashboard"
+                        else:
+                            st.session_state.active_page = "Home Page"
+                        
                         st.toast(f"✅ Welcome back, Admin/User {record['name']}! Login successful.")
                         import time
                         time.sleep(0.5)
@@ -1798,9 +1819,7 @@ with st.sidebar:
 </div>""", unsafe_allow_html=True)
 
     # Sidebar Page Selection Navigation
-    is_admin = st.session_state.get("is_logged_in", False) and st.session_state.get("user_name", "").strip().lower() in ["avinash", "madhukar", "sharon", "deepak"]
-    is_dummy = st.session_state.get("is_logged_in", False) and st.session_state.get("user_name", "").strip().lower() == "dummy@we01"
-    pages_to_loop = PAGES + [("👑", "Admin Dashboard")] if (is_admin or is_dummy) else PAGES
+    pages_to_loop = get_pages_to_loop()
     for icon, name in pages_to_loop:
         # Clean uniform buttons. Active highlights are rendered via index-based CSS.
         label_text = f"{icon}  {name}"
@@ -1912,14 +1931,19 @@ with st.sidebar:
 # ─────────────────────────────────────────────────────────
 # RENDER PAGES
 # ─────────────────────────────────────────────────────────
+# Admin constraint: force Admins to ONLY view the Admin Dashboard
+is_admin_check = st.session_state.get("is_logged_in", False) and st.session_state.get("user_name", "").strip().lower() in ["avinash", "madhukar", "sharon", "deepak"]
+if is_admin_check and st.session_state.active_page != "Admin Dashboard":
+    st.session_state.active_page = "Admin Dashboard"
+    st.rerun()
+
 page = st.session_state.active_page
 mode = st.session_state.theme_mode
 t    = THEMES_DARK[page] if mode == "dark" else THEMES_LIGHT[page]
 
 # Compute active page index for sidebar nav highlighting
 active_idx = 0
-is_admin = st.session_state.get("is_logged_in", False) and st.session_state.get("user_name", "").strip().lower() in ["avinash", "madhukar", "sharon", "deepak"]
-pages_to_loop = PAGES + [("👑", "Admin Dashboard")] if is_admin else PAGES
+pages_to_loop = get_pages_to_loop()
 for idx, (_, name) in enumerate(pages_to_loop):
     if name == page:
         active_idx = idx
@@ -2017,23 +2041,11 @@ gated_premium_pages = ["Crowd Flow", "Medical & Heat", "Security", "Resource Pla
 is_gated_page = page in gated_premium_pages
 is_analytical_page = page in ["Overview", "Crowd Flow", "Medical & Heat", "Security", "Resource Planning", "Risk Matrix"]
 
-# Ask AI Page Gating (Always requires Pro Access for everyone except creator/dummy)
+# Ask AI Page Gating (Redirects to Access Plan page if no Pro Access)
 if page == "Ask AI" and not has_pro_access:
-    page_header("💬", "AI Command Chat locked", "The interactive Ask AI operations co-pilot chat is a Pro Plan exclusive feature.")
-    st.markdown(f"""
-    <div style="background: rgba(29, 39, 59, 0.95); border: 2px solid #818CF8; border-radius: 16px; padding: 30px; text-align: center; margin-bottom: 30px; margin-top:20px; box-shadow: {t['shadow']};">
-        <h3 style="color: #818CF8; margin-top:0; font-family: 'Sora', sans-serif; font-size:20px;">🤖 Pro AI Command Chat Co-Pilot</h3>
-        <p style="font-size:13px; color:#94A3B8; margin-bottom:20px; line-height:1.6;">
-            Get immediate feedback, query custom data queries, and command crowd dispatch resources with Cohere AI. Upgrade to the Pro Plan to activate the Ask AI co-pilot block.
-        </p>
-        <div style="display: flex; justify-content: center; gap: 12px; margin-bottom: 20px;">
-            <span style="background: rgba(129, 140, 248, 0.15); color: #818CF8; padding: 6px 12px; border-radius: 6px; font-size: 11.5px; font-weight:700;">₹399 / mo Starter</span>
-            <span style="background: rgba(16, 185, 129, 0.15); color: #10B981; padding: 6px 12px; border-radius: 6px; font-size: 11.5px; font-weight:700;">Instant Activation</span>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    render_pricing_plans()
-    st.stop()
+    st.session_state.active_page = "User Portal"
+    st.session_state.pending_plan_msg = "⚠️ The interactive Ask AI operations co-pilot chat is a Pro Plan exclusive feature. You have been directed to the Access Plan terminal."
+    st.rerun()
 
 # Day 2+ Analytical Pages Gating (Visuals Blurred, requires Premium Access)
 if is_analytical_page and not is_day_1 and not has_premium_access:
@@ -2063,6 +2075,9 @@ if is_analytical_page and not is_day_1 and not has_premium_access:
         </p>
     </div>
     """, unsafe_allow_html=True)
+    if st.button("👤 Go to Access Plan Terminal (User Portal) to Upgrade", type="primary", use_container_width=True, key="day2_redirect_btn"):
+        st.session_state.active_page = "User Portal"
+        st.rerun()
     render_pricing_plans()
     st.stop()
 
@@ -2231,6 +2246,10 @@ if page == "Home Page":
 if page == "User Portal":
     page_header("👤", "Authority Authorization Terminal & Spectator Season Pass Portal", 
                 "Configure stadium permissions, view your Digital RFID Access Badge, and activate Season Copilot subscriptions.")
+
+    if "pending_plan_msg" in st.session_state and st.session_state.pending_plan_msg:
+        st.warning(st.session_state.pending_plan_msg)
+        st.session_state.pending_plan_msg = ""
 
     col1, col2 = st.columns([1, 1], gap="large")
 
@@ -3292,8 +3311,13 @@ if page == "Overview":
         st.session_state.overview_report = ""
 
     if generate_ai:
-        with st.spinner("Analyzing executive logs with Cohere AI..."):
-            st.session_state.overview_report = generate_cohere_insights(summary_text, "Overview Dashboard", ai_temperature, ai_max_tokens)
+        if not has_premium_access:
+            st.session_state.active_page = "User Portal"
+            st.session_state.pending_plan_msg = "⚠️ Generating AI Recommendations and insights requires the Premium Plan. You have been directed to the access plan terminal."
+            st.rerun()
+        else:
+            with st.spinner("Analyzing executive logs with Cohere AI..."):
+                st.session_state.overview_report = generate_cohere_insights(summary_text, "Overview Dashboard", ai_temperature, ai_max_tokens)
 
     if st.session_state.overview_report:
         st.markdown(render_ai_insight_report(st.session_state.overview_report, t), unsafe_allow_html=True)
@@ -3378,11 +3402,16 @@ elif page == "Crowd Flow":
 
     generate_ai_cf = st.button("🤖 Generate Crowd Flow AI Evaluation", use_container_width=True, key="ai_cf")
     if generate_ai_cf:
-        with st.spinner("Analyzing entry queue vectors..."):
-            high_risk_cf = f[f["bottleneck_risk_score"] >= 50][["zone_name", "phase", "people_count", "avg_queue_wait_time", "bottleneck_risk_score"]].sort_values("bottleneck_risk_score", ascending=False).head(10)
-            high_risk_cf_text = high_risk_cf.to_string(index=False) if not high_risk_cf.empty else "No high bottleneck sectors detected under active filters."
-            
-            cf_context = f"""
+        if not has_premium_access:
+            st.session_state.active_page = "User Portal"
+            st.session_state.pending_plan_msg = "⚠️ Generating AI recommendations and insights requires the Premium Plan. You have been directed to the access plan page."
+            st.rerun()
+        else:
+            with st.spinner("Analyzing entry queue vectors..."):
+                high_risk_cf = f[f["bottleneck_risk_score"] >= 50][["zone_name", "phase", "people_count", "avg_queue_wait_time", "bottleneck_risk_score"]].sort_values("bottleneck_risk_score", ascending=False).head(10)
+                high_risk_cf_text = high_risk_cf.to_string(index=False) if not high_risk_cf.empty else "No high bottleneck sectors detected under active filters."
+                
+                cf_context = f"""
 Focus on spectator entry queue bottlenecks, gate queues, and zone flows:
 - Mean Bottleneck Level: {avg_bottleneck}/100
 - Mean Turnstile Queue Wait Time: {avg_queue} minutes
@@ -3395,7 +3424,7 @@ WORST CROWD CONGESTION SECTOR RECORDS DETECTED:
 TOP RISK OPERATION LOGS:
 {top_risk_text}
 """
-            st.session_state.cf_report = generate_cohere_insights(cf_context, "Crowd Flow & Gate Wait Dashboard", ai_temperature, ai_max_tokens)
+                st.session_state.cf_report = generate_cohere_insights(cf_context, "Crowd Flow & Gate Wait Dashboard", ai_temperature, ai_max_tokens)
         
     if st.session_state.cf_report:
         st.markdown(render_ai_insight_report(st.session_state.cf_report, t), unsafe_allow_html=True)
@@ -3477,11 +3506,16 @@ elif page == "Medical & Heat":
 
     generate_ai_mh = st.button("🤖 Generate Paramedic Operations AI Report", use_container_width=True, key="ai_mh")
     if generate_ai_mh:
-        with st.spinner("Evaluating ambulance paths with Cohere AI..."):
-            high_heat_med = f[(f["ambulance_response_time"] >= 8) | (f["heat_risk_index"] >= 30)][["zone_name", "phase", "temperature_celsius", "humidity_percent", "heat_risk_index", "ambulance_response_time", "medical_incidents"]].sort_values("heat_risk_index", ascending=False).head(10)
-            high_heat_med_text = high_heat_med.to_string(index=False) if not high_heat_med.empty else "No thermal risk or delayed ambulance zones detected."
-            
-            mh_context = f"""
+        if not has_premium_access:
+            st.session_state.active_page = "User Portal"
+            st.session_state.pending_plan_msg = "⚠️ Generating AI recommendations and insights requires the Premium Plan. You have been directed to the access plan page."
+            st.rerun()
+        else:
+            with st.spinner("Evaluating ambulance paths with Cohere AI..."):
+                high_heat_med = f[(f["ambulance_response_time"] >= 8) | (f["heat_risk_index"] >= 30)][["zone_name", "phase", "temperature_celsius", "humidity_percent", "heat_risk_index", "ambulance_response_time", "medical_incidents"]].sort_values("heat_risk_index", ascending=False).head(10)
+                high_heat_med_text = high_heat_med.to_string(index=False) if not high_heat_med.empty else "No thermal risk or delayed ambulance zones detected."
+                
+                mh_context = f"""
 Focus on stadium weather/thermal indices, ambulance path delay risks, and medical case counts:
 - Medical Incident Occurrence Rate: {med_rate} per 1000 people
 - Mean Ambulance Transit lag: {amb_resp} minutes
@@ -3494,7 +3528,7 @@ WORST THERMAL STRESS & DELAYED MEDICAL STANDS REGISTERED:
 TOP RISK OPERATION LOGS:
 {top_risk_text}
 """
-            st.session_state.mh_report = generate_cohere_insights(mh_context, "Paramedic & Heat Stress Dashboard", ai_temperature, ai_max_tokens)
+                st.session_state.mh_report = generate_cohere_insights(mh_context, "Paramedic & Heat Stress Dashboard", ai_temperature, ai_max_tokens)
         
     if st.session_state.mh_report:
         st.markdown(render_ai_insight_report(st.session_state.mh_report, t), unsafe_allow_html=True)
@@ -3560,11 +3594,16 @@ elif page == "Security":
 
     generate_ai_sec = st.button("🤖 Generate Security Analytics AI Report", use_container_width=True, key="ai_sec")
     if generate_ai_sec:
-        with st.spinner("Analyzing perimeter access vectors with Cohere AI..."):
-            high_risk_sec = f[f["security_incidents"] > 0][["zone_name", "phase", "people_count", "security_incidents", "unauthorized_entry_attempts", "counterfeit_ticket_cases", "fan_ejections"]].sort_values("security_incidents", ascending=False).head(10)
-            high_risk_sec_text = high_risk_sec.to_string(index=False) if not high_risk_sec.empty else "No security incidents flagged under active filters."
-            
-            sec_context = f"""
+        if not has_premium_access:
+            st.session_state.active_page = "User Portal"
+            st.session_state.pending_plan_msg = "⚠️ Generating AI recommendations and insights requires the Premium Plan. You have been directed to the access plan page."
+            st.rerun()
+        else:
+            with st.spinner("Analyzing perimeter access vectors with Cohere AI..."):
+                high_risk_sec = f[f["security_incidents"] > 0][["zone_name", "phase", "people_count", "security_incidents", "unauthorized_entry_attempts", "counterfeit_ticket_cases", "fan_ejections"]].sort_values("security_incidents", ascending=False).head(10)
+                high_risk_sec_text = high_risk_sec.to_string(index=False) if not high_risk_sec.empty else "No security incidents flagged under active filters."
+                
+                sec_context = f"""
 Focus on access boundary controls, security wardens coordination, and gate ticket frauds:
 - Perimeter Forced Ingress Attempts Count: {unauthorized} incidents
 - Barcode Duplications & Fake Ticket Issues: {counterfeit} cases
@@ -3577,7 +3616,7 @@ WORST ACCESS POINT SECURITY INFRACTIONS LOGGED:
 TOP RISK OPERATION LOGS:
 {top_risk_text}
 """
-            st.session_state.sec_report = generate_cohere_insights(sec_context, "Access Control & Gate Security Dashboard", ai_temperature, ai_max_tokens)
+                st.session_state.sec_report = generate_cohere_insights(sec_context, "Access Control & Gate Security Dashboard", ai_temperature, ai_max_tokens)
         
     if st.session_state.sec_report:
         st.markdown(render_ai_insight_report(st.session_state.sec_report, t), unsafe_allow_html=True)
@@ -3658,11 +3697,16 @@ elif page == "Resource Planning":
 
     generate_ai_rp = st.button("🤖 Generate Resource Optimization AI Report", use_container_width=True, key="ai_rp")
     if generate_ai_rp:
-        with st.spinner("Analyzing warden staff capacity..."):
-            low_adequacy_res = f[f["staff_adequacy_ratio"] < f["staff_adequacy_ratio"].median()][["zone_name", "phase", "people_count", "required_staff", "required_barricades", "staff_adequacy_ratio"]].sort_values("staff_adequacy_ratio", ascending=True).head(10)
-            low_adequacy_res_text = low_adequacy_res.to_string(index=False) if not low_adequacy_res.empty else "No understaffed zones detected."
-            
-            rp_context = f"""
+        if not has_premium_access:
+            st.session_state.active_page = "User Portal"
+            st.session_state.pending_plan_msg = "⚠️ Generating AI recommendations and insights requires the Premium Plan. You have been directed to the access plan page."
+            st.rerun()
+        else:
+            with st.spinner("Analyzing warden staff capacity..."):
+                low_adequacy_res = f[f["staff_adequacy_ratio"] < f["staff_adequacy_ratio"].median()][["zone_name", "phase", "people_count", "required_staff", "required_barricades", "staff_adequacy_ratio"]].sort_values("staff_adequacy_ratio", ascending=True).head(10)
+                low_adequacy_res_text = low_adequacy_res.to_string(index=False) if not low_adequacy_res.empty else "No understaffed zones detected."
+                
+                rp_context = f"""
 Focus on warden staffing levels, crowd fences/barricades placement, and paramedic deployment schedules:
 - Combined Marshall/Warden Adequacy Density Index: {staff_ratio} per thousand spectators
 - Active Steel Barricades Deployed: {req_barr} fences
@@ -3675,7 +3719,7 @@ STADIUM SECTORS WITH CRITICAL UNDERSTAFFING / OUTLIER DEMANDS:
 TOP RISK OPERATION LOGS:
 {top_risk_text}
 """
-            st.session_state.rp_report = generate_cohere_insights(rp_context, "Resource & Scheduling Dashboard", ai_temperature, ai_max_tokens)
+                st.session_state.rp_report = generate_cohere_insights(rp_context, "Resource & Scheduling Dashboard", ai_temperature, ai_max_tokens)
         
     if st.session_state.rp_report:
         st.markdown(render_ai_insight_report(st.session_state.rp_report, t), unsafe_allow_html=True)
@@ -3752,10 +3796,15 @@ elif page == "Risk Matrix":
 
     generate_ai_rm = st.button("🤖 Generate Advanced Multi-Metric AI Threat Report", use_container_width=True, key="ai_rm")
     if generate_ai_rm:
-        with st.spinner("Calculating hazard vectors..."):
-            anomaly_snapshot = anomaly_table.head(8).to_string(index=False) if not anomaly_table.empty else "No anomalies detected."
-            
-            rm_context = f"""
+        if not has_premium_access:
+            st.session_state.active_page = "User Portal"
+            st.session_state.pending_plan_msg = "⚠️ Generating AI recommendations and insights requires the Premium Plan. You have been directed to the access plan page."
+            st.rerun()
+        else:
+            with st.spinner("Calculating hazard vectors..."):
+                anomaly_snapshot = anomaly_table.head(8).to_string(index=False) if not anomaly_table.empty else "No anomalies detected."
+                
+                rm_context = f"""
 Focus on overall stadium safety, risk indexes weighted calculations, and outlier anomalies:
 - Live Calculated Operations Risk: {overall_risk_score}/100
 - Critical Alert Records: {critical_zone_count} stand states
@@ -3768,7 +3817,7 @@ STADIUM EXTREME TELEMETRY ANOMALIES LOG SNAPSHOT:
 TOP HAZARD PRIORITY DATABASE RECORDS:
 {top_risk_text}
 """
-            st.session_state.rm_report = generate_cohere_insights(rm_context, "Advanced Risk & Anomaly Matrix Dashboard", ai_temperature, ai_max_tokens)
+                st.session_state.rm_report = generate_cohere_insights(rm_context, "Advanced Risk & Anomaly Matrix Dashboard", ai_temperature, ai_max_tokens)
         
     if st.session_state.rm_report:
         st.markdown(render_ai_insight_report(st.session_state.rm_report, t), unsafe_allow_html=True)
