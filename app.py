@@ -39,6 +39,15 @@ THEMES_DARK = {
         "palette": ["#00F0FF", "#38BDF8", "#FBBF24", "#34D399", "#F87171", "#A78BFA"],
         "crit_col": "#F43F5E", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#00F0FF",
     },
+    "User Portal": {
+        "bg": "#100C26", "sidebar": "#0A0819", "card": "#1D1845",
+        "border": "#312B6E", "accent": "#818CF8", "accent_lt": "rgba(129, 140, 248, 0.12)", "accent2": "#A78BFA",
+        "text": "#FAFAFA", "text2": "#94A3B8",
+        "plot_bg": "#1D1845", "paper_bg": "#100C26", "grid": "#271E57",
+        "legend_rgba": "rgba(16,12,38,0.95)", "shadow": "0 4px 20px rgba(0,0,0,0.3)",
+        "palette": ["#818CF8", "#A78BFA", "#FBBF24", "#10B981", "#EF4444", "#3B82F6"],
+        "crit_col": "#EF4444", "warn_col": "#FBBF24", "ok_col": "#10B981", "info_col": "#818CF8",
+    },
     "Intro": {
         "bg": "#0B101E", "sidebar": "#070B14", "card": "#131C33",
         "border": "#212F4F", "accent": "#00F0FF", "accent_lt": "rgba(0, 240, 255, 0.12)", "accent2": "#38BDF8",
@@ -132,6 +141,15 @@ THEMES_LIGHT = {
         "palette": ["#008CA8", "#0ea5e9", "#D97706", "#059669", "#DC2626", "#7C3AED"],
         "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#008CA8",
     },
+    "User Portal": {
+        "bg": "#F6F5FC", "sidebar": "#ECE9FC", "card": "#FFFFFF",
+        "border": "#D7D2FB", "accent": "#5A2EDB", "accent_lt": "rgba(90, 46, 219, 0.08)", "accent2": "#6366F1",
+        "text": "#0F172A", "text2": "#475569",
+        "plot_bg": "#FFFFFF", "paper_bg": "#F6F5FC", "grid": "#E2E8F0",
+        "legend_rgba": "rgba(255,255,255,0.95)", "shadow": "0 4px 12px rgba(0,0,0,0.06)",
+        "palette": ["#5A2EDB", "#6366F1", "#D97706", "#059669", "#DC2626", "#1D4ED8"],
+        "crit_col": "#DC2626", "warn_col": "#D97706", "ok_col": "#059669", "info_col": "#5A2EDB",
+    },
     "Intro": {
         "bg": "#F2F5FB", "sidebar": "#E5ECF6", "card": "#FFFFFF",
         "border": "#CBD6E4", "accent": "#008CA8", "accent_lt": "rgba(0, 140, 168, 0.08)", "accent2": "#0ea5e9",
@@ -217,6 +235,7 @@ THEMES_LIGHT = {
 
 PAGES = [
     ("🏟️", "Home Page"),
+    ("👤", "User Portal"),
     ("🏠", "Overview"),
     ("🌊", "Crowd Flow"),
     ("🏥", "Medical & Heat"),
@@ -232,6 +251,18 @@ if "active_page" not in st.session_state:
     st.session_state.active_page = "Home Page"
 if "theme_mode" not in st.session_state:
     st.session_state.theme_mode = "dark"
+
+# User registration & subscriptive states matching dynamic React profile
+if "user_role" not in st.session_state:
+    st.session_state.user_role = "general_user"
+if "is_subscribed" not in st.session_state:
+    st.session_state.is_subscribed = False
+if "user_name" not in st.session_state:
+    st.session_state.user_name = "Guest Spectator"
+if "serial_id" not in st.session_state:
+    st.session_state.serial_id = "IPL-SPEC-1083"
+if "payment_processing" not in st.session_state:
+    st.session_state.payment_processing = False
 
 # Define the dynamic active theme t based on active mode & page
 page = st.session_state.active_page
@@ -1582,6 +1613,193 @@ if page == "Home Page":
 
 
 # ═══════════════════════════════════════════════════════════
+# PAGE: USER PORTAL
+# ═══════════════════════════════════════════════════════════
+if page == "User Portal":
+    page_header("👤", "Authority Authorization Terminal & Spectator Season Pass Portal", 
+                "Configure stadium permissions, view your Digital RFID Access Badge, and activate Season Copilot subscriptions.")
+
+    col1, col2 = st.columns([1, 1], gap="large")
+
+    with col1:
+        st.markdown(f'<p style="font-size:16px; font-weight:800; color:{t["accent"]}; margin-bottom:12px;">🛡️ RFID DIGITAL SMART CARD</p>', unsafe_allow_html=True)
+
+        # Edit profile details
+        new_name = st.text_input("Cardholder Name", value=st.session_state.user_name)
+        if new_name != st.session_state.user_name:
+            st.session_state.user_name = new_name
+            st.rerun()
+
+        # Dynamic selector for Roles conforming to React definitions
+        role_label_map = {
+            "stadium_ops": "🏟️ Stadium Operations Commander",
+            "police_security": "👮 Police & Security Marshal",
+            "medical_team": "🏥 Paramedic Response Specialist",
+            "general_user": "🏏 General Spectator / Guest"
+        }
+        
+        selected_role = st.selectbox(
+            "System Access Role",
+            options=list(role_label_map.keys()),
+            format_func=lambda x: role_label_map[x],
+            index=list(role_label_map.keys()).index(st.session_state.user_role)
+        )
+        
+        if selected_role != st.session_state.user_role:
+            st.session_state.user_role = selected_role
+            # Automatically assign serial UID corresponding to role chosen
+            role_prefixes = {
+                "stadium_ops": "IPL-OPS-9942",
+                "police_security": "IPL-SEC-7719",
+                "medical_team": "IPL-EMT-5120",
+                "general_user": "IPL-SPEC-1083"
+            }
+            st.session_state.serial_id = role_prefixes[selected_role]
+            st.rerun()
+
+        # Premium RFID Card styled precisely via Inline Custom CSS
+        role_card_colors = {
+            "stadium_ops": {"gradient": "linear-gradient(135deg, #7C3AED 0%, #1D4ED8 100%)", "tag": "COMMANDER", "accent": "#00FFFF"},
+            "police_security": {"gradient": "linear-gradient(135deg, #1E3A8A 0%, #0F172A 100%)", "tag": "MARSHAL", "accent": "#38BDF8"},
+            "medical_team": {"gradient": "linear-gradient(135deg, #B91C1C 0%, #450A0A 100%)", "tag": "MED TEAM", "accent": "#F87171"},
+            "general_user": {"gradient": "linear-gradient(135deg, #374151 0%, #111827 100%)", "tag": "SPECTATOR", "accent": "#9CA3AF"}
+        }
+        
+        card_design = role_card_colors[st.session_state.user_role]
+        
+        badge_html = f"""
+        <div style="
+            background: {card_design['gradient']};
+            border: 2px solid {card_design['accent']}95;
+            border-radius: 18px;
+            padding: 24px;
+            color: #FFFFFF;
+            font-family: 'JetBrains Mono', 'Sora', sans-serif;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            margin-top: 15px;
+            max-width: 440px;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        ">
+            <div style="position: absolute; top: -50px; right: -50px; width: 140px; height: 140px; background: {card_design['accent']}22; filter: blur(40px); border-radius: 50%;"></div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; z-index: 10;">
+                <div>
+                    <div style="font-size: 13px; font-weight: 800; letter-spacing: 0.5px; opacity: 0.95;">IPL OPERATIONS CONTROL</div>
+                    <div style="font-size: 8px; font-weight: 600; color: {card_design['accent']}; letter-spacing: 1px; margin-top: 2px;">DIGITAL IDENT DECK</div>
+                </div>
+                <div style="
+                    background: rgba(255, 255, 255, 0.15);
+                    border: 1px solid rgba(255,255,255,0.25);
+                    padding: 4px 10px;
+                    border-radius: 6px;
+                    font-size: 8px;
+                    font-weight: 800;
+                    letter-spacing: 1px;
+                ">{card_design['tag']}</div>
+            </div>
+            
+            <div style="
+                background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+                width: 32px;
+                height: 24px;
+                border-radius: 4px;
+                padding: 4px;
+                box-shadow: inset 0 0 4px rgba(0,0,0,0.2);
+                margin-top: 20px;
+                display: flex;
+                gap: 2px;
+                z-index: 10;
+            ">
+                <div style="border: 1px solid rgba(255,255,255,0.2); width: 100%; height: 100%;"></div>
+                <div style="border: 1px solid rgba(255,255,255,0.2); width: 100%; height: 100%;"></div>
+            </div>
+            
+            <div style="margin-top: auto; z-index: 10;">
+                <div style="font-size: 10px; color: rgba(255, 255, 255, 0.6); font-weight: 600;">OFFICIAL SYSTEM USER</div>
+                <div style="font-size: 18px; font-weight: 800; font-family: 'Sora', sans-serif; letter-spacing: -0.2px; margin-top: 2px;">{st.session_state.user_name}</div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 14px; border-top: 1px solid rgba(255,255,255,0.14); padding-top: 12px;">
+                    <div>
+                        <div style="font-size: 7px; color: rgba(255,255,255,0.5); letter-spacing: 0.5px;">SYSTEM SERIAL UID</div>
+                        <div style="font-size: 11px; font-weight: 700; color: {card_design['accent']}; letter-spacing: 0.5px; margin-top: 1px;">{st.session_state.serial_id}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 7px; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; text-align: right;">STATUS ENCRYPTION</div>
+                        <div style="font-size: 10px; font-weight: 700; text-align: right; letter-spacing: 0.5px; margin-top: 1px; color: #10B981;">● COMPLIANT</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """
+        st.markdown(badge_html, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown(f'<p style="font-size:16px; font-weight:800; color:{t["accent"]}; margin-bottom:12px;">🎟️ SPECTATOR SEASON COPILOT SUBSCRIPTION</p>', unsafe_allow_html=True)
+        
+        has_priority_bypass = st.session_state.user_role in ["stadium_ops", "police_security", "medical_team"]
+        
+        if has_priority_bypass:
+            st.markdown(f"""
+            <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid #10B98150; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 20px;">
+                <h4 style="color: #10B981; margin-top: 0; font-family: 'Sora', sans-serif; font-size:16px;">🔑 Agency Whitelist Active</h4>
+                <p style="font-size: 13px; color: {t['text2']}; line-height: 1.5; margin-bottom: 0;">
+                    Your active role as an official commander or responder grants you <strong>full whitelisting bypass</strong> to access all pages.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+        elif st.session_state.is_subscribed:
+            st.markdown(f"""
+            <div style="background: rgba(129, 140, 248, 0.08); border: 1px solid {t['accent']}50; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 20px;">
+                <h4 style="color: {t['accent']}; margin-top: 0; font-family: 'Sora', sans-serif; font-size:16px;">🎉 Season Pass Active</h4>
+                <p style="font-size: 13px; color: {t['text2']}; line-height: 1.5; margin-bottom: 15px;">
+                    Your Season Spectator Pass is fully activated. You have premium command privileges!
+                </p>
+                <div style="display: flex; justify-content: center; gap: 10px;">
+                    <span style="background: {t['accent_lt']}; color: {t['accent']}; border: 1px solid {t['accent']}40; padding: 4px 10.5px; border-radius: 6px; font-size: 11px; font-weight: 700;">₹299 INR Paid</span>
+                    <span style="background: rgba(16,185,129,0.1); color: #10B981; border: 1px solid #10B98140; padding: 4px 10.5px; border-radius: 6px; font-size: 11px; font-weight: 700;">Valid 2026 Season</span>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            if st.button("Disable Season Pass (Testing Lock States)", key="test_disable_sub_btn"):
+                st.session_state.is_subscribed = False
+                st.rerun()
+        else:
+            st.markdown(f"""
+            <div style="background: {t['card']}; border: 1px dashed {t['border']}; border-radius: 12px; padding: 22px; margin-bottom: 20px;">
+                <h4 style="margin-top:0; font-family:'Sora',sans-serif; color:{t['text']}; font-size:15px;">🔓 Unlock Senior Analytical Modules</h4>
+                <p style="font-size:12.5px; color:{t['text2']}; line-height:1.6; margin-bottom:12px;">
+                    General Spectators are gated from critical features. Unlock standard access with a <strong>₹299 INR Season Pass</strong>:
+                </p>
+                <ul style="font-size:12px; color:{t['text2']}; padding-left:18px; line-height:1.8; margin-bottom:18px;">
+                    <li><strong>Command Assistance (Ask AI Interface)</strong></li>
+                    <li><strong>Continuous Generative Risk Forecasting</strong></li>
+                    <li><strong>Full Interoperability Hazard Indices</strong></li>
+                </ul>
+            </div>
+            """, unsafe_allow_html=True)
+
+            if st.session_state.payment_processing:
+                st.markdown(f'<p style="font-size:12px; font-weight: 600; text-align:center; color: {t["accent"]};">⏳ Authorizing with banking server and creating pass index...</p>', unsafe_allow_html=True)
+                import time
+                time.sleep(1.2)
+                st.session_state.is_subscribed = True
+                st.session_state.payment_processing = False
+                st.toast("✅ Season Pass Activated! Access granted.")
+                st.rerun()
+            else:
+                if st.button("💳 Purchase ₹299 INR Season Ticket Pass", key="buy_pass_btn", type="primary", use_container_width=True):
+                    st.session_state.payment_processing = True
+                    st.rerun()
+
+    st.stop()
+
+
+# ═══════════════════════════════════════════════════════════
 # PAGE: ABOUT APP
 # ═══════════════════════════════════════════════════════════
 if page == "About App":
@@ -2319,6 +2537,22 @@ elif page == "Risk Matrix":
     page_header("🚨", "AI Risk Decision Matrix & Anomaly Detection Center",
                 "Advanced prioritized decision-support tool helping operations commanders isolate and secure critical zone threat coordinates.")
 
+    # Dynamic Subscription Gating Checks matching dynamic React profile
+    if st.session_state.user_role == "general_user" and not st.session_state.is_subscribed:
+        st.markdown(f"""
+        <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid {t['crit_col']}50; border-radius: 12px; padding: 25px; text-align: center; margin: 30px 0;">
+            <div style="font-size: 40px; margin-bottom: 15px;">🔒 Premium Analytical View Locked</div>
+            <h3 style="color: {t['text']}; font-family: 'Sora', sans-serif; margin-bottom: 10px;">Subscription Season Ticket Required</h3>
+            <p style="font-size: 13.5px; color: {t['text2']}; max-width: 600px; margin: 0 auto 20px auto; line-height: 1.6;">
+                General spectators do not have authorization to view the active cross-agency Risk Matrix or interactive AI Assist module. Upgrade your status to command staff or purchase a Season Spectator Pass.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("👤 Visit User Access Portal to Upgrade Status", key="risk_gate_portal_btn", type="primary", use_container_width=True):
+            st.session_state.active_page = "User Portal"
+            st.rerun()
+        st.stop()
+
     k1, k2, k3, k4 = st.columns(4)
     with k1: kpi_card("Overall Operations Risk", str(overall_risk_score),  "crit", "Combined live threat score")
     with k2: kpi_card("Critical Alert Records",  str(critical_zone_count), "crit", "Immediate control deployment")
@@ -2395,6 +2629,22 @@ TOP HAZARD PRIORITY DATABASE RECORDS:
 elif page == "Ask AI":
     page_header("💬", "Conversational AI Command Control Assistant",
                 "Directly query the live stadium database, ask safety questions, and generate instant crowd control task plans.")
+
+    # Dynamic Subscription Gating Checks matching dynamic React profile
+    if st.session_state.user_role == "general_user" and not st.session_state.is_subscribed:
+        st.markdown(f"""
+        <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid {t['crit_col']}50; border-radius: 12px; padding: 25px; text-align: center; margin: 30px 0;">
+            <div style="font-size: 40px; margin-bottom: 15px;">🔒 Premium AI Command Core Locked</div>
+            <h3 style="color: {t['text']}; font-family: 'Sora', sans-serif; margin-bottom: 10px;">Subscription Season Ticket Required</h3>
+            <p style="font-size: 13.5px; color: {t['text2']}; max-width: 600px; margin: 0 auto 20px auto; line-height: 1.6;">
+                General spectators do not have authorization to view the active cross-agency Risk Matrix or interactive AI Assist module. Upgrade your status to command staff or purchase a Season Spectator Pass.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("👤 Visit User Access Portal to Upgrade Status", key="ai_gate_portal_btn", type="primary", use_container_width=True):
+            st.session_state.active_page = "User Portal"
+            st.rerun()
+        st.stop()
 
     # State controller initialization
     if "chat_history" not in st.session_state:
