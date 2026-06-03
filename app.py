@@ -1738,83 +1738,46 @@ if not st.session_state.is_logged_in:
             <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
                 <h4 style="font-family: 'Sora', sans-serif; color: {t['text']}; font-size: 15px; margin-top: 0; margin-bottom: 8px;">🔑 Credentials Recovery Center</h4>
                 <p style="font-size: 12.5px; color: {t['text2']}; margin: 0; line-height: 1.5;">
-                    Registered users and creators can request a secure One-Time Passcode (OTP) SMS text message to regain account access instantly.
+                    Registered users and creators can directly reset their credentials below to regain account access instantly.
                 </p>
             </div>
             """, unsafe_allow_html=True)
             
-            recover_name = st.text_input("Enter Username / Name", key="recover_username_field").strip()
+            recover_name = st.text_input("Enter Registered Username / Name", key="recover_username_field").strip()
+            new_password = st.text_input("Establish New Access Password", type="password", key="recover_new_pass_field")
             
-            if st.button("📨 Request Recovery OTP SMS", key="recover_otp_btn", type="primary", use_container_width=True):
+            is_long = len(new_password) >= 6
+            has_digit = any(char.isdigit() for char in new_password)
+            has_special = any(char in "!@#$%^&*()_+=-[]{}|;:',.<>?/~`" for char in new_password)
+            is_strong = is_long and has_digit and has_special
+            
+            if new_password:
+                if is_strong:
+                    st.markdown("<p style='font-size:12.5px; color:#10B981; font-weight:700; margin-top:4px;'>🟢 STRONG PASSWORD (Fully Compliant)</p>", unsafe_allow_html=True)
+                else:
+                    st.markdown("<p style='font-size:12.5px; color:#EF4444; font-weight:700; margin-top:4px;'>🔴 WEAK PASSWORD (Must be at least 6 characters, contain 1 number & 1 special symbol)</p>", unsafe_allow_html=True)
+            
+            st.write("")
+            
+            if st.button("🔒 Confirm Credentials Revision", key="recover_password_confirm_btn", type="primary", use_container_width=True):
                 if not recover_name:
                     st.error("⚠️ Please specify your registered username / name.")
+                elif not new_password:
+                    st.error("⚠️ New password cannot be blank.")
+                elif not is_strong:
+                    st.error("❌ PASSWORD TOO WEAK! Password must be at least 6 characters, contain 1 digit/number, and 1 special character.")
                 else:
                     lookup_lower = recover_name.lower()
                     if lookup_lower in st.session_state.registered_users:
-                        record = st.session_state.registered_users[lookup_lower]
-                        import random
-                        otp_val = str(random.randint(100000, 999999))
-                        st.session_state.forgot_otp_dict = {
-                            "user": lookup_lower,
-                            "otp": otp_val,
-                            "phone": record["phone"]
-                        }
-                        st.toast("✅ Secure reset OTP generated successfully!")
+                        # Save password update
+                        st.session_state.registered_users[lookup_lower]["password"] = new_password
+                        st.success("🎉 SECURITY RESET COMPLETE! New credentials successfully registered. You can now use your new password under the login tab.")
+                        st.toast("✅ Credentials updated successfully!")
+                        import time
+                        time.sleep(1.5)
+                        st.rerun()
                     else:
                         st.error("❌ Username not found in register. Check spelling or create a new profile.")
-            
-            if "forgot_otp_dict" in st.session_state and st.session_state.forgot_otp_dict:
-                otp_data = st.session_state.forgot_otp_dict
-                user_key = otp_data["user"]
-                
-                if recover_name.lower() == user_key:
-                    st.markdown(f"""
-                    <div style="background: rgba(16, 185, 129, 0.1); border: 1px dashed #10B981; border-radius: 10px; padding: 14px; margin-top: 15px; margin-bottom: 20px;">
-                        <span style="font-size: 11.5px; font-weight: 800; color: #10B981; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 6px;">📱 SMS Gateway Dispatched</span>
-                        <p style="font-size: 12.5px; color: {t['text2']}; margin: 0 0 10px 0; line-height: 1.4;">
-                            Verification OTP code successfully routed to phone number <strong style="color:{t['text']}">{otp_data['phone']}</strong>:
-                        </p>
-                        <div style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 800; color: #10B981; background: rgba(0,0,0,0.25); padding: 8px 12px; border-radius: 6px; display: inline-block;">
-                            OTP CODE: {otp_data['otp']}
-                        </div>
-                    </div>
-                    """, unsafe_allow_html=True)
-                    
-                    entered_otp = st.text_input("Enter 6-Digit OTP", key="recover_otp_input_field").strip()
-                    new_password = st.text_input("Establish New Access Password", type="password", key="recover_new_pass_field")
-                    
-                    is_long = len(new_password) >= 6
-                    has_digit = any(char.isdigit() for char in new_password)
-                    has_special = any(char in "!@#$%^&*()_+=-[]{}|;:',.<>?/~`" for char in new_password)
-                    is_strong = is_long and has_digit and has_special
-                    
-                    if new_password:
-                        if is_strong:
-                            st.markdown("<p style='font-size:12.5px; color:#10B981; font-weight:700; margin-top:4px;'>🟢 STRONG PASSWORD (Fully Compliant)</p>", unsafe_allow_html=True)
-                        else:
-                            st.markdown("<p style='font-size:12.5px; color:#EF4444; font-weight:700; margin-top:4px;'>🔴 WEAK PASSWORD (Must be at least 6 characters, contain 1 number & 1 special symbol)</p>", unsafe_allow_html=True)
-                    
-                    st.write("")
-                    
-                    if st.button("🔒 Confirm Passcode Revision", key="recover_password_confirm_btn", type="primary", use_container_width=True):
-                        if not entered_otp:
-                            st.error("⚠️ Please specify the 6-digit OTP code sent in the SMS.")
-                        elif entered_otp != otp_data["otp"]:
-                            st.error("❌ INVALID OTP! Code does not match.")
-                        elif not new_password:
-                            st.error("⚠️ New password cannot be blank.")
-                        elif not is_strong:
-                            st.error("❌ PASSWORD TOO WEAK! Password must be at least 6 characters, contain 1 digit/number, and 1 special character.")
-                        else:
-                            # Save password update
-                            st.session_state.registered_users[user_key]["password"] = new_password
-                            # Clear OTP dictionary
-                            del st.session_state.forgot_otp_dict
-                            st.success("🎉 SECURITY RESET COMPLETE! New credentials successfully registered. You can now use your new password under the login tab.")
-                            st.toast("✅ Credentials updated successfully!")
-                            import time
-                            time.sleep(1.5)
-                            st.rerun()
                     
     st.stop()
 
@@ -2050,6 +2013,7 @@ is_day_1 = st.session_state.get("app_usage_day", "Day 1") == "Day 1"
 has_premium_access = st.session_state.get("is_premium_subscribed", False) or has_unlimited_bypass
 has_pro_access = st.session_state.get("is_pro_subscribed", False) or has_unlimited_bypass
 
+gated_premium_pages = ["Crowd Flow", "Medical & Heat", "Security", "Resource Planning", "Risk Matrix", "Ask AI"]
 is_gated_page = page in gated_premium_pages
 is_analytical_page = page in ["Overview", "Crowd Flow", "Medical & Heat", "Security", "Resource Planning", "Risk Matrix"]
 
