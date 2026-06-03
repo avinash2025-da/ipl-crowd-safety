@@ -427,48 +427,59 @@ if "payment_processing" not in st.session_state:
 if "subscription_payments" not in st.session_state:
     st.session_state.subscription_payments = [
         {
-            "username": "avinash",
-            "name": "Avinash",
+            "username": "che_admin01",
+            "name": "CHE_Admin01",
             "role": "stadium_ops",
             "plan": "₹999 INR / 12 months Season",
             "amount": 999,
             "term": "12 months",
             "date": "2026-05-15 14:32:10",
-            "method": "UPI: avinash@okaxis",
-            "transaction_id": "TXN94817491"
+            "method": "UPI: chepauk@okaxis",
+            "transaction_id": "TXN50182741"
         },
         {
-            "username": "madhukar",
-            "name": "Madhukar",
+            "username": "chin_admin01",
+            "name": "CHIN_Admin01",
             "role": "stadium_ops",
             "plan": "₹599 INR / 6 months Half-Year",
             "amount": 599,
             "term": "6 months",
             "date": "2026-05-20 09:12:45",
             "method": "Card: **** **** **** 4321",
-            "transaction_id": "TXN73812948"
+            "transaction_id": "TXN50182742"
         },
         {
-            "username": "sharon",
-            "name": "Sharon",
+            "username": "eden_admin01",
+            "name": "EDEN_Admin01",
             "role": "stadium_ops",
             "plan": "₹999 INR / 12 months Season",
             "amount": 999,
             "term": "12 months",
             "date": "2026-05-22 18:45:30",
-            "method": "UPI: sharon@okicici",
-            "transaction_id": "TXN82301982"
+            "method": "UPI: eden@okicici",
+            "transaction_id": "TXN50182743"
         },
         {
-            "username": "deepak",
-            "name": "Deepak",
+            "username": "uppal_admin01",
+            "name": "UPPAL_Admin01",
             "role": "stadium_ops",
             "plan": "₹399 INR / 3 months Quarter",
             "amount": 399,
             "term": "3 months",
             "date": "2026-06-01 11:24:15",
-            "method": "UPI: deepak@okhdfc",
-            "transaction_id": "TXN49302847"
+            "method": "UPI: uppal@okhdfc",
+            "transaction_id": "TXN50182744"
+        },
+        {
+            "username": "wank_admin01",
+            "name": "WANK_Admin01",
+            "role": "stadium_ops",
+            "plan": "₹999 INR / 12 months Season",
+            "amount": 999,
+            "term": "12 months",
+            "date": "2026-06-03 10:05:00",
+            "method": "Card: **** **** **** 8899",
+            "transaction_id": "TXN50182745"
         },
     ]
 
@@ -559,6 +570,12 @@ try:
 except Exception as e:
     st.error(f"❌ Data load error: {e}")
     st.stop()
+
+def dataframe_to_csv_bytes(df):
+    try:
+        return df.to_csv(index=False).encode('utf-8')
+    except Exception:
+        return b""
 
 
 # ─────────────────────────────────────────────────────────
@@ -1829,50 +1846,60 @@ with st.sidebar:
 
     st.markdown("<hr style='margin:16px 0; opacity:0.3;'>", unsafe_allow_html=True)
 
-    # Active filters sidebar block: Render unconditionally across all pages
-    st.markdown(
-        '<p style="font-size:10px;font-weight:800;letter-spacing:1px;margin:0 0 10px 0;color:#94A3B8;text-transform:uppercase;">FILTER TELEMETRY</p>',
-        unsafe_allow_html=True)
+    hide_filters = (st.session_state.active_page == "Admin Dashboard")
 
-    # Locked stadium contexts mapping
-    STADIUM_MAPPING = {
-        "che_admin01": "Chepauk",
-        "chin_admin01": "Chinnaswamy",
-        "eden_admin01": "Eden Gardens",
-        "uppal_admin01": "Uppal",
-        "wank_admin01": "Wankhede",
-    }
-    username_lower = st.session_state.get("username_key", "").strip().lower()
-    is_stadium_manager = username_lower in STADIUM_MAPPING
-
-    if is_stadium_manager:
-        designated_stadium = STADIUM_MAPPING[username_lower]
-        st.markdown(f"""
-        <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid #10B981; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
-            <p style="font-size:10px; font-weight:800; color:#10B981; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">📍 LOCKED STADIUM CONTEXT</p>
-            <p style="font-size:13.5px; color:#FFFFFF; margin:0; font-weight:700;">{designated_stadium}</p>
-        </div>
-        """, unsafe_allow_html=True)
-        sel_stadium = [designated_stadium]
+    if hide_filters:
+        # Define fallback non-filtered values so no downstream code breaks
+        sel_stadium = list(ops["stadium_name"].dropna().unique())
+        sel_phase = list(PHASE_ORDER)
+        sel_year = list(ops["season_year"].dropna().astype(int).unique())
+        sel_zone = list(ops["zone_type"].dropna().unique())
+        sel_cat = list(ops["match_category"].dropna().unique())
     else:
-        all_stadiums = sorted(ops["stadium_name"].dropna().unique())
-        sel_stadium_val = st.selectbox("Stadium Venue", ["All Stadiums"] + list(all_stadiums), key="f_stad")
-        sel_stadium = list(all_stadiums) if sel_stadium_val == "All Stadiums" else [sel_stadium_val]
+        # Active filters sidebar block: Render unconditionally across all pages
+        st.markdown(
+            '<p style="font-size:10px;font-weight:800;letter-spacing:1px;margin:0 0 10px 0;color:#94A3B8;text-transform:uppercase;">FILTER TELEMETRY</p>',
+            unsafe_allow_html=True)
 
-    sel_phase_val = st.selectbox("Match Phase", ["All Phases"] + list(PHASE_ORDER), key="f_ph")
-    sel_phase = list(PHASE_ORDER) if sel_phase_val == "All Phases" else [sel_phase_val]
+        # Locked stadium contexts mapping
+        STADIUM_MAPPING = {
+            "che_admin01": "Chepauk",
+            "chin_admin01": "Chinnaswamy",
+            "eden_admin01": "Eden Gardens",
+            "uppal_admin01": "Uppal",
+            "wank_admin01": "Wankhede",
+        }
+        username_lower = st.session_state.get("username_key", "").strip().lower()
+        is_stadium_manager = username_lower in STADIUM_MAPPING
 
-    all_years = sorted(ops["season_year"].dropna().astype(int).unique())
-    sel_year_val = st.selectbox("Season Year", ["All Years"] + [str(y) for y in all_years], key="f_yr")
-    sel_year = list(all_years) if sel_year_val == "All Years" else [int(sel_year_val)]
+        if is_stadium_manager:
+            designated_stadium = STADIUM_MAPPING[username_lower]
+            st.markdown(f"""
+            <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid #10B981; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+                <p style="font-size:10px; font-weight:800; color:#10B981; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">📍 LOCKED STADIUM CONTEXT</p>
+                <p style="font-size:13.5px; color:#FFFFFF; margin:0; font-weight:700;">{designated_stadium}</p>
+            </div>
+            """, unsafe_allow_html=True)
+            sel_stadium = [designated_stadium]
+        else:
+            all_stadiums = sorted(ops["stadium_name"].dropna().unique())
+            sel_stadium_val = st.selectbox("Stadium Venue", ["All Stadiums"] + list(all_stadiums), key="f_stad")
+            sel_stadium = list(all_stadiums) if sel_stadium_val == "All Stadiums" else [sel_stadium_val]
 
-    all_zones = sorted(ops["zone_type"].dropna().unique())
-    sel_zone_val = st.selectbox("Zone Category", ["All Zones"] + list(all_zones), key="f_zt")
-    sel_zone = list(all_zones) if sel_zone_val == "All Zones" else [sel_zone_val]
+        sel_phase_val = st.selectbox("Match Phase", ["All Phases"] + list(PHASE_ORDER), key="f_ph")
+        sel_phase = list(PHASE_ORDER) if sel_phase_val == "All Phases" else [sel_phase_val]
 
-    all_cats = sorted(ops["match_category"].dropna().unique())
-    sel_cat_val = st.selectbox("Match Category", ["All Categories"] + list(all_cats), key="f_mc")
-    sel_cat = list(all_cats) if sel_cat_val == "All Categories" else [sel_cat_val]
+        all_years = sorted(ops["season_year"].dropna().astype(int).unique())
+        sel_year_val = st.selectbox("Season Year", ["All Years"] + [str(y) for y in all_years], key="f_yr")
+        sel_year = list(all_years) if sel_year_val == "All Years" else [int(sel_year_val)]
+
+        all_zones = sorted(ops["zone_type"].dropna().unique())
+        sel_zone_val = st.selectbox("Zone Category", ["All Zones"] + list(all_zones), key="f_zt")
+        sel_zone = list(all_zones) if sel_zone_val == "All Zones" else [sel_zone_val]
+
+        all_cats = sorted(ops["match_category"].dropna().unique())
+        sel_cat_val = st.selectbox("Match Category", ["All Categories"] + list(all_cats), key="f_mc")
+        sel_cat = list(all_cats) if sel_cat_val == "All Categories" else [sel_cat_val]
 
     st.markdown("<hr style='margin:16px 0; opacity:0.3;'>", unsafe_allow_html=True)
     st.markdown(
@@ -1881,15 +1908,16 @@ with st.sidebar:
     ai_temperature = st.slider("Model Temperature", 0.0, 1.0, 0.4, 0.1)
     ai_max_tokens  = st.slider("Max Response Tokens", 100, 2000, 750, 100)
 
-    # Usage Day Simulator
-    st.markdown("<hr style='margin:16px 0; opacity:0.15;'>", unsafe_allow_html=True)
-    st.markdown(
-        f'<p style="font-size:10px;font-weight:800;letter-spacing:1px;margin:0 0 10px 0;color:#94A3B8;text-transform:uppercase;">⏳ USAGE DAY SIMULATION</p>',
-        unsafe_allow_html=True
-    )
-    sim_opts = ["Day 1", "Day 2+"]
-    curr_sim_day = st.radio("Active App Day Context", sim_opts, index=0 if st.session_state.app_usage_day == "Day 1" else 1, horizontal=True, key="sim_day_radio_sidebar")
-    st.session_state.app_usage_day = curr_sim_day
+    if not hide_filters:
+        # Usage Day Simulator
+        st.markdown("<hr style='margin:16px 0; opacity:0.15;'>", unsafe_allow_html=True)
+        st.markdown(
+            f'<p style="font-size:10px;font-weight:800;letter-spacing:1px;margin:0 0 10px 0;color:#94A3B8;text-transform:uppercase;">⏳ USAGE DAY SIMULATION</p>',
+            unsafe_allow_html=True
+        )
+        sim_opts = ["Day 1", "Day 2+"]
+        curr_sim_day = st.radio("Active App Day Context", sim_opts, index=0 if st.session_state.app_usage_day == "Day 1" else 1, horizontal=True, key="sim_day_radio_sidebar")
+        st.session_state.app_usage_day = curr_sim_day
 
     # Modern dynamic theme toggle at bottom of sidebar
     st.markdown("<hr style='margin:16px 0; opacity:0.15;'>", unsafe_allow_html=True)
@@ -2257,7 +2285,8 @@ if page == "User Portal":
         "stadium_ops": "🏟️ Stadium Operations Commander",
         "police_security": "👮 Police & Security Marshal",
         "medical_team": "🏥 Paramedic Response Specialist",
-        "general_user": "🏏 General Spectator / Guest"
+        "general_user": "🏏 General Spectator / Guest",
+        "dummy_all_access": "🕵️ Spectator All Access Spectator Portal"
     }
 
     with col1:
@@ -2269,32 +2298,13 @@ if page == "User Portal":
             st.session_state.user_name = new_name
             st.rerun()
 
-        # Dynamic selector for Roles conforming to React definitions
-        selected_role = st.selectbox(
-            "System Access Role",
-            options=list(role_label_map.keys()),
-            format_func=lambda x: role_label_map[x],
-            index=list(role_label_map.keys()).index(st.session_state.user_role)
-        )
-        
-        if selected_role != st.session_state.user_role:
-            st.session_state.user_role = selected_role
-            # Automatically assign serial UID corresponding to role chosen
-            role_prefixes = {
-                "stadium_ops": "IPL-OPS-9942",
-                "police_security": "IPL-SEC-7719",
-                "medical_team": "IPL-EMT-5120",
-                "general_user": "IPL-SPEC-1083"
-            }
-            st.session_state.serial_id = role_prefixes[selected_role]
-            st.rerun()
-
         # Premium RFID Card styled precisely via Inline Custom CSS — flushed left to clear code parsing rule
         role_card_colors = {
             "stadium_ops": {"gradient": "linear-gradient(135deg, #7C3AED 0%, #1D4ED8 100%)", "tag": "COMMANDER", "accent": "#00FFFF"},
             "police_security": {"gradient": "linear-gradient(135deg, #1E3A8A 0%, #0F172A 100%)", "tag": "MARSHAL", "accent": "#38BDF8"},
             "medical_team": {"gradient": "linear-gradient(135deg, #B91C1C 0%, #450A0A 100%)", "tag": "MED TEAM", "accent": "#F87171"},
-            "general_user": {"gradient": "linear-gradient(135deg, #374151 0%, #111827 100%)", "tag": "SPECTATOR", "accent": "#9CA3AF"}
+            "general_user": {"gradient": "linear-gradient(135deg, #374151 0%, #111827 100%)", "tag": "SPECTATOR", "accent": "#9CA3AF"},
+            "dummy_all_access": {"gradient": "linear-gradient(135deg, #0D9488 0%, #115E59 100%)", "tag": "SPECTATOR DUMMY", "accent": "#2DD4BF"}
         }
         
         card_design = role_card_colors[st.session_state.user_role]
@@ -2349,10 +2359,12 @@ if page == "User Portal":
         has_unlimited_bypass = is_creator or is_dummy_user
         
         # Determine specific subscription active states
-        is_prem_active = st.session_state.get("is_premium_subscribed", False) or has_unlimited_bypass
-        is_pro_active = st.session_state.get("is_pro_subscribed", False) or has_unlimited_bypass
+        is_prem_active = st.session_state.get("is_premium_subscribed", False) or (has_unlimited_bypass and not is_dummy_user)
+        is_pro_active = st.session_state.get("is_pro_subscribed", False) or (has_unlimited_bypass and not is_dummy_user)
         
-        if has_unlimited_bypass:
+        if is_dummy_user:
+            st.info("🕵️ **All Access (System Evaluation Bypass) Active.** You can view available commercial plans below, but simulated purchases are restricted for this dummy account profile.")
+        elif has_unlimited_bypass:
             st.markdown(f"""
             <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid #10B98150; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 20px;">
                 <h4 style="color: #10B981; margin-top: 0; font-family: 'Sora', sans-serif; font-size:16px;">👑 Admin / Creator Whitelist</h4>
@@ -2558,10 +2570,13 @@ if page == "User Portal":
             
             p_btn_label = f"⚡ Activate Premium Plan — {p_plan[0].split(' / ')[0]}" if not is_prem_active else "🟢 Premium Active (Paid)"
             if st.button(p_btn_label, key="portal_buy_prem_btn", type="primary", use_container_width=True, disabled=is_prem_active):
-                st.session_state.billing_type = "premium"
-                st.session_state.billing_plan = p_plan
-                st.session_state.payment_processing = True
-                st.rerun()
+                if is_dummy_user:
+                    st.error("🕵️ **System Evaluation Mode**: Simulated checkout is disabled for this dummy profile. This account already has free backdoor bypass access to all AI insights and telemetry features!")
+                else:
+                    st.session_state.billing_type = "premium"
+                    st.session_state.billing_plan = p_plan
+                    st.session_state.payment_processing = True
+                    st.rerun()
                 
             st.markdown("<hr style='margin:18px 0; opacity:0.1;'>", unsafe_allow_html=True)
             
@@ -2583,10 +2598,13 @@ if page == "User Portal":
             
             o_btn_label = f"⚡ Activate Pro Plan — {o_plan[0].split(' / ')[0]}" if not is_pro_active else "🔮 Pro Active (Paid)"
             if st.button(o_btn_label, key="portal_buy_pro_btn", type="primary", use_container_width=True, disabled=is_pro_active):
-                st.session_state.billing_type = "pro"
-                st.session_state.billing_plan = o_plan
-                st.session_state.payment_processing = True
-                st.rerun()
+                if is_dummy_user:
+                    st.error("🕵️ **System Evaluation Mode**: Simulated checkout is disabled for this dummy profile. This account already has free backdoor bypass access to all AI insights and co-pilot chat features!")
+                else:
+                    st.session_state.billing_type = "pro"
+                    st.session_state.billing_plan = o_plan
+                    st.session_state.payment_processing = True
+                    st.rerun()
                 
             # If subscribed (and not creator/dummy bypass), show a toggle to test disabling
             if not has_unlimited_bypass and (st.session_state.get("is_premium_subscribed") or st.session_state.get("is_pro_subscribed")):
@@ -2783,6 +2801,104 @@ if page == "Admin Dashboard":
 
     st.markdown("<hr style='margin:28px 0; opacity:0.15;'>", unsafe_allow_html=True)
 
+    st.markdown(f'<p style="font-size:16px; font-weight:800; color:{t["accent"]}; margin-bottom:12px;">👥 OFFICIAL ACTIVE STADIUM MANAGER ACCOUNTS (SHOWCASE)</p>', unsafe_allow_html=True)
+    
+    m1, m2, m3, m4, m5 = st.columns(5)
+    managers_showcase = [
+        {"name": "CHE_Admin01", "stadium": "Chepauk Stadium", "role": "Stadium Commander", "plan": "₹999 / 12 Mo.", "color": "#7C3AED", "bg_color": "rgba(124, 58, 237, 0.08)"},
+        {"name": "CHIN_Admin01", "stadium": "Chinnaswamy Stadium", "role": "Zone Marshall", "plan": "₹599 / 6 Mo.", "color": "#1E3A8A", "bg_color": "rgba(30, 58, 138, 0.08)"},
+        {"name": "EDEN_Admin01", "stadium": "Eden Gardens", "role": "Ops Supervisor", "plan": "₹999 / 12 Mo.", "color": "#0D9488", "bg_color": "rgba(13, 148, 136, 0.08)"},
+        {"name": "UPPAL_Admin01", "stadium": "Uppal Stadium", "role": "Emergency Lead", "plan": "₹399 / 3 Mo.", "color": "#B91C1C", "bg_color": "rgba(185, 28, 28, 0.08)"},
+        {"name": "WANK_Admin01", "stadium": "Wankhede Stadium", "role": "Safety Director", "plan": "₹999 / 12 Mo.", "color": "#D97706", "bg_color": "rgba(217, 119, 6, 0.08)"}
+    ]
+    
+    cols_m = [m1, m2, m3, m4, m5]
+    for idx, manager in enumerate(managers_showcase):
+        with cols_m[idx]:
+            st.markdown(f"""
+            <div style="background: {manager['bg_color']}; border: 1px solid {manager['color']}50; border-radius: 12px; padding: 15px; text-align: center; height: 180px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: {t['shadow']};">
+                <div>
+                    <div style="font-size: 24px; margin-bottom: 2px;">👮</div>
+                    <div style="font-size: 14px; font-weight: 800; color: {t['text']}; font-family: 'Sora', sans-serif;">{manager['name']}</div>
+                    <div style="font-size: 10px; color: {t['text2']}; margin-top: 1px; font-weight: 600;">{manager['stadium']}</div>
+                </div>
+                <div style="border-top: 1px dashed {t['border']}22; padding-top: 8px; margin-top: 8px;">
+                    <span style="background: {manager['color']}15; color: {manager['color']}; font-size: 9px; font-weight: 800; padding: 3px 6px; border-radius: 4px; display: inline-block; margin-bottom: 5px;">{manager['role']}</span>
+                    <div style="font-size: 11px; font-weight: 700; color: #10B981;">🎫 Active (Unlocked)</div>
+                    <div style="font-size: 9px; color: {t['text2']};">{manager['plan']}</div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+    st.write("")
+    st.markdown("<hr style='margin:28px 0; opacity:0.15;'>", unsafe_allow_html=True)
+    st.markdown(f'<p style="font-size:16px; font-weight:800; color:{t["accent"]}; margin-bottom:12px;">💬 ADMIN EXECUTIVE FINANCIAL CO-PILOT (COHERE ASSIST)</p>', unsafe_allow_html=True)
+    
+    if "admin_chat_history" not in st.session_state:
+        st.session_state.admin_chat_history = []
+        
+    admin_api_present = bool(get_cohere_key())
+    if not admin_api_present:
+        st.warning("⚠️ **AI Advisor Offline (API key missing).** Admin conversational capability is offline.")
+    else:
+        st.success("✅ **Executive Q&A Advisor Connected.** Query this page's operational and financial data instantly below.")
+        
+    # Render previous admin chats
+    if st.session_state.admin_chat_history:
+        st.markdown('<div style="background: rgba(0,0,0,0.1); border-radius: 12px; padding: 15px; margin-bottom: 15px; max-height: 250px; overflow-y: auto;">', unsafe_allow_html=True)
+        for msg in st.session_state.admin_chat_history:
+            role_label = "🧑‍💻 System Admin" if msg["role"] == "user" else "🤖 Executive AI Co-Pilot"
+            role_col = t["accent"] if msg["role"] == "user" else "#10B981"
+            st.markdown(f"""
+            <div style="margin-bottom: 12px; border-bottom: 1px solid {t['border']}22; padding-bottom: 8px;">
+                <span style="font-size: 11px; font-weight: 800; color: {role_col}; text-transform: uppercase;">{role_label}</span>
+                <p style="margin: 3px 0 0 0; font-size: 13px; color: {t['text']};">{msg['text']}</p>
+            </div>
+            """, unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+        
+    admin_q_input = st.text_input("Ask about dashboard analytics, revenues, or active manager status...", key="admin_co_pilot_input_field")
+    col_ask1, col_ask2 = st.columns([1, 4])
+    with col_ask1:
+        if st.button("🚀 Send Context Query", key="send_admin_co_pilot_btn", type="primary", use_container_width=True):
+            if admin_q_input.strip():
+                # Formulate Context
+                admin_qa_context = f"""
+                Admin Financial Dashboard Analytics Summary:
+                - Total Revenue generated: INR {total_revenue}
+                - Total Active Subscribers: {total_subscribers}
+                - Average ARPU (Revenue Per User): INR {avg_value}
+                - Top Selling plan Tier: {best_plan} Pass
+                
+                Subscribers Breakdown per plan:
+                - 1 Month Pass: {plan_metrics['1 Month']['count']} subscribers, revenue INR {plan_metrics['1 Month']['revenue']}
+                - 3 Months Pass: {plan_metrics['3 Months']['count']} subscribers, revenue INR {plan_metrics['3 Months']['revenue']}
+                - 6 Months Pass: {plan_metrics['6 Months']['count']} subscribers, revenue INR {plan_metrics['6 Months']['revenue']}
+                - 12 Months Pass: {plan_metrics['12 Months']['count']} subscribers, revenue INR {plan_metrics['12 Months']['revenue']}
+                
+                These subscribers are our 5 official stadium manager default users:
+                1. CHE_Admin01 (Chepauk Zone Commander)
+                2. CHIN_Admin01 (Chinnaswamy Zone Commander)
+                3. EDEN_Admin01 (Eden Gardens Zone Commander)
+                4. UPPAL_Admin01 (Uppal Zone Commander)
+                5. WANK_Admin01 (Wankhede Zone Commander)
+                
+                Please answer general financial, subscription, and managerial questions relating to this administrator dashboard. Keep answers clear, succinct and helpful.
+                """
+                with st.spinner("⏳ Analyzing metrics and loading response..."):
+                    co_resp = ask_ai_question(admin_q_input, admin_qa_context, ai_temperature, ai_max_tokens)
+                    
+                st.session_state.admin_chat_history.append({"role": "user", "text": admin_q_input})
+                st.session_state.admin_chat_history.append({"role": "assistant", "text": co_resp})
+                st.rerun()
+    with col_ask2:
+        if st.button("🧹 Reset Query Thread", key="reset_admin_co_pilot_btn", use_container_width=True):
+            st.session_state.admin_chat_history = []
+            st.rerun()
+
+    st.write("")
+    st.markdown("<hr style='margin:28px 0; opacity:0.15;'>", unsafe_allow_html=True)
+
     # Management Terminal Options (Complimentary activation & synthetic transaction simulations)
     adm_col1, adm_col2 = st.columns(2)
     with adm_col1:
@@ -2916,48 +3032,59 @@ if page == "Admin Dashboard":
         if st.button("🗑️ Reset Transaction Ledger to Seed Defaults", key="admin_clear_ledger_btn", type="secondary", use_container_width=True):
             st.session_state.subscription_payments = [
                 {
-                    "username": "avinash",
-                    "name": "Avinash",
+                    "username": "che_admin01",
+                    "name": "CHE_Admin01",
                     "role": "stadium_ops",
                     "plan": "₹999 INR / 12 months Season",
                     "amount": 999,
                     "term": "12 months",
                     "date": "2026-05-15 14:32:10",
-                    "method": "UPI: avinash@okaxis",
-                    "transaction_id": "TXN94817491"
+                    "method": "UPI: chepauk@okaxis",
+                    "transaction_id": "TXN50182741"
                 },
                 {
-                    "username": "madhukar",
-                    "name": "Madhukar",
+                    "username": "chin_admin01",
+                    "name": "CHIN_Admin01",
                     "role": "stadium_ops",
                     "plan": "₹599 INR / 6 months Half-Year",
                     "amount": 599,
                     "term": "6 months",
                     "date": "2026-05-20 09:12:45",
                     "method": "Card: **** **** **** 4321",
-                    "transaction_id": "TXN73812948"
+                    "transaction_id": "TXN50182742"
                 },
                 {
-                    "username": "sharon",
-                    "name": "Sharon",
+                    "username": "eden_admin01",
+                    "name": "EDEN_Admin01",
                     "role": "stadium_ops",
                     "plan": "₹999 INR / 12 months Season",
                     "amount": 999,
                     "term": "12 months",
                     "date": "2026-05-22 18:45:30",
-                    "method": "UPI: sharon@okicici",
-                    "transaction_id": "TXN82301982"
+                    "method": "UPI: eden@okicici",
+                    "transaction_id": "TXN50182743"
                 },
                 {
-                    "username": "deepak",
-                    "name": "Deepak",
+                    "username": "uppal_admin01",
+                    "name": "UPPAL_Admin01",
                     "role": "stadium_ops",
                     "plan": "₹399 INR / 3 months Quarter",
                     "amount": 399,
                     "term": "3 months",
                     "date": "2026-06-01 11:24:15",
-                    "method": "UPI: deepak@okhdfc",
-                    "transaction_id": "TXN49302847"
+                    "method": "UPI: uppal@okhdfc",
+                    "transaction_id": "TXN50182744"
+                },
+                {
+                    "username": "wank_admin01",
+                    "name": "WANK_Admin01",
+                    "role": "stadium_ops",
+                    "plan": "₹999 INR / 12 months Season",
+                    "amount": 999,
+                    "term": "12 months",
+                    "date": "2026-06-03 10:05:00",
+                    "method": "Card: **** **** **** 8899",
+                    "transaction_id": "TXN50182745"
                 }
             ]
             st.success("🗑️ Cleared transactional ledger and restored system defaults.")
