@@ -252,6 +252,58 @@ if "active_page" not in st.session_state:
 if "theme_mode" not in st.session_state:
     st.session_state.theme_mode = "dark"
 
+# Dynamic secure registration check
+if "is_logged_in" not in st.session_state:
+    st.session_state.is_logged_in = False
+
+if "registered_users" not in st.session_state:
+    st.session_state.registered_users = {
+        "avinash": {
+            "name": "Avinash",
+            "password": "030262@avi",
+            "phone": "+91 99999 88888",
+            "age": 25,
+            "gender": "Male",
+            "role": "stadium_ops",
+            "serial_id": "IPL-OPS-9942",
+            "is_subscribed": True,
+            "is_creator": True
+        },
+        "madhukar": {
+            "name": "Madhukar",
+            "password": "Madhukar@13",
+            "phone": "+91 99999 77777",
+            "age": 28,
+            "gender": "Male",
+            "role": "stadium_ops",
+            "serial_id": "IPL-OPS-9943",
+            "is_subscribed": True,
+            "is_creator": True
+        },
+        "sharon": {
+            "name": "Sharon",
+            "password": "sharon@06",
+            "phone": "+91 99999 66666",
+            "age": 24,
+            "gender": "Male",
+            "role": "stadium_ops",
+            "serial_id": "IPL-OPS-9944",
+            "is_subscribed": True,
+            "is_creator": True
+        },
+        "deepak": {
+            "name": "Deepak",
+            "password": "Dee@452003",
+            "phone": "+91 99999 55555",
+            "age": 22,
+            "gender": "Male",
+            "role": "stadium_ops",
+            "serial_id": "IPL-OPS-9945",
+            "is_subscribed": True,
+            "is_creator": True
+        }
+    }
+
 # User registration & subscriptive states matching dynamic React profile
 if "user_role" not in st.session_state:
     st.session_state.user_role = "general_user"
@@ -1358,8 +1410,206 @@ def create_anomaly_table(df):
     return anomalies
 
 
-def dataframe_to_csv_bytes(df):
-    return df.to_csv(index=False).encode("utf-8")
+# ─────────────────────────────────────────────────────────
+# SECURE GATEWAY & MULTI-USER AUTHENTICATION
+# ─────────────────────────────────────────────────────────
+if "is_logged_in" not in st.session_state:
+    st.session_state.is_logged_in = False
+
+if not st.session_state.is_logged_in:
+    inject_css(t, active_idx=0)
+    
+    st.markdown(f"""
+    <div style="text-align: center; margin-top: 25px; margin-bottom: 25px;">
+        <span style="font-size: 55px; line-height: 1;">🏟️</span>
+        <h1 style="font-family: 'Sora', sans-serif; font-size: 34px; font-weight: 800; color: {t['accent']}; margin: 12px 0 6px 0; letter-spacing: -0.5px;">
+            IPL CROWD SAFETY MANAGEMENT CENTER
+        </h1>
+        <p style="color: {t['text2']}; font-size: 14.5px; max-width: 650px; margin: 0 auto; line-height: 1.6;">
+            Universal security operations, multi-agency logistical scheduling, and live stadium risk-mitigation co-pilot.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    auth_col1, auth_col2, auth_col3 = st.columns([1, 4, 1])
+    
+    with auth_col2:
+        tab_login, tab_register = st.tabs(["🔐 SECURE LOG IN (RETURNING USERS)", "📝 DEPLOY NEW SIGN UP PROFILE"])
+        
+        with tab_login:
+            st.markdown(f"""
+            <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                <h4 style="font-family: 'Sora', sans-serif; color: {t['text']}; font-size: 15px; margin-top: 0; margin-bottom: 8px;">🎫 Enter Stadium Credentials</h4>
+                <p style="font-size: 12.5px; color: {t['text2']}; margin: 0 0 15px 0; line-height: 1.5;">
+                    Sign in with your configured name or username and matching password. Official staff cards and subscribed accounts are authenticated status-compliant immediately.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            login_name = st.text_input("Username / Name", key="login_username_field")
+            login_pass = st.text_input("Access Password", type="password", key="login_pass_field")
+            
+            st.write("")
+            
+            # Creator access cheat sheet block
+            st.markdown(f"""
+            <div style="background: {t['accent_lt']}; border: 1px dashed {t['accent']}60; border-radius: 10px; padding: 14px; margin-bottom: 20px;">
+                <span style="font-size: 11.5px; font-weight: 800; color: {t['accent']}; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px;">🌟 Official App Creator Bypass Directory</span>
+                <p style="font-size: 11.5px; color: {t['text2']}; margin: 0 0 10px 0; line-height: 1.4;">
+                    Creators bypass subscription gates. Log in as any of the following creators to test with maximum operations authorization:
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: {t['text2']};">
+                    <div>🧑‍💻 <strong>Avinash</strong><br><span style="color:{t['accent']}">030262@avi</span></div>
+                    <div>🧑‍💻 <strong>Madhukar</strong><br><span style="color:{t['accent']}">Madhukar@13</span></div>
+                    <div>🧑‍💻 <strong>Sharon</strong><br><span style="color:{t['accent']}">sharon@06</span></div>
+                    <div>🧑‍💻 <strong>Deepak</strong><br><span style="color:{t['accent']}">Dee@452003</span></div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            if st.button("🚀 Authorize & Enter Dashboard", key="login_submit_btn", type="primary", use_container_width=True):
+                target_key = login_name.strip().lower()
+                if not login_name or not login_pass:
+                    st.error("⚠️ Username and password are required fields.")
+                elif target_key in st.session_state.registered_users:
+                    record = st.session_state.registered_users[target_key]
+                    if record["password"] == login_pass:
+                        st.session_state.is_logged_in = True
+                        st.session_state.user_name = record["name"]
+                        st.session_state.user_role = record["role"]
+                        st.session_state.serial_id = record["serial_id"]
+                        
+                        # Set subscription state
+                        if record.get("is_creator", False) or record["role"] in ["stadium_ops", "police_security", "medical_team"]:
+                            st.session_state.is_subscribed = True
+                        else:
+                            st.session_state.is_subscribed = record.get("is_subscribed", False)
+                            
+                        st.toast(f"✅ Welcome back, Admin/User {record['name']}! Login successful.")
+                        import time
+                        time.sleep(0.5)
+                        st.rerun()
+                    else:
+                        st.error("❌ Invalid password details. Please check password and retry.")
+                else:
+                    st.error("❌ Account matching this username not found. Please register as a new user first.")
+                    
+        with tab_register:
+            st.markdown(f"""
+            <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                <h4 style="font-family: 'Sora', sans-serif; color: {t['text']}; font-size: 15px; margin-top: 0; margin-bottom: 8px;">📝 File Authorized Stadium Credentials</h4>
+                <p style="font-size: 12.5px; color: {t['text2']}; margin: 0; line-height: 1.5;">
+                    Configure your official device node profile. If you have on-duty department IDs, provide them below to activate premium modules instantly with free bypass status.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Required core specifications
+            reg_name = st.text_input("User Name", placeholder="e.g. Rahul Sharma (User ID/Login Name)", key="reg_name_field")
+            reg_phone = st.text_input("Phone Number", placeholder="e.g. +91 98765 43210", key="reg_phone_field")
+            
+            col_specs1, col_specs2 = st.columns(2)
+            with col_specs1:
+                reg_age = st.number_input("Age (Years)", min_value=12, max_value=95, value=25, key="reg_age_field")
+            with col_specs2:
+                reg_gender = st.selectbox("Gender", ["Male", "Female", "Other", "Prefer not to say"], key="reg_gender_field")
+                
+            reg_password = st.text_input("Establish Pass Code", type="password", key="reg_pass_field")
+            reg_password_confirm = st.text_input("Confirm Pass Code", type="password", key="reg_pass_confirm_field")
+            
+            st.markdown("<hr style='opacity:0.25; margin:16px 0;'>", unsafe_allow_html=True)
+            
+            st.markdown(f"""
+            <p style="font-size:12.5px; font-weight:800; color:{t['accent']}; margin:0 0 6px 0;">🛡️ OFFICIAL EMERGENCY / FORCE WORKPLACE CHECKUP</p>
+            <p style="font-size:12px; color:{t['text2']}; margin:0 0 14px 0; line-height:1.45;">
+                Officials representing on-duty public safety, medical networks, or stadium management command are granted <strong>full analytics access for free</strong>. State your organization details below:
+            </p>
+            """, unsafe_allow_html=True)
+            
+            st_official_selection = st.selectbox(
+                "Are you an active operations responder or administrator?",
+                ["No - I am a General Stadium Spectator / Visitor",
+                 "Yes - Stadium Operations Commander",
+                 "Yes - Police & Security Marshal Unit",
+                 "Yes - Emergency Medical Paramedic Unit"],
+                key="reg_official_mode_select"
+            )
+            
+            reg_department_id = ""
+            if st_official_selection != "No - I am a General Stadium Spectator / Visitor":
+                reg_department_id = st.text_input(
+                    "Official Department ID / Secure Registry ID Code",
+                    placeholder="Enter valid Badge, License, or System Command Code...",
+                    key="reg_official_badge_code"
+                )
+                
+            st.write("")
+            
+            if st.button("📝 Setup Account Card & Enter Suite", key="reg_submit_action", type="primary", use_container_width=True):
+                cleaned_name = reg_name.strip()
+                lookup_lower = cleaned_name.lower()
+                
+                if not cleaned_name:
+                    st.error("⚠️ Username / Name is required to build credentials.")
+                elif len(cleaned_name) < 3:
+                    st.error("⚠️ Name / Username must be at least 3 character labels.")
+                elif lookup_lower in st.session_state.registered_users:
+                    st.error("⚠️ Name already exists in system. Use returning sign-in or select another name.")
+                elif not reg_phone.strip():
+                    st.error("⚠️ Valid phone contact details are required.")
+                elif not reg_password:
+                    st.error("⚠️ Account passcode must be set.")
+                elif reg_password != reg_password_confirm:
+                    st.error("❌ PASSCODE MISMATCH! The entered passcodes do not match.")
+                elif st_official_selection != "No - I am a General Stadium Spectator / Visitor" and not reg_department_id.strip():
+                    st.error("⚠️ Please supply your Department ID Code or register as a general spectator.")
+                else:
+                    # Map roles
+                    if st_official_selection == "Yes - Stadium Operations Commander":
+                        assigned_role = "stadium_ops"
+                        computed_serial = f"IPL-OPS-{reg_department_id.strip().upper()}"
+                        free_bypass = True
+                    elif st_official_selection == "Yes - Police & Security Marshal Unit":
+                        assigned_role = "police_security"
+                        computed_serial = f"IPL-SEC-{reg_department_id.strip().upper()}"
+                        free_bypass = True
+                    elif st_official_selection == "Yes - Emergency Medical Paramedic Unit":
+                        assigned_role = "medical_team"
+                        computed_serial = f"IPL-EMT-{reg_department_id.strip().upper()}"
+                        free_bypass = True
+                    else:
+                        assigned_role = "general_user"
+                        import random
+                        computed_serial = f"IPL-SPEC-{random.randint(1001, 9999)}"
+                        free_bypass = False
+                        
+                    # Save user details
+                    st.session_state.registered_users[lookup_lower] = {
+                        "name": cleaned_name,
+                        "password": reg_password,
+                        "phone": reg_phone.strip(),
+                        "age": int(reg_age),
+                        "gender": reg_gender,
+                        "role": assigned_role,
+                        "serial_id": computed_serial,
+                        "is_subscribed": free_bypass,
+                        "is_creator": False
+                    }
+                    
+                    # Store login states
+                    st.session_state.is_logged_in = True
+                    st.session_state.user_name = cleaned_name
+                    st.session_state.user_role = assigned_role
+                    st.session_state.serial_id = computed_serial
+                    st.session_state.is_subscribed = free_bypass
+                    
+                    st.success("🎉 Registration complete! Node serialized successfully.")
+                    st.toast(f"✅ Welcome to the Centre, {cleaned_name}!")
+                    import time
+                    time.sleep(1.0)
+                    st.rerun()
+                    
+    st.stop()
 
 
 # ─────────────────────────────────────────────────────────
@@ -1437,6 +1687,20 @@ with st.sidebar:
             st.session_state.theme_mode = "light" if st.session_state.theme_mode == "dark" else "dark"
             st.rerun()
 
+    # Secure Logout button at the very bottom
+    st.markdown("<hr style='margin:16px 0; opacity:0.15;'>", unsafe_allow_html=True)
+    if st.button("🚪 Secure Log Out", key="sidebar_logout_btn", type="secondary", use_container_width=True):
+        st.session_state.is_logged_in = False
+        st.session_state.user_name = "Guest Spectator"
+        st.session_state.user_role = "general_user"
+        st.session_state.serial_id = "IPL-SPEC-1083"
+        st.session_state.is_subscribed = False
+        st.session_state.payment_processing = False
+        st.toast("🚪 Logged out securely.")
+        import time
+        time.sleep(0.5)
+        st.rerun()
+
 
 # ─────────────────────────────────────────────────────────
 # RENDER PAGES
@@ -1453,6 +1717,52 @@ for idx, (_, name) in enumerate(PAGES):
         break
 
 inject_css(t, active_idx)
+
+# ─────────────────────────────────────────────────────────
+# SUBSCRIPTION & OPERATIONS BYPASS GATE
+# ─────────────────────────────────────────────────────────
+gated_premium_pages = ["Crowd Flow", "Medical & Heat", "Security", "Resource Planning", "Risk Matrix", "Ask AI"]
+has_priority_bypass = st.session_state.user_role in ["stadium_ops", "police_security", "medical_team"]
+is_gated_page = page in gated_premium_pages
+
+if is_gated_page and not st.session_state.is_subscribed and not has_priority_bypass:
+    # Render premium lock wall
+    page_header("🔒", "Subscription Access Lock Required", 
+                "Higher level operational analytics indices and co-pilot co-ordination tools are reserved for duty officers and subscribed pass holders.")
+    
+    lock_col1, lock_col2, lock_col3 = st.columns([1, 4, 1])
+    with lock_col2:
+        st.markdown(f"""
+        <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 16px; padding: 32px; text-align: center; box-shadow: {t['shadow']}; margin-top: 30px;">
+            <div style="font-size: 64px; margin-bottom: 20px;">🔒</div>
+            <h3 style="font-family: 'Sora', sans-serif; color: {t['text']}; font-size: 22px; font-weight: 800; margin: 0 0 10px 0; letter-spacing: -0.5px;">Premium Operational View Locked</h3>
+            <p style="color: {t['text2']}; font-size: 14px; line-height: 1.6; margin-bottom: 25px; max-width: 500px; margin-left: auto; margin-right: auto;">
+                The <strong>{page}</strong> workspace contains professional utility maps, real-time security alerts, and AI command modules. Spectators can activate full suite rights immediately.
+            </p>
+            <div style="background: {t['accent_lt']}; border: 1px dashed {t['accent']}50; border-radius: 12px; padding: 18px; margin-bottom: 30px; text-align: left;">
+                <span style="font-size: 11px; font-weight: 800; color:{t['accent']}; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px;">🔐 Choose Your Access Solution:</span>
+                <div style="font-size: 13px; color: {t['text2']}; line-height: 1.6;">
+                    🇮🇳 <strong>1. Purchase Season Ticket Pass:</strong> Get complete 2026 Season copilot access for just <strong>₹299 INR</strong>.<br>
+                    🛡️ <strong>2. Official Duty Clearance:</strong> Active Stadium Managers, Police, and Medical responders bypass charges with a duty ID registration.
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.write("")
+        col_act1, col_act2 = st.columns(2)
+        with col_act1:
+            if st.button("👥 Setup Duty Credentials / Register ID", key="lock_go_register", use_container_width=True):
+                st.session_state.active_page = "User Portal"
+                st.rerun()
+        with col_act2:
+            if st.button("💳 Purchase ₹299 INR Season Ticket Pass", key="lock_go_purchase", type="primary", use_container_width=True):
+                st.session_state.active_page = "User Portal"
+                st.session_state.payment_processing = True
+                st.rerun()
+                
+    st.stop()
+
 
 # ═══════════════════════════════════════════════════════════
 # PAGE: HOME PAGE
@@ -1621,6 +1931,13 @@ if page == "User Portal":
 
     col1, col2 = st.columns([1, 1], gap="large")
 
+    role_label_map = {
+        "stadium_ops": "🏟️ Stadium Operations Commander",
+        "police_security": "👮 Police & Security Marshal",
+        "medical_team": "🏥 Paramedic Response Specialist",
+        "general_user": "🏏 General Spectator / Guest"
+    }
+
     with col1:
         st.markdown(f'<p style="font-size:16px; font-weight:800; color:{t["accent"]}; margin-bottom:12px;">🛡️ RFID DIGITAL SMART CARD</p>', unsafe_allow_html=True)
 
@@ -1631,13 +1948,6 @@ if page == "User Portal":
             st.rerun()
 
         # Dynamic selector for Roles conforming to React definitions
-        role_label_map = {
-            "stadium_ops": "🏟️ Stadium Operations Commander",
-            "police_security": "👮 Police & Security Marshal",
-            "medical_team": "🏥 Paramedic Response Specialist",
-            "general_user": "🏏 General Spectator / Guest"
-        }
-        
         selected_role = st.selectbox(
             "System Access Role",
             options=list(role_label_map.keys()),
@@ -1657,7 +1967,7 @@ if page == "User Portal":
             st.session_state.serial_id = role_prefixes[selected_role]
             st.rerun()
 
-        # Premium RFID Card styled precisely via Inline Custom CSS
+        # Premium RFID Card styled precisely via Inline Custom CSS — flushed left to clear code parsing rule
         role_card_colors = {
             "stadium_ops": {"gradient": "linear-gradient(135deg, #7C3AED 0%, #1D4ED8 100%)", "tag": "COMMANDER", "accent": "#00FFFF"},
             "police_security": {"gradient": "linear-gradient(135deg, #1E3A8A 0%, #0F172A 100%)", "tag": "MARSHAL", "accent": "#38BDF8"},
@@ -1667,76 +1977,46 @@ if page == "User Portal":
         
         card_design = role_card_colors[st.session_state.user_role]
         
-        badge_html = f"""
-        <div style="
-            background: {card_design['gradient']};
-            border: 2px solid {card_design['accent']}95;
-            border-radius: 18px;
-            padding: 24px;
-            color: #FFFFFF;
-            font-family: 'JetBrains Mono', 'Sora', sans-serif;
-            position: relative;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-            margin-top: 15px;
-            max-width: 440px;
-            height: 250px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            overflow: hidden;
-        ">
-            <div style="position: absolute; top: -50px; right: -50px; width: 140px; height: 140px; background: {card_design['accent']}22; filter: blur(40px); border-radius: 50%;"></div>
-            
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; z-index: 10;">
-                <div>
-                    <div style="font-size: 13px; font-weight: 800; letter-spacing: 0.5px; opacity: 0.95;">IPL OPERATIONS CONTROL</div>
-                    <div style="font-size: 8px; font-weight: 600; color: {card_design['accent']}; letter-spacing: 1px; margin-top: 2px;">DIGITAL IDENT DECK</div>
-                </div>
-                <div style="
-                    background: rgba(255, 255, 255, 0.15);
-                    border: 1px solid rgba(255,255,255,0.25);
-                    padding: 4px 10px;
-                    border-radius: 6px;
-                    font-size: 8px;
-                    font-weight: 800;
-                    letter-spacing: 1px;
-                ">{card_design['tag']}</div>
-            </div>
-            
-            <div style="
-                background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-                width: 32px;
-                height: 24px;
-                border-radius: 4px;
-                padding: 4px;
-                box-shadow: inset 0 0 4px rgba(0,0,0,0.2);
-                margin-top: 20px;
-                display: flex;
-                gap: 2px;
-                z-index: 10;
-            ">
-                <div style="border: 1px solid rgba(255,255,255,0.2); width: 100%; height: 100%;"></div>
-                <div style="border: 1px solid rgba(255,255,255,0.2); width: 100%; height: 100%;"></div>
-            </div>
-            
-            <div style="margin-top: auto; z-index: 10;">
-                <div style="font-size: 10px; color: rgba(255, 255, 255, 0.6); font-weight: 600;">OFFICIAL SYSTEM USER</div>
-                <div style="font-size: 18px; font-weight: 800; font-family: 'Sora', sans-serif; letter-spacing: -0.2px; margin-top: 2px;">{st.session_state.user_name}</div>
-                
-                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 14px; border-top: 1px solid rgba(255,255,255,0.14); padding-top: 12px;">
-                    <div>
-                        <div style="font-size: 7px; color: rgba(255,255,255,0.5); letter-spacing: 0.5px;">SYSTEM SERIAL UID</div>
-                        <div style="font-size: 11px; font-weight: 700; color: {card_design['accent']}; letter-spacing: 0.5px; margin-top: 1px;">{st.session_state.serial_id}</div>
-                    </div>
-                    <div>
-                        <div style="font-size: 7px; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; text-align: right;">STATUS ENCRYPTION</div>
-                        <div style="font-size: 10px; font-weight: 700; text-align: right; letter-spacing: 0.5px; margin-top: 1px; color: #10B981;">● COMPLIANT</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        """
+        badge_html = f"""<div style="background: {card_design['gradient']}; border: 2px solid {card_design['accent']}95; border-radius: 18px; padding: 24px; color: #FFFFFF; font-family: 'JetBrains Mono', 'Sora', sans-serif; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.4); margin-top: 15px; max-width: 440px; height: 250px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;">
+<div style="position: absolute; top: -50px; right: -50px; width: 140px; height: 140px; background: {card_design['accent']}22; filter: blur(40px); border-radius: 50%;"></div>
+<div style="display: flex; justify-content: space-between; align-items: flex-start; z-index: 10;">
+<div>
+<div style="font-size: 13px; font-weight: 800; letter-spacing: 0.5px; opacity: 0.95;">IPL OPERATIONS CONTROL</div>
+<div style="font-size: 8px; font-weight: 600; color: {card_design['accent']}; letter-spacing: 1px; margin-top: 2px;">DIGITAL IDENT DECK</div>
+</div>
+<div style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255,255,255,0.25); padding: 4px 10px; border-radius: 6px; font-size: 8px; font-weight: 800; letter-spacing: 1px;">{card_design['tag']}</div>
+</div>
+<div style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); width: 32px; height: 24px; border-radius: 4px; padding: 4px; box-shadow: inset 0 0 4px rgba(0,0,0,0.2); margin-top: 20px; display: flex; gap: 2px; z-index: 10;">
+<div style="border: 1px solid rgba(255,255,255,0.2); width: 100%; height: 100%;"></div>
+<div style="border: 1px solid rgba(255,255,255,0.2); width: 100%; height: 100%;"></div>
+</div>
+<div style="margin-top: auto; z-index: 10;">
+<div style="font-size: 10px; color: rgba(255, 255, 255, 0.6); font-weight: 600;">OFFICIAL SYSTEM USER</div>
+<div style="font-size: 18px; font-weight: 800; font-family: 'Sora', sans-serif; letter-spacing: -0.2px; margin-top: 2px;">{st.session_state.user_name}</div>
+<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 14px; border-top: 1px solid rgba(255,255,255,0.14); padding-top: 12px;">
+<div>
+<div style="font-size: 7px; color: rgba(255,255,255,0.5); letter-spacing: 0.5px;">SYSTEM SERIAL UID</div>
+<div style="font-size: 11px; font-weight: 700; color: {card_design['accent']}; letter-spacing: 0.5px; margin-top: 1px;">{st.session_state.serial_id}</div>
+</div>
+<div>
+<div style="font-size: 7px; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; text-align: right;">STATUS ENCRYPTION</div>
+<div style="font-size: 10px; font-weight: 700; text-align: right; letter-spacing: 0.5px; margin-top: 1px; color: #10B981;">● COMPLIANT</div>
+</div>
+</div>
+</div>
+</div>"""
         st.markdown(badge_html, unsafe_allow_html=True)
+        
+        # Current login card details metadata
+        st.write("")
+        st.markdown(f'<p style="font-size:13px; font-weight:800; color:{t["text2"]}; margin-top:10px; margin-bottom:5px;">📋 CURRENT LOGON IDENT DECK</p>', unsafe_allow_html=True)
+        st.markdown(f"""
+        <div style="background: {t['card']}; border: 1px solid {t['border']}; border-radius: 10px; padding: 15px; font-size: 13.5px; color: {t['text2']}; line-height: 1.65;">
+            👤 <strong>Access Cardholder:</strong> <span style="color: {t['text']}; font-weight:600;">{st.session_state.user_name}</span><br>
+            🏷️ <strong>System Serial UID:</strong> <span style="color: {t['accent']}; font-family: 'JetBrains Mono', monospace; font-weight: 700;">{st.session_state.serial_id}</span><br>
+            🏢 <strong>Authorized Role:</strong> <span style="color: {t['accent2']}; font-weight: 600;">{role_label_map[st.session_state.user_role]}</span>
+        </div>
+        """, unsafe_allow_html=True)
 
     with col2:
         st.markdown(f'<p style="font-size:16px; font-weight:800; color:{t["accent"]}; margin-bottom:12px;">🎟️ SPECTATOR SEASON COPILOT SUBSCRIPTION</p>', unsafe_allow_html=True)
@@ -1783,18 +2063,86 @@ if page == "User Portal":
             </div>
             """, unsafe_allow_html=True)
 
-            if st.session_state.payment_processing:
-                st.markdown(f'<p style="font-size:12px; font-weight: 600; text-align:center; color: {t["accent"]};">⏳ Authorizing with banking server and creating pass index...</p>', unsafe_allow_html=True)
-                import time
-                time.sleep(1.2)
-                st.session_state.is_subscribed = True
-                st.session_state.payment_processing = False
-                st.toast("✅ Season Pass Activated! Access granted.")
-                st.rerun()
-            else:
-                if st.button("💳 Purchase ₹299 INR Season Ticket Pass", key="buy_pass_btn", type="primary", use_container_width=True):
+            if not st.session_state.payment_processing:
+                if st.button("💳 Purchase ₹299 INR Season Ticket Pass", key="buy_pass_btn_portal", type="primary", use_container_width=True):
                     st.session_state.payment_processing = True
                     st.rerun()
+            else:
+                st.markdown(f"""
+                <div style="background: {t['sidebar']}; border: 2px solid {t['accent']}80; border-radius: 12px; padding: 18px; margin-bottom: 15px;">
+                    <span style="font-size: 11.5px; font-weight: 700; color: {t['accent']}; text-transform: uppercase; letter-spacing: 0.8px; display: block; margin-bottom: 4px;">💳 Secure PayGuard Gateway</span>
+                    <p style="font-size: 12px; color: {t['text2']}; margin: 0; line-height: 1.4;">
+                        Select checkout method to process premium ₹299 INR activation safely. Note that as a returning spectator, payment confirmation will update your session deck automatically.
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                pay_method = st.radio("Choose Pay Mode", ["UPI Transfer (Instant)", "Credit / Debit / ATM Card"], key="portal_pay_method_radio")
+                
+                if pay_method == "UPI Transfer (Instant)":
+                    upi_id = st.text_input("UPI Address ID", placeholder="e.g. upi_user@okicici", key="portal_upi_address_field")
+                    st.write("")
+                    col_p1, col_p2 = st.columns(2)
+                    with col_p1:
+                        if st.button("❌ Terminate Purchase", key="portal_cancel_u", use_container_width=True):
+                            st.session_state.payment_processing = False
+                            st.rerun()
+                    with col_p2:
+                        if st.button("🔒 Confirm UPI Payment", key="portal_confirm_pay_u", type="primary", use_container_width=True):
+                            if "@" not in upi_id or len(upi_id) < 5:
+                                st.error("⚠️ Invalid UPI address structure (missing '@' handle).")
+                            else:
+                                with st.spinner("⏳ Broadcasting authorization push request to UPI application..."):
+                                    import time
+                                    time.sleep(2.0)
+                                st.session_state.is_subscribed = True
+                                st.session_state.payment_processing = False
+                                # update user's subscription state in registered list
+                                lookup = st.session_state.user_name.strip().lower()
+                                if lookup in st.session_state.registered_users:
+                                    st.session_state.registered_users[lookup]["is_subscribed"] = True
+                                st.success("✅ Payment Authorized! Season Ticket Pass activated.")
+                                st.toast("🎉 Subscription Successful!")
+                                time.sleep(1.0)
+                                st.rerun()
+                else:
+                    card_num = st.text_input("16-Digit Card Credentials", placeholder="xxxx xxxx xxxx xxxx", key="portal_card_credentials_field")
+                    col_card1, col_card2 = st.columns(2)
+                    with col_card1:
+                        card_exp = st.text_input("Expiration MM/YY", placeholder="01/29", key="portal_card_exp_field")
+                    with col_card2:
+                        card_cvv = st.text_input("Secure CVV Code", type="password", placeholder="***", key="portal_card_cvv_field")
+                    
+                    st.write("")
+                    col_p1, col_p2 = st.columns(2)
+                    with col_p1:
+                        if st.button("❌ Terminate Purchase", key="portal_cancel_c", use_container_width=True):
+                            st.session_state.payment_processing = False
+                            st.rerun()
+                    with col_p2:
+                        if st.button("🔒 Authorize Card Securely", key="portal_confirm_pay_c", type="primary", use_container_width=True):
+                            clean_card = card_num.replace(" ", "")
+                            if not clean_card.isdigit() or len(clean_card) != 16:
+                                st.error("⚠️ Invalid Card Number configuration. Must be 16 digits.")
+                            elif "/" not in card_exp or len(card_exp) != 5:
+                                shadow_exp = card_exp
+                                st.error("⚠️ Invalid Expiration. Use standard MM/YY configuration.")
+                            elif not card_cvv.isdigit() or len(card_cvv) != 3:
+                                st.error("⚠️ Secure CVV is invalid. Must be 3 numeric characters.")
+                            else:
+                                with st.spinner("⏳ Submitting secure transaction token to gateway system..."):
+                                    import time
+                                    time.sleep(2.2)
+                                st.session_state.is_subscribed = True
+                                st.session_state.payment_processing = False
+                                # update user's subscription state in registered list
+                                lookup = st.session_state.user_name.strip().lower()
+                                if lookup in st.session_state.registered_users:
+                                    st.session_state.registered_users[lookup]["is_subscribed"] = True
+                                st.success("✅ Card Transaction Authorized! Season Ticket Pass activated.")
+                                st.toast("🎉 Subscription Successful!")
+                                time.sleep(1.0)
+                                st.rerun()
 
     st.stop()
 
