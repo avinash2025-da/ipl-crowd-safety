@@ -334,9 +334,9 @@ default_accounts = {
         "gender": "Male",
         "role": "stadium_ops",
         "serial_id": "STAD-CHE-001",
-        "is_subscribed": False,
-        "is_premium_subscribed": False,
-        "is_pro_subscribed": False
+        "is_subscribed": True,
+        "is_premium_subscribed": True,
+        "is_pro_subscribed": True
     },
     "chin_admin01": {
         "name": "CHIN_Admin01",
@@ -346,8 +346,8 @@ default_accounts = {
         "gender": "Male",
         "role": "stadium_ops",
         "serial_id": "STAD-CHIN-002",
-        "is_subscribed": False,
-        "is_premium_subscribed": False,
+        "is_subscribed": True,
+        "is_premium_subscribed": True,
         "is_pro_subscribed": False
     },
     "eden_admin01": {
@@ -358,9 +358,9 @@ default_accounts = {
         "gender": "Female",
         "role": "stadium_ops",
         "serial_id": "STAD-EDEN-003",
-        "is_subscribed": False,
-        "is_premium_subscribed": False,
-        "is_pro_subscribed": False
+        "is_subscribed": True,
+        "is_premium_subscribed": True,
+        "is_pro_subscribed": True
     },
     "uppal_admin01": {
         "name": "UPPAL_Admin01",
@@ -370,9 +370,9 @@ default_accounts = {
         "gender": "Male",
         "role": "stadium_ops",
         "serial_id": "STAD-UPP-004",
-        "is_subscribed": False,
-        "is_premium_subscribed": False,
-        "is_pro_subscribed": False
+        "is_subscribed": True,
+        "is_premium_subscribed": True,
+        "is_pro_subscribed": True
     },
     "wank_admin01": {
         "name": "WANK_Admin01",
@@ -382,9 +382,9 @@ default_accounts = {
         "gender": "Male",
         "role": "stadium_ops",
         "serial_id": "STAD-WAN-005",
-        "is_subscribed": False,
-        "is_premium_subscribed": False,
-        "is_pro_subscribed": False
+        "is_subscribed": True,
+        "is_premium_subscribed": True,
+        "is_pro_subscribed": True
     },
     "dummy@we01": {
         "name": "DuMMy@we01",
@@ -430,56 +430,78 @@ if "subscription_payments" not in st.session_state:
             "username": "che_admin01",
             "name": "CHE_Admin01",
             "role": "stadium_ops",
-            "plan": "₹999 INR / 12 months Season",
-            "amount": 999,
-            "term": "12 months",
+            "plan": "PREMIUM + PRO: Free Trial Lifetime",
+            "amount": 0,
+            "term": "Lifetime",
             "date": "2026-05-15 14:32:10",
-            "method": "UPI: chepauk@okaxis",
+            "method": "Promo: First Registered Stadium User",
             "transaction_id": "TXN50182741"
         },
         {
             "username": "chin_admin01",
             "name": "CHIN_Admin01",
             "role": "stadium_ops",
-            "plan": "₹599 INR / 6 months Half-Year",
-            "amount": 599,
-            "term": "6 months",
+            "plan": "PREMIUM: ₹399 INR / 3 Months (AI Insights)",
+            "amount": 399,
+            "term": "3 months",
             "date": "2026-05-20 09:12:45",
-            "method": "Card: **** **** **** 4321",
+            "method": "UPI: chinnaswamy@okaxis",
             "transaction_id": "TXN50182742"
         },
         {
             "username": "eden_admin01",
             "name": "EDEN_Admin01",
             "role": "stadium_ops",
-            "plan": "₹999 INR / 12 months Season",
-            "amount": 999,
-            "term": "12 months",
-            "date": "2026-05-22 18:45:30",
-            "method": "UPI: eden@okicici",
+            "plan": "PREMIUM: ₹399 INR / 3 Months (Safety Visuals)",
+            "amount": 399,
+            "term": "3 months",
+            "date": "2026-05-22 10:14:00",
+            "method": "Card: **** **** **** 1039",
             "transaction_id": "TXN50182743"
+        },
+        {
+            "username": "eden_admin01",
+            "name": "EDEN_Admin01",
+            "role": "stadium_ops",
+            "plan": "PRO: ₹549 INR / 3 Months (AI Co-Pilot)",
+            "amount": 549,
+            "term": "3 months",
+            "date": "2026-05-22 10:18:30",
+            "method": "Card: **** **** **** 1039",
+            "transaction_id": "TXN50182744"
         },
         {
             "username": "uppal_admin01",
             "name": "UPPAL_Admin01",
             "role": "stadium_ops",
-            "plan": "₹399 INR / 3 months Quarter",
-            "amount": 399,
-            "term": "3 months",
+            "plan": "TRIAL: 1-Day Trial Pass",
+            "amount": 0,
+            "term": "1 day",
             "date": "2026-06-01 11:24:15",
-            "method": "UPI: uppal@okhdfc",
-            "transaction_id": "TXN50182744"
+            "method": "Bypass: Complimentary Day Trial",
+            "transaction_id": "TXN50182745"
         },
         {
             "username": "wank_admin01",
             "name": "WANK_Admin01",
             "role": "stadium_ops",
-            "plan": "₹999 INR / 12 months Season",
-            "amount": 999,
-            "term": "12 months",
+            "plan": "PREMIUM: ₹399 INR / 3 Months Speed Run",
+            "amount": 399,
+            "term": "3 months",
             "date": "2026-06-03 10:05:00",
             "method": "Card: **** **** **** 8899",
-            "transaction_id": "TXN50182745"
+            "transaction_id": "TXN50182746"
+        },
+        {
+            "username": "wank_admin01",
+            "name": "WANK_Admin01",
+            "role": "stadium_ops",
+            "plan": "PRO: ₹799 INR / 6 Months Upgrade Extension",
+            "amount": 799,
+            "term": "6 months",
+            "date": "2026-06-03 15:45:10",
+            "method": "Card: **** **** **** 8899",
+            "transaction_id": "TXN50182747"
         },
     ]
 
@@ -1908,8 +1930,12 @@ with st.sidebar:
     ai_temperature = st.slider("Model Temperature", 0.0, 1.0, 0.4, 0.1)
     ai_max_tokens  = st.slider("Max Response Tokens", 100, 2000, 750, 100)
 
-    if not hide_filters:
-        # Usage Day Simulator
+    username_key_val = st.session_state.get("username_key", "").strip().lower()
+    is_day_1 = st.session_state.get("app_usage_day", "Day 1") == "Day 1"
+    is_manager_or_admin = username_key_val in ["che_admin01", "chin_admin01", "eden_admin01", "uppal_admin01", "wank_admin01", "avinash", "madhukar", "sharon", "deepak"]
+
+    # Render Day Simulation Controls unconditionally for Admin/Managers to test
+    if not hide_filters or is_manager_or_admin:
         st.markdown("<hr style='margin:16px 0; opacity:0.15;'>", unsafe_allow_html=True)
         st.markdown(
             f'<p style="font-size:10px;font-weight:800;letter-spacing:1px;margin:0 0 10px 0;color:#94A3B8;text-transform:uppercase;">⏳ USAGE DAY SIMULATION</p>',
@@ -1918,6 +1944,54 @@ with st.sidebar:
         sim_opts = ["Day 1", "Day 2+"]
         curr_sim_day = st.radio("Active App Day Context", sim_opts, index=0 if st.session_state.app_usage_day == "Day 1" else 1, horizontal=True, key="sim_day_radio_sidebar")
         st.session_state.app_usage_day = curr_sim_day
+
+    # Embed professional live Javascript ticking timer in sidebar for Day 1 sessions (Trial or Administration mode)
+    if st.session_state.app_usage_day == "Day 1":
+        if username_key_val == "uppal_admin01" or username_key_val in ["avinash", "madhukar", "sharon", "deepak"]:
+            st.markdown(f"""
+            <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid #10B98150; border-radius: 10px; padding: 12px; margin-top: 10px; margin-bottom: 2px;">
+                <p style="font-size:9.5px; font-weight:800; color:#10B981; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">⏳ TRIAL HOUR COUNTDOWN</p>
+                <div id="sidebar-ticking-timer" style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#FFFFFF; margin-top: 2px;">
+                    Calculating...
+                </div>
+                <p style="font-size:8.5px; color:#94A3B8; margin:4px 0 0 0;">Active 1-Day Trial. Auto-expires after Day 1.</p>
+            </div>
+            
+            <script>
+            (function() {
+                var targetTime = localStorage.getItem('ipl_trial_target_time_ms');
+                var nowSec = Date.now();
+                if (!targetTime || (parseInt(targetTime) < nowSec)) {
+                    targetTime = nowSec + (14 * 3600 + 32 * 60 + 48) * 1000;
+                    localStorage.setItem('ipl_trial_target_time_ms', targetTime.toString());
+                } else {
+                    targetTime = parseInt(targetTime);
+                }
+                
+                function updateTicker() {
+                    var currentMs = Date.now();
+                    var diffMs = targetTime - currentMs;
+                    if (diffMs < 0) diffMs = 0;
+                    
+                    var totalSecs = Math.floor(diffMs / 1000);
+                    var h = Math.floor(totalSecs / 3600);
+                    var m = Math.floor((totalSecs % 3600) / 60);
+                    var s = totalSecs % 60;
+                    
+                    var hStr = (h < 10 ? '0' : '') + h;
+                    var mStr = (m < 10 ? '0' : '') + m;
+                    var sStr = (s < 10 ? '0' : '') + s;
+                    
+                    var container = document.getElementById('sidebar-ticking-timer');
+                    if (container) {
+                        container.innerHTML = hStr + "h : " + mStr + "m : " + sStr + "s";
+                    }
+                }
+                setInterval(updateTicker, 1000);
+                updateTicker();
+            })();
+            </script>
+            """, unsafe_allow_html=True)
 
     # Modern dynamic theme toggle at bottom of sidebar
     st.markdown("<hr style='margin:16px 0; opacity:0.15;'>", unsafe_allow_html=True)
@@ -2062,8 +2136,54 @@ has_unlimited_bypass = is_creator_admin or is_dummy_user
 
 # Global subscription and trial checks
 is_day_1 = st.session_state.get("app_usage_day", "Day 1") == "Day 1"
-has_premium_access = st.session_state.get("is_premium_subscribed", False) or has_unlimited_bypass
-has_pro_access = st.session_state.get("is_pro_subscribed", False) or has_unlimited_bypass
+
+username_key = st.session_state.get("username_key", "").strip().lower()
+
+# Align st.session_state variables dynamically for stadium managers to keep all UI unified
+if username_key in ["che_admin01", "chin_admin01", "eden_admin01", "uppal_admin01", "wank_admin01"]:
+    if username_key == "che_admin01":
+        st.session_state.is_premium_subscribed = True
+        st.session_state.is_pro_subscribed = True
+    elif username_key == "chin_admin01":
+        st.session_state.is_premium_subscribed = True
+        st.session_state.is_pro_subscribed = False
+    elif username_key == "eden_admin01":
+        st.session_state.is_premium_subscribed = True
+        st.session_state.is_pro_subscribed = True
+    elif username_key == "uppal_admin01":
+        if is_day_1:
+            st.session_state.is_premium_subscribed = True
+            st.session_state.is_pro_subscribed = True
+        else:
+            st.session_state.is_premium_subscribed = False
+            st.session_state.is_pro_subscribed = False
+    elif username_key == "wank_admin01":
+        st.session_state.is_premium_subscribed = True
+        st.session_state.is_pro_subscribed = True
+
+# Overwrite access metrics based on custom stadium mappings requested by the user
+if username_key == "che_admin01":
+    has_premium_access = True
+    has_pro_access = True
+elif username_key == "chin_admin01":
+    has_premium_access = True
+    has_pro_access = False
+elif username_key == "eden_admin01":
+    has_premium_access = True
+    has_pro_access = True
+elif username_key == "uppal_admin01":
+    if is_day_1:
+        has_premium_access = True
+        has_pro_access = True
+    else:
+        has_premium_access = False
+        has_pro_access = False
+elif username_key == "wank_admin01":
+    has_premium_access = True
+    has_pro_access = True
+else:
+    has_premium_access = st.session_state.get("is_premium_subscribed", False) or has_unlimited_bypass
+    has_pro_access = st.session_state.get("is_pro_subscribed", False) or has_unlimited_bypass
 
 gated_premium_pages = ["Crowd Flow", "Medical & Heat", "Security", "Resource Planning", "Risk Matrix", "Ask AI"]
 is_gated_page = page in gated_premium_pages
@@ -2095,11 +2215,17 @@ if is_analytical_page and not is_day_1 and not has_premium_access:
     """, unsafe_allow_html=True)
     
     st.markdown(f"""
-    <div style="background: rgba(30, 41, 59, 0.95); border: 2px solid #38BDF8; border-radius: 12px; padding: 32px; text-align: center; margin-bottom: 30px; margin-top: 20px; box-shadow: {t['shadow']};">
+    <div style="background: rgba(30, 41, 59, 0.95); border: 2px solid #EF4444; border-radius: 12px; padding: 32px; text-align: center; margin-bottom: 30px; margin-top: 20px; box-shadow: {t['shadow']};">
         <div style="font-size: 50px; margin-bottom: 12px;">🔒</div>
-        <h3 style="font-family: 'Sora', sans-serif; color: #38BDF8; font-size: 22px; font-weight: 800; margin: 0 0 8px 0; letter-spacing: -0.5px;">Premium Operational View Locked (Day 2+)</h3>
+        <h3 style="font-family: 'Sora', sans-serif; color: #F87171; font-size: 22px; font-weight: 800; margin: 0 0 8px 0; letter-spacing: -0.5px;">Premium Operational View Locked (Day 2+)</h3>
+        
+        <div style="background: rgba(220, 38, 38, 0.12); border: 1px solid #EF444450; border-radius: 8px; padding: 12px; display: inline-block; margin-bottom: 15px; margin-left: auto; margin-right: auto; min-width: 250px;">
+            <p style="font-size: 10px; font-weight: 800; color: #F87171; margin: 0 0 2px 0; text-transform: uppercase; letter-spacing: 0.8px;">⏳ TRIAL TIME RECONCILIATION</p>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; color: #EF4444;">00h : 00m : 00s (EXPIRED)</div>
+        </div>
+
         <p style="color: {t['text2']}; font-size: 14px; line-height: 1.6; margin-bottom: 20px; max-width: 600px; margin-left: auto; margin-right: auto;">
-            Your 1-day free-trial period has expired. The live visualizations, KPIs, risk prioritizations, and anomaly matrices for <strong>{page}</strong> are blurred. Upgrade to the Premium Plan to lift the blur immediately.
+            The 1-day free-trial period for this stadium profile (<strong>{"Uppal Stadium" if username_key == "uppal_admin01" else "Trial Mode"}</strong>) has expired. The live visualizations, KPIs, risk prioritizations, and anomaly matrices for <strong>{page}</strong> are blurred. Upgrade to lock in your Premium subscription.
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -2309,6 +2435,36 @@ if page == "User Portal":
         
         card_design = role_card_colors[st.session_state.user_role]
         
+        # Calculate dynamic text of the active season subscription plan for visual card badge display
+        username_key_val = st.session_state.get("username_key", "").strip().lower()
+        is_day_1_val = st.session_state.get("app_usage_day", "Day 1") == "Day 1"
+        active_plan_descr = "No active subscription"
+        
+        if username_key_val == "che_admin01":
+            active_plan_descr = "🎁 Free Trial (Lifetime)"
+        elif username_key_val == "chin_admin01":
+            active_plan_descr = "✨ Premium (AI Insights 3M)"
+        elif username_key_val == "eden_admin01":
+            active_plan_descr = "🔮 Premium + Pro (3M)"
+        elif username_key_val == "uppal_admin01":
+            if is_day_1_val:
+                active_plan_descr = "⌛ 1-Day Trial (Active)"
+            else:
+                active_plan_descr = "❌ 1-Day Trial (Expired)"
+        elif username_key_val == "wank_admin01":
+            active_plan_descr = "🔮 Prem (3M) + Pro (6M)"
+        else:
+            if st.session_state.get("is_premium_subscribed") and st.session_state.get("is_pro_subscribed"):
+                active_plan_descr = "🔮 Premium + Pro Plan Active"
+            elif st.session_state.get("is_premium_subscribed"):
+                active_plan_descr = "✨ Premium Plan Active"
+            elif st.session_state.get("is_pro_subscribed"):
+                active_plan_descr = "💎 Pro Plan Active"
+            elif has_unlimited_bypass:
+                active_plan_descr = "👑 Unlimited Admin Bypass"
+            else:
+                active_plan_descr = "🏏 Guest Spectator Pass"
+
         badge_html = f"""<div style="background: {card_design['gradient']}; border: 2px solid {card_design['accent']}95; border-radius: 18px; padding: 24px; color: #FFFFFF; font-family: 'JetBrains Mono', 'Sora', sans-serif; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.4); margin-top: 15px; max-width: 440px; height: 250px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;">
 <div style="position: absolute; top: -50px; right: -50px; width: 140px; height: 140px; background: {card_design['accent']}22; filter: blur(40px); border-radius: 50%;"></div>
 <div style="display: flex; justify-content: space-between; align-items: flex-start; z-index: 10;">
@@ -2331,8 +2487,8 @@ if page == "User Portal":
 <div style="font-size: 11px; font-weight: 700; color: {card_design['accent']}; letter-spacing: 0.5px; margin-top: 1px;">{st.session_state.serial_id}</div>
 </div>
 <div>
-<div style="font-size: 7px; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; text-align: right;">STATUS ENCRYPTION</div>
-<div style="font-size: 10px; font-weight: 700; text-align: right; letter-spacing: 0.5px; margin-top: 1px; color: #10B981;">● COMPLIANT</div>
+<div style="font-size: 7px; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; text-align: right;">ACTIVE SEASON SUBSCRIPTION</div>
+<div style="font-size: 10px; font-weight: 700; text-align: right; letter-spacing: 0.5px; margin-top: 1px; color: #38BDF8;">{active_plan_descr}</div>
 </div>
 </div>
 </div>
@@ -2804,28 +2960,77 @@ if page == "Admin Dashboard":
     st.markdown(f'<p style="font-size:16px; font-weight:800; color:{t["accent"]}; margin-bottom:12px;">👥 OFFICIAL ACTIVE STADIUM MANAGER ACCOUNTS (SHOWCASE)</p>', unsafe_allow_html=True)
     
     m1, m2, m3, m4, m5 = st.columns(5)
+    is_day_1_val = st.session_state.get("app_usage_day", "Day 1") == "Day 1"
+    uppal_status = "🟢 Active (1D Trial)" if is_day_1_val else "🔴 Expired (Blurred)"
+    uppal_color = "#10B981" if is_day_1_val else "#F87171"
+
     managers_showcase = [
-        {"name": "CHE_Admin01", "stadium": "Chepauk Stadium", "role": "Stadium Commander", "plan": "₹999 / 12 Mo.", "color": "#7C3AED", "bg_color": "rgba(124, 58, 237, 0.08)"},
-        {"name": "CHIN_Admin01", "stadium": "Chinnaswamy Stadium", "role": "Zone Marshall", "plan": "₹599 / 6 Mo.", "color": "#1E3A8A", "bg_color": "rgba(30, 58, 138, 0.08)"},
-        {"name": "EDEN_Admin01", "stadium": "Eden Gardens", "role": "Ops Supervisor", "plan": "₹999 / 12 Mo.", "color": "#0D9488", "bg_color": "rgba(13, 148, 136, 0.08)"},
-        {"name": "UPPAL_Admin01", "stadium": "Uppal Stadium", "role": "Emergency Lead", "plan": "₹399 / 3 Mo.", "color": "#B91C1C", "bg_color": "rgba(185, 28, 28, 0.08)"},
-        {"name": "WANK_Admin01", "stadium": "Wankhede Stadium", "role": "Safety Director", "plan": "₹999 / 12 Mo.", "color": "#D97706", "bg_color": "rgba(217, 119, 6, 0.08)"}
+        {
+            "name": "CHE_Admin01",
+            "stadium": "Chepauk Stadium",
+            "role": "Stadium Commander",
+            "plan_desc": "Free Trial (Lifetime)",
+            "status": "🟢 Compliant (Lifetime)",
+            "status_color": "#10B981",
+            "color": "#7C3AED",
+            "bg_color": "rgba(124, 58, 237, 0.08)"
+        },
+        {
+            "name": "CHIN_Admin01",
+            "stadium": "Chinnaswamy Stadium",
+            "role": "Zone Marshall",
+            "plan_desc": "Premium (Insights 3M)",
+            "status": "✨ Premium Active",
+            "status_color": "#38BDF8",
+            "color": "#1E3A8A",
+            "bg_color": "rgba(30, 58, 138, 0.08)"
+        },
+        {
+            "name": "EDEN_Admin01",
+            "stadium": "Eden Gardens",
+            "role": "Ops Supervisor",
+            "plan_desc": "Premium + Pro (3Months)",
+            "status": "🔮 Prem+Pro Active",
+            "status_color": "#A78BFA",
+            "color": "#0D9488",
+            "bg_color": "rgba(13, 148, 136, 0.08)"
+        },
+        {
+            "name": "UPPAL_Admin01",
+            "stadium": "Uppal Stadium",
+            "role": "Emergency Lead",
+            "plan_desc": "1-Day Free Trial",
+            "status": uppal_status,
+            "status_color": uppal_color,
+            "color": "#B91C1C",
+            "bg_color": "rgba(185, 28, 28, 0.08)"
+        },
+        {
+            "name": "WANK_Admin01",
+            "stadium": "Wankhede Stadium",
+            "role": "Safety Director",
+            "plan_desc": "Prem 3M + Pro 6M Combo",
+            "status": "🔮 Prem+Pro Active",
+            "status_color": "#10B981",
+            "color": "#D97706",
+            "bg_color": "rgba(217, 119, 6, 0.08)"
+        }
     ]
     
     cols_m = [m1, m2, m3, m4, m5]
     for idx, manager in enumerate(managers_showcase):
         with cols_m[idx]:
             st.markdown(f"""
-            <div style="background: {manager['bg_color']}; border: 1px solid {manager['color']}50; border-radius: 12px; padding: 15px; text-align: center; height: 180px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: {t['shadow']};">
+            <div style="background: {manager['bg_color']}; border: 1px solid {manager['color']}50; border-radius: 12px; padding: 15px; text-align: center; height: 195px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: {t['shadow']};">
                 <div>
                     <div style="font-size: 24px; margin-bottom: 2px;">👮</div>
-                    <div style="font-size: 14px; font-weight: 800; color: {t['text']}; font-family: 'Sora', sans-serif;">{manager['name']}</div>
+                    <div style="font-size: 13px; font-weight: 800; color: {t['text']}; font-family: 'Sora', sans-serif;">{manager['name']}</div>
                     <div style="font-size: 10px; color: {t['text2']}; margin-top: 1px; font-weight: 600;">{manager['stadium']}</div>
                 </div>
                 <div style="border-top: 1px dashed {t['border']}22; padding-top: 8px; margin-top: 8px;">
                     <span style="background: {manager['color']}15; color: {manager['color']}; font-size: 9px; font-weight: 800; padding: 3px 6px; border-radius: 4px; display: inline-block; margin-bottom: 5px;">{manager['role']}</span>
-                    <div style="font-size: 11px; font-weight: 700; color: #10B981;">🎫 Active (Unlocked)</div>
-                    <div style="font-size: 9px; color: {t['text2']};">{manager['plan']}</div>
+                    <div style="font-size: 10.5px; font-weight: 700; color: {manager['status_color']};">{manager['status']}</div>
+                    <div style="font-size: 9.5px; color: {t['text2']}; margin-top: 1px; line-height: 1.25;">{manager['plan_desc']}</div>
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -3035,56 +3240,78 @@ if page == "Admin Dashboard":
                     "username": "che_admin01",
                     "name": "CHE_Admin01",
                     "role": "stadium_ops",
-                    "plan": "₹999 INR / 12 months Season",
-                    "amount": 999,
-                    "term": "12 months",
+                    "plan": "PREMIUM + PRO: Free Trial Lifetime",
+                    "amount": 0,
+                    "term": "Lifetime",
                     "date": "2026-05-15 14:32:10",
-                    "method": "UPI: chepauk@okaxis",
+                    "method": "Promo: First Registered Stadium User",
                     "transaction_id": "TXN50182741"
                 },
                 {
                     "username": "chin_admin01",
                     "name": "CHIN_Admin01",
                     "role": "stadium_ops",
-                    "plan": "₹599 INR / 6 months Half-Year",
-                    "amount": 599,
-                    "term": "6 months",
+                    "plan": "PREMIUM: ₹399 INR / 3 Months (AI Insights)",
+                    "amount": 399,
+                    "term": "3 months",
                     "date": "2026-05-20 09:12:45",
-                    "method": "Card: **** **** **** 4321",
+                    "method": "UPI: chinnaswamy@okaxis",
                     "transaction_id": "TXN50182742"
                 },
                 {
                     "username": "eden_admin01",
                     "name": "EDEN_Admin01",
                     "role": "stadium_ops",
-                    "plan": "₹999 INR / 12 months Season",
-                    "amount": 999,
-                    "term": "12 months",
-                    "date": "2026-05-22 18:45:30",
-                    "method": "UPI: eden@okicici",
+                    "plan": "PREMIUM: ₹399 INR / 3 Months (Safety Visuals)",
+                    "amount": 399,
+                    "term": "3 months",
+                    "date": "2026-05-22 10:14:00",
+                    "method": "Card: **** **** **** 1039",
                     "transaction_id": "TXN50182743"
+                },
+                {
+                    "username": "eden_admin01",
+                    "name": "EDEN_Admin01",
+                    "role": "stadium_ops",
+                    "plan": "PRO: ₹549 INR / 3 Months (AI Co-Pilot)",
+                    "amount": 549,
+                    "term": "3 months",
+                    "date": "2026-05-22 10:18:30",
+                    "method": "Card: **** **** **** 1039",
+                    "transaction_id": "TXN50182744"
                 },
                 {
                     "username": "uppal_admin01",
                     "name": "UPPAL_Admin01",
                     "role": "stadium_ops",
-                    "plan": "₹399 INR / 3 months Quarter",
-                    "amount": 399,
-                    "term": "3 months",
+                    "plan": "TRIAL: 1-Day Trial Pass",
+                    "amount": 0,
+                    "term": "1 day",
                     "date": "2026-06-01 11:24:15",
-                    "method": "UPI: uppal@okhdfc",
-                    "transaction_id": "TXN50182744"
+                    "method": "Bypass: Complimentary Day Trial",
+                    "transaction_id": "TXN50182745"
                 },
                 {
                     "username": "wank_admin01",
                     "name": "WANK_Admin01",
                     "role": "stadium_ops",
-                    "plan": "₹999 INR / 12 months Season",
-                    "amount": 999,
-                    "term": "12 months",
+                    "plan": "PREMIUM: ₹399 INR / 3 Months Speed Run",
+                    "amount": 399,
+                    "term": "3 months",
                     "date": "2026-06-03 10:05:00",
                     "method": "Card: **** **** **** 8899",
-                    "transaction_id": "TXN50182745"
+                    "transaction_id": "TXN50182746"
+                },
+                {
+                    "username": "wank_admin01",
+                    "name": "WANK_Admin01",
+                    "role": "stadium_ops",
+                    "plan": "PRO: ₹799 INR / 6 Months Upgrade Extension",
+                    "amount": 799,
+                    "term": "6 months",
+                    "date": "2026-06-03 15:45:10",
+                    "method": "Card: **** **** **** 8899",
+                    "transaction_id": "TXN50182747"
                 }
             ]
             st.success("🗑️ Cleared transactional ledger and restored system defaults.")
