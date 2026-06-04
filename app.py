@@ -413,6 +413,21 @@ if "is_premium_subscribed" not in st.session_state:
     st.session_state.is_premium_subscribed = False
 if "is_pro_subscribed" not in st.session_state:
     st.session_state.is_pro_subscribed = False
+if "trial_login_attempts" not in st.session_state:
+    st.session_state.trial_login_attempts = {
+        "uppal_admin01": 1  # Predefined trial user starts with 1 login attempt
+    }
+
+def is_trial_user_check(username):
+    if not username:
+        return False
+    uname_lower = username.strip().lower()
+    if uname_lower in ["avinash", "madhukar", "sharon", "deepak", "dummy@we01"]:
+        return False
+    if uname_lower in ["che_admin01", "chin_admin01", "eden_admin01", "wank_admin01"]:
+        return False
+    return True
+
 if "app_usage_day" not in st.session_state:
     st.session_state.app_usage_day = "Day 1"
 if "username_key" not in st.session_state:
@@ -1667,6 +1682,13 @@ if not st.session_state.is_logged_in:
                         st.session_state.serial_id = record["serial_id"]
                         st.session_state.username_key = target_key
                         
+                        # Increment login attempts if in trial mode
+                        if is_trial_user_check(target_key):
+                            if "trial_login_attempts" not in st.session_state:
+                                st.session_state.trial_login_attempts = {}
+                            current_cnt = st.session_state.trial_login_attempts.get(target_key, 0)
+                            st.session_state.trial_login_attempts[target_key] = current_cnt + 1
+                        
                         # Set subscription states on login
                         st.session_state.is_premium_subscribed = record.get("is_premium_subscribed", False)
                         st.session_state.is_pro_subscribed = record.get("is_pro_subscribed", False)
@@ -1785,6 +1807,13 @@ if not st.session_state.is_logged_in:
                     st.session_state.user_role = assigned_role
                     st.session_state.serial_id = computed_serial
                     st.session_state.username_key = lookup_lower
+                    
+                    # Set initial login attempt if trial user
+                    if is_trial_user_check(lookup_lower):
+                        if "trial_login_attempts" not in st.session_state:
+                            st.session_state.trial_login_attempts = {}
+                        st.session_state.trial_login_attempts[lookup_lower] = 1
+                    
                     st.session_state.is_subscribed = False
                     st.session_state.is_premium_subscribed = False
                     st.session_state.is_pro_subscribed = False
@@ -1939,151 +1968,136 @@ with st.sidebar:
     is_admin_user = curr_user_l in ["avinash", "madhukar", "sharon", "deepak"] or username_key_val in ["avinash", "madhukar", "sharon", "deepak"]
     is_stadium_user = username_key_val in ["che_admin01", "chin_admin01", "eden_admin01", "uppal_admin01", "wank_admin01"]
 
-    # Embed professional live Javascript ticking timer in sidebar ONLY for stadium manager users, NOT for admins/creators (No day simulation in sidebar)
-    if is_stadium_user and not is_admin_user:
-        if username_key_val == "che_admin01":
-            st.markdown("""
-            <div style="background: rgba(124, 58, 237, 0.08); border: 1px solid #7C3AED50; border-radius: 10px; padding: 12px; margin-top: 10px; margin-bottom: 2px;">
-                <p style="font-size:9.5px; font-weight:800; color:#A78BFA; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">💎 SUBSCRIPTION TERMINAL</p>
-                <div style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#FFFFFF; margin-top: 2px;">
-                    ∞ Lifetime Access
+    # Display Subscription Status
+    is_signed_in = st.session_state.get("is_logged_in", False)
+    if is_signed_in and not is_admin_user:
+        # Determine trial status
+        is_trial_mode = is_trial_user_check(username_key_val)
+        
+        if is_trial_mode:
+            if "trial_login_attempts" not in st.session_state:
+                st.session_state.trial_login_attempts = {}
+            attempts_count = st.session_state.trial_login_attempts.get(username_key_val, 1)
+            
+            # Color scale based on login attempts count
+            if attempts_count <= 3:
+                attempt_color = "#10B981"
+                attempt_bg = "rgba(16, 185, 129, 0.08)"
+                attempt_border = "#10B98140"
+                status_label = "🟢 EXCELLENT TRIAL ACCESS"
+                subtext = "Secure workspace active"
+            elif attempts_count <= 7:
+                attempt_color = "#FBBF24"
+                attempt_bg = "rgba(251, 191, 36, 0.08)"
+                attempt_border = "#FBBF2440"
+                status_label = "🟡 MODERATE USE"
+                subtext = "Approaching trial threshold"
+            elif attempts_count <= 9:
+                attempt_color = "#F97316"
+                attempt_bg = "rgba(249, 115, 22, 0.08)"
+                attempt_border = "#F9731640"
+                status_label = "🟠 WARNING LEVEL"
+                subtext = "Critical trial depletion"
+            else:
+                attempt_color = "#EF4444"
+                attempt_bg = "rgba(239, 68, 68, 0.12)"
+                attempt_border = "#EF444450"
+                status_label = "🔴 ACCESS DISCONNECTED"
+                subtext = "Attempts quota fully spent"
+                
+            st.markdown(f"""
+            <div style="background: {attempt_bg}; border: 1px solid {attempt_border}; border-radius: 12px; padding: 14px; margin-top: 10px; margin-bottom: 2px; text-align: center;">
+                <p style="font-size:9.5px; font-weight:800; color:{attempt_color}; margin:0 0 4px 0; text-transform:uppercase; letter-spacing:0.8px;">🎫 1-DAY FREE TRIAL ACTIVE</p>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size:24px; font-weight:800; color:#FFFFFF; margin-top: 4px; margin-bottom: 4px;">
+                    {attempts_count} / 10
                 </div>
-                <p style="font-size:8.5px; color:#A78BFA; margin:4px 0 0 0;">First stadium promoter bypass tier active.</p>
+                <p style="font-size:11px; font-weight:700; color:{attempt_color}; margin: 2px 0 6px 0;">{status_label}</p>
+                <p style="font-size:8.5px; color:#94A3B8; margin:0; line-height:1.4;">{subtext}. New logins will increment count.</p>
             </div>
             """, unsafe_allow_html=True)
-        else:
-            # Non-free stadium users: chin_admin01, eden_admin01, uppal_admin01, wank_admin01
-            plan_label = "1-DAY FREE TRIAL"
-            plan_color = "#10B981"
-            plan_bg = "rgba(16, 185, 129, 0.08)"
-            plan_border = "#10B98150"
-            if username_key_val == "chin_admin01":
-                plan_label = "1-MONTH PREMIUM PLAN"
-                plan_color = "#38BDF8"
-                plan_bg = "rgba(56, 189, 248, 0.08)"
-                plan_border = "#38BDF850"
-            elif username_key_val == "eden_admin01":
-                plan_label = "3-MONTH PREMIUM + PRO"
-                plan_color = "#A78BFA"
-                plan_bg = "rgba(167, 139, 250, 0.08)"
-                plan_border = "#A78BFA50"
-            elif username_key_val == "wank_admin01":
-                plan_label = "PREM 3M + PRO 6M COMBO"
-                plan_color = "#FBBF24"
-                plan_bg = "rgba(251, 191, 36, 0.08)"
-                plan_border = "#FBBF2450"
-
-            if is_day_1:
-                st.markdown(f"""
-                <div style="background: {plan_bg}; border: 1px solid {plan_border}; border-radius: 10px; padding: 12px; margin-top: 10px; margin-bottom: 2px;">
-                    <p style="font-size:9.5px; font-weight:800; color:{plan_color}; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">⏳ SUBSCRIPTION COUNTDOWN</p>
-                    <div id="sidebar-ticking-timer" style="font-family: 'JetBrains Mono', monospace; font-size:18px; font-weight:700; color:#FFFFFF; margin-top: 2px;">
-                        Calculating...
+            
+        elif is_stadium_user:
+            # Paid stadium users (che_admin01, chin_admin01, eden_admin01, wank_admin01)
+            if username_key_val == "che_admin01":
+                st.markdown("""
+                <div style="background: rgba(124, 58, 237, 0.08); border: 1px solid #7C3AED50; border-radius: 12px; padding: 12px; margin-top: 10px; margin-bottom: 2px; text-align: center;">
+                    <p style="font-size:9.5px; font-weight:800; color:#A78BFA; margin:0 0 4px 0; text-transform:uppercase; letter-spacing:0.5px;">💎 SUBSCRIPTION TERMINAL</p>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#FFFFFF; margin-top: 4px; margin-bottom: 4px;">
+                        ∞ Lifetime Access
                     </div>
-                    <p style="font-size:8.5px; color:#94A3B8; margin:4px 0 0 0;">Active {plan_label}. Expiration count-down live.</p>
+                    <p style="font-size:8.5px; color:#A78BFA; margin:0; line-height:1.4;">Promoter bypass active.</p>
                 </div>
-                
-                <img src="x" style="display:none;" onerror="(function() {{
-                    var userId = '{username_key_val}';
-                    var key = 'ipl_target_expiry_ms_' + userId;
-                    var targetTime = null;
-                    try {{
-                        targetTime = localStorage.getItem(key);
-                    }} catch(e) {{
-                        try {{
-                            targetTime = window.parent[key];
-                        }} catch(err) {{
-                            try {{
-                                targetTime = window[key];
-                            }} catch(err2) {{}}
-                        }}
-                    }}
-                    var now = Date.now();
-                    if (!targetTime || parseInt(targetTime) < now) {{
-                        // Starts exactly from 23 hours, 59 minutes, 59 seconds (Day 1)
-                        targetTime = now + (23 * 3600 + 59 * 60 + 59) * 1000;
-                        try {{
-                            localStorage.setItem(key, targetTime.toString());
-                        }} catch(e) {{
-                            try {{
-                                window.parent[key] = targetTime.toString();
-                            }} catch(err) {{
-                                try {{
-                                    window[key] = targetTime.toString();
-                                }} catch(err2) {{}}
-                            }}
-                        }}
-                    }} else {{
-                        targetTime = parseInt(targetTime);
-                    }}
-                    
-                    function updateTicker() {{
-                        var curr = Date.now();
-                        var diff = targetTime - curr;
-                        if (diff <= 0) {{
-                            diff = 0;
-                            if (window.tickerInterval) {{
-                                clearInterval(window.tickerInterval);
-                            }}
-                            // Visual blur of stream elements immediately
-                            try {{
-                                var doc = window.parent.document || document;
-                                var elms = doc.querySelectorAll('div[data-testid=stKPI], div[data-testid=stMetricValue], div[data-testid=stArrowDataFrame], div[data-testid=stPlotlyChart]');
-                                elms.forEach(function(el) {{
-                                    el.style.filter = 'blur(8px) grayscale(45%)';
-                                    el.style.pointerEvents = 'none';
-                                    el.style.opacity = '0.82';
-                                }});
-                            }} catch (e) {{}}
-                            // Instant redirection to User Portal via query parameters reload
-                            setTimeout(function() {{
-                                try {{
-                                    window.parent.location.search = '?expired=true';
-                                }} catch (e) {{
-                                    try {{
-                                        window.location.search = '?expired=true';
-                                    }} catch (err) {{}}
-                                }}
-                            }}, 800);
-                        }}
-                        
-                        var totalSecs = Math.floor(diff / 1000);
-                        var h = Math.floor(totalSecs / 3600);
-                        var m = Math.floor((totalSecs % 3600) / 60);
-                        var s = totalSecs % 60;
-                        
-                        var timeStr = '';
-                        if (h > 0) {{
-                            var mStr = (m < 10 ? '0' : '') + m;
-                            var sStr = (s < 10 ? '0' : '') + s;
-                            timeStr = h + ':' + mStr + ':' + sStr;
-                        }} else if (m > 0) {{
-                            var sStr = (s < 10 ? '0' : '') + s;
-                            timeStr = m + ':' + sStr;
-                        }} else {{
-                            timeStr = s.toString();
-                        }}
-                        
-                        var container = document.getElementById('sidebar-ticking-timer');
-                        if (container) {{
-                            container.innerHTML = timeStr;
-                        }}
-                    }}
-                    if (window.tickerInterval) {{
-                        clearInterval(window.tickerInterval);
-                    }}
-                    window.tickerInterval = setInterval(updateTicker, 1000);
-                    updateTicker();
-                }})();" />
+                """, unsafe_allow_html=True)
+            elif username_key_val == "chin_admin01":
+                st.markdown("""
+                <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid #38BDF850; border-radius: 12px; padding: 12px; margin-top: 10px; margin-bottom: 2px; text-align: center;">
+                    <p style="font-size:9.5px; font-weight:800; color:#38BDF8; margin:0 0 4px 0; text-transform:uppercase; letter-spacing:0.5px;">✨ SUBSCRIPTION TERMINAL</p>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#FFFFFF; margin-top: 4px; margin-bottom: 4px;">
+                        1-Month Premium
+                    </div>
+                    <p style="font-size:8.5px; color:#94A3B8; margin:0; line-height:1.4;">AI Insights active.</p>
+                </div>
+                """, unsafe_allow_html=True)
+            elif username_key_val == "eden_admin01":
+                st.markdown("""
+                <div style="background: rgba(167, 139, 250, 0.08); border: 1px solid #A78BFA50; border-radius: 12px; padding: 12px; margin-top: 10px; margin-bottom: 2px; text-align: center;">
+                    <p style="font-size:9.5px; font-weight:800; color:#A78BFA; margin:0 0 4px 0; text-transform:uppercase; letter-spacing:0.5px;">🔮 SUBSCRIPTION TERMINAL</p>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#FFFFFF; margin-top: 4px; margin-bottom: 4px;">
+                        Premium + Pro (3M)
+                    </div>
+                    <p style="font-size:8.5px; color:#94A3B8; margin:0; line-height:1.4;">Supervisor permissions active.</p>
+                </div>
+                """, unsafe_allow_html=True)
+            elif username_key_val == "wank_admin01":
+                st.markdown("""
+                <div style="background: rgba(251, 191, 36, 0.08); border: 1px solid #FBBF2450; border-radius: 12px; padding: 12px; margin-top: 10px; margin-bottom: 2px; text-align: center;">
+                    <p style="font-size:9.5px; font-weight:800; color:#FBBF24; margin:0 0 4px 0; text-transform:uppercase; letter-spacing:0.5px;">🔮 SUBSCRIPTION TERMINAL</p>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#FFFFFF; margin-top: 4px; margin-bottom: 4px;">
+                        Prem + Pro Combo
+                    </div>
+                    <p style="font-size:8.5px; color:#94A3B8; margin:0; line-height:1.4;">All-Access Combo subscription active.</p>
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            # Other general paid users
+            if st.session_state.is_premium_subscribed and st.session_state.is_pro_subscribed:
+                st.markdown("""
+                <div style="background: rgba(251, 191, 36, 0.08); border: 1px solid #FBBF2450; border-radius: 12px; padding: 12px; margin-top: 10px; margin-bottom: 2px; text-align: center;">
+                    <p style="font-size:9.5px; font-weight:800; color:#FBBF24; margin:0 0 4px 0; text-transform:uppercase; letter-spacing:0.5px;">👑 PREMIUM + PRO CO-PILOT</p>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#FFFFFF; margin-top: 4px; margin-bottom: 4px;">
+                        Full Active Suite
+                    </div>
+                    <p style="font-size:8.5px; color:#94A3B8; margin:0; line-height:1.4;">All Operations features unlocked.</p>
+                </div>
+                """, unsafe_allow_html=True)
+            elif st.session_state.is_premium_subscribed:
+                st.markdown("""
+                <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid #38BDF850; border-radius: 12px; padding: 12px; margin-top: 10px; margin-bottom: 2px; text-align: center;">
+                    <p style="font-size:9.5px; font-weight:800; color:#38BDF8; margin:0 0 4px 0; text-transform:uppercase; letter-spacing:0.5px;">✨ PREMIUM PLAN ACTIVE</p>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#FFFFFF; margin-top: 4px; margin-bottom: 4px;">
+                        Analytical Access
+                    </div>
+                    <p style="font-size:8.5px; color:#94A3B8; margin:0; line-height:1.4;">Smart visualizers unlocked.</p>
+                </div>
+                """, unsafe_allow_html=True)
+            elif st.session_state.is_pro_subscribed:
+                st.markdown("""
+                <div style="background: rgba(167, 139, 250, 0.08); border: 1px solid #A78BFA50; border-radius: 12px; padding: 12px; margin-top: 10px; margin-bottom: 2px; text-align: center;">
+                    <p style="font-size:9.5px; font-weight:800; color:#A78BFA; margin:0 0 4px 0; text-transform:uppercase; letter-spacing:0.5px;">🔮 PRO PLAN ACTIVE</p>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#FFFFFF; margin-top: 4px; margin-bottom: 4px;">
+                        Smart Co-Pilot Access
+                    </div>
+                    <p style="font-size:8.5px; color:#94A3B8; margin:0; line-height:1.4;">Ask AI Interactive Companion active.</p>
+                </div>
                 """, unsafe_allow_html=True)
             else:
-                st.markdown(f"""
-                <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid #EF444450; border-radius: 10px; padding: 12px; margin-top: 10px; margin-bottom: 2px;">
-                    <p style="font-size:9.5px; font-weight:800; color:#EF4444; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">⏳ SUBSCRIPTION EXPIRED</p>
-                    <div style="font-family: 'JetBrains Mono', monospace; font-size:18px; font-weight:700; color:#EF4444; margin-top: 2px;">
-                        0 (EXPIRED)
+                st.markdown("""
+                <div style="background: rgba(148, 163, 184, 0.08); border: 1px solid #94A3B850; border-radius: 12px; padding: 12px; margin-top: 10px; margin-bottom: 2px; text-align: center;">
+                    <p style="font-size:9.5px; font-weight:800; color:#94A3B8; margin:0 0 4px 0; text-transform:uppercase; letter-spacing:0.5px;">🏏 GUEST SPECTATOR PASS</p>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#FFFFFF; margin-top: 4px; margin-bottom: 4px;">
+                        Standard Access
                     </div>
-                    <p style="font-size:8.5px; color:#F87171; margin:4px 0 0 0;">Term finished. Dashboard visuals are blurred.</p>
+                    <p style="font-size:8.5px; color:#94A3B8; margin:0; line-height:1.4;">Upgrade at terminal to unlock operations.</p>
                 </div>
                 """, unsafe_allow_html=True)
 
@@ -2313,14 +2327,48 @@ gated_premium_pages = ["Crowd Flow", "Medical & Heat", "Security", "Resource Pla
 is_gated_page = page in gated_premium_pages
 is_analytical_page = page in ["Overview", "Crowd Flow", "Medical & Heat", "Security", "Resource Planning", "Risk Matrix"]
 
-# Ask AI Page Gating (Redirects to Access Plan page if no Pro Access)
-if page == "Ask AI" and not has_pro_access:
-    st.session_state.active_page = "User Portal"
-    st.session_state.pending_plan_msg = "⚠️ The interactive Ask AI operations co-pilot chat is a Pro Plan exclusive feature. You have been directed to the Access Plan terminal."
-    st.rerun()
+# Determine if they are on a 1-day trial
+is_trial_user = is_trial_user_check(username_key)
+is_trial_exhausted = False
 
-# Day 2+ Analytical Pages Gating (Visuals Blurred, requires Premium Access)
-if is_analytical_page and not is_day_1 and not has_premium_access:
+if is_trial_user:
+    if "trial_login_attempts" not in st.session_state:
+        st.session_state.trial_login_attempts = {}
+    attempts_count = st.session_state.trial_login_attempts.get(username_key, 1)
+    if attempts_count >= 10:
+        is_trial_exhausted = True
+
+# Day 2+ Analytical Pages Gating OR Trial Login Attempts Exhausted Gating
+trigger_blur_gating = False
+blur_reason_title = ""
+blur_reason_descr = ""
+blur_badge_html = ""
+
+is_analytical_or_ai = page in ["Overview", "Crowd Flow", "Medical & Heat", "Security", "Resource Planning", "Risk Matrix", "Ask AI"]
+
+if is_analytical_or_ai:
+    if is_trial_exhausted:
+        trigger_blur_gating = True
+        blur_reason_title = "Trial Limit Reached (10 Login Attempts Exhausted)"
+        blur_badge_html = f"""
+        <div style="background: rgba(220, 38, 38, 0.12); border: 1px solid #EF444450; border-radius: 8px; padding: 12px; display: inline-block; margin-bottom: 15px; margin-left: auto; margin-right: auto; min-width: 250px;">
+            <p style="font-size: 10px; font-weight: 800; color: #F87171; margin: 0 0 2px 0; text-transform: uppercase; letter-spacing: 0.8px;">⛔ TRIAL QUOTA LOCKED</p>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; color: #EF4444;">10 / 10 ATTEMPTS SPENT</div>
+        </div>
+        """
+        blur_reason_descr = f"The 1-day free-trial pass for this profile has reached its maximum limit of <strong>10 login attempts</strong> for today. The live visualizations, KPIs, and AI integrations for <strong>{page}</strong> are locked. Upgrade to restore normal operational views."
+    elif is_analytical_page and not is_day_1 and not has_premium_access:
+        trigger_blur_gating = True
+        blur_reason_title = "Premium Operational View Locked (Day 2+)"
+        blur_badge_html = f"""
+        <div style="background: rgba(220, 38, 38, 0.12); border: 1px solid #EF444450; border-radius: 8px; padding: 12px; display: inline-block; margin-bottom: 15px; margin-left: auto; margin-right: auto; min-width: 250px;">
+            <p style="font-size: 10px; font-weight: 800; color: #F87171; margin: 0 0 2px 0; text-transform: uppercase; letter-spacing: 0.8px;">⏳ TRIAL TIME RECONCILIATION</p>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; color: #EF4444;">00h : 00m : 00s (EXPIRED)</div>
+        </div>
+        """
+        blur_reason_descr = f"The 1-day free-trial period for this stadium profile (<strong>{'Uppal Stadium' if username_key == 'uppal_admin01' else 'Trial Mode'}</strong>) has expired. The live visualizations, KPIs, risk prioritizations, and anomaly matrices for <strong>{page}</strong> are blurred. Upgrade to lock in your Premium subscription."
+
+if trigger_blur_gating:
     # Render blurred overlay
     st.markdown(f"""
     <style>
@@ -2341,15 +2389,12 @@ if is_analytical_page and not is_day_1 and not has_premium_access:
     st.markdown(f"""
     <div style="background: rgba(30, 41, 59, 0.95); border: 2px solid #EF4444; border-radius: 12px; padding: 32px; text-align: center; margin-bottom: 30px; margin-top: 20px; box-shadow: {t['shadow']};">
         <div style="font-size: 50px; margin-bottom: 12px;">🔒</div>
-        <h3 style="font-family: 'Sora', sans-serif; color: #F87171; font-size: 22px; font-weight: 800; margin: 0 0 8px 0; letter-spacing: -0.5px;">Premium Operational View Locked (Day 2+)</h3>
+        <h3 style="font-family: 'Sora', sans-serif; color: #F87171; font-size: 22px; font-weight: 800; margin: 0 0 8px 0; letter-spacing: -0.5px;">{blur_reason_title}</h3>
         
-        <div style="background: rgba(220, 38, 38, 0.12); border: 1px solid #EF444450; border-radius: 8px; padding: 12px; display: inline-block; margin-bottom: 15px; margin-left: auto; margin-right: auto; min-width: 250px;">
-            <p style="font-size: 10px; font-weight: 800; color: #F87171; margin: 0 0 2px 0; text-transform: uppercase; letter-spacing: 0.8px;">⏳ TRIAL TIME RECONCILIATION</p>
-            <div style="font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; color: #EF4444;">00h : 00m : 00s (EXPIRED)</div>
-        </div>
+        {blur_badge_html}
 
         <p style="color: {t['text2']}; font-size: 14px; line-height: 1.6; margin-bottom: 20px; max-width: 600px; margin-left: auto; margin-right: auto;">
-            The 1-day free-trial period for this stadium profile (<strong>{"Uppal Stadium" if username_key == "uppal_admin01" else "Trial Mode"}</strong>) has expired. The live visualizations, KPIs, risk prioritizations, and anomaly matrices for <strong>{page}</strong> are blurred. Upgrade to lock in your Premium subscription.
+            {blur_reason_descr}
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -2358,6 +2403,12 @@ if is_analytical_page and not is_day_1 and not has_premium_access:
         st.rerun()
     render_pricing_plans()
     st.stop()
+
+# Ask AI Page Gating (Redirects to Access Plan page if no Pro Access, only checked for non-trial users or non-exhausted)
+if page == "Ask AI" and not has_pro_access:
+    st.session_state.active_page = "User Portal"
+    st.session_state.pending_plan_msg = "⚠️ The interactive Ask AI operations co-pilot chat is a Pro Plan exclusive feature. You have been directed to the Access Plan terminal."
+    st.rerun()
 
 
 # ═══════════════════════════════════════════════════════════
@@ -2574,10 +2625,11 @@ if page == "User Portal":
         elif username_key_val == "eden_admin01":
             active_plan_descr = "🔮 Premium + Pro (3M)"
         elif username_key_val == "uppal_admin01":
-            if is_day_1_val:
-                active_plan_descr = "⌛ 1-Day Trial (Active)"
+            uppal_attempts = st.session_state.get("trial_login_attempts", {}).get("uppal_admin01", 1)
+            if uppal_attempts < 10:
+                active_plan_descr = f"⌛ 1-Day Trial ({10 - uppal_attempts} Logins Left)"
             else:
-                active_plan_descr = "❌ 1-Day Trial (Expired)"
+                active_plan_descr = "❌ 1-Day Trial (Exhausted)"
         elif username_key_val == "wank_admin01":
             active_plan_descr = "🔮 Prem (3M) + Pro (6M)"
         else:
@@ -2589,6 +2641,12 @@ if page == "User Portal":
                 active_plan_descr = "💎 Pro Plan Active"
             elif has_unlimited_bypass:
                 active_plan_descr = "👑 Unlimited Admin Bypass"
+            elif is_trial_user_check(username_key_val):
+                general_attempts = st.session_state.get("trial_login_attempts", {}).get(username_key_val, 1)
+                if general_attempts < 10:
+                    active_plan_descr = f"⌛ 1-Day Trial ({10 - general_attempts} Logins Left)"
+                else:
+                    active_plan_descr = "❌ 1-Day Trial (Exhausted)"
             else:
                 active_plan_descr = "🏏 Guest Spectator Pass"
 
@@ -3088,8 +3146,13 @@ if page == "Admin Dashboard":
     
     m1, m2, m3, m4, m5 = st.columns(5)
     is_day_1_val = st.session_state.get("app_usage_day", "Day 1") == "Day 1"
-    uppal_status = "🟢 Active (1D Trial)" if is_day_1_val else "🔴 Expired (Blurred)"
-    uppal_color = "#10B981" if is_day_1_val else "#F87171"
+    uppal_attempts = st.session_state.get("trial_login_attempts", {}).get("uppal_admin01", 1)
+    if uppal_attempts < 10:
+        uppal_status = f"🟢 Active ({uppal_attempts}/10 Logins)"
+        uppal_color = "#10B981"
+    else:
+        uppal_status = "🔴 Blocked (Locked)"
+        uppal_color = "#F87171"
     
     chin_status = "✨ Active (1M Insights)" if is_day_1_val else "🔴 Expired (Blurred)"
     chin_color = "#38BDF8" if is_day_1_val else "#F87171"
