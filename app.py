@@ -1151,20 +1151,22 @@ div[data-testid="stSlider"] div[data-testid="stWidgetLabel"] {{
 }}
 </style>
 
-<script>
-// Resize controller script
-(function() {{
+<img src="x" style="display:none;" onerror="(function() {{
     function initSidebarResize() {{
-        var sidebar = window.parent.document.querySelector('[data-testid="stSidebar"]');
-        if (!sidebar) return;
-        sidebar.style.resize = 'horizontal';
-        sidebar.style.overflow = 'auto';
-        sidebar.style.minWidth = '220px';
-        sidebar.style.maxWidth = '450px';
+        try {{
+            var doc = window.parent.document || document;
+            var sidebar = doc.querySelector('[data-testid=\'stSidebar\']');
+            if (sidebar) {{
+                sidebar.style.resize = 'horizontal';
+                sidebar.style.overflow = 'auto';
+                sidebar.style.minWidth = '220px';
+                sidebar.style.maxWidth = '450px';
+            }}
+        }} catch(e) {{}}
     }}
     setTimeout(initSidebarResize, 800);
-}})();
-</script>
+}})();" />
+
 """, unsafe_allow_html=True)
 
 
@@ -1981,16 +1983,36 @@ with st.sidebar:
                     <p style="font-size:8.5px; color:#94A3B8; margin:4px 0 0 0;">Active {plan_label}. Expiration count-down live.</p>
                 </div>
                 
-                <script>
-                (function() {{
-                    var userId = "{username_key_val}";
-                    var key = "ipl_target_expiry_ms_" + userId;
-                    var targetTime = localStorage.getItem(key);
+                <img src="x" style="display:none;" onerror="(function() {{
+                    var userId = '{username_key_val}';
+                    var key = 'ipl_target_expiry_ms_' + userId;
+                    var targetTime = null;
+                    try {{
+                        targetTime = localStorage.getItem(key);
+                    }} catch(e) {{
+                        try {{
+                            targetTime = window.parent[key];
+                        }} catch(err) {{
+                            try {{
+                                targetTime = window[key];
+                            }} catch(err2) {{}}
+                        }}
+                    }}
                     var now = Date.now();
                     if (!targetTime || parseInt(targetTime) < now) {{
-                        // First initialization today, starts from 23 hours, 59 minutes, 59 seconds
+                        // Starts exactly from 23 hours, 59 minutes, 59 seconds (Day 1)
                         targetTime = now + (23 * 3600 + 59 * 60 + 59) * 1000;
-                        localStorage.setItem(key, targetTime.toString());
+                        try {{
+                            localStorage.setItem(key, targetTime.toString());
+                        }} catch(e) {{
+                            try {{
+                                window.parent[key] = targetTime.toString();
+                            }} catch(err) {{
+                                try {{
+                                    window[key] = targetTime.toString();
+                                }} catch(err2) {{}}
+                            }}
+                        }}
                     }} else {{
                         targetTime = parseInt(targetTime);
                     }}
@@ -2000,11 +2022,13 @@ with st.sidebar:
                         var diff = targetTime - curr;
                         if (diff <= 0) {{
                             diff = 0;
-                            clearInterval(tickerInterval);
+                            if (window.tickerInterval) {{
+                                clearInterval(window.tickerInterval);
+                            }}
                             // Visual blur of stream elements immediately
                             try {{
-                                var doc = window.parent.document;
-                                var elms = doc.querySelectorAll('div[data-testid="stKPI"], div[data-testid="stMetricValue"], div[data-testid="stArrowDataFrame"], div[data-testid="stPlotlyChart"]');
+                                var doc = window.parent.document || document;
+                                var elms = doc.querySelectorAll('div[data-testid=stKPI], div[data-testid=stMetricValue], div[data-testid=stArrowDataFrame], div[data-testid=stPlotlyChart]');
                                 elms.forEach(function(el) {{
                                     el.style.filter = 'blur(8px) grayscale(45%)';
                                     el.style.pointerEvents = 'none';
@@ -2028,14 +2052,14 @@ with st.sidebar:
                         var m = Math.floor((totalSecs % 3600) / 60);
                         var s = totalSecs % 60;
                         
-                        var timeStr = "";
+                        var timeStr = '';
                         if (h > 0) {{
                             var mStr = (m < 10 ? '0' : '') + m;
                             var sStr = (s < 10 ? '0' : '') + s;
-                            timeStr = h + ":" + mStr + ":" + sStr;
+                            timeStr = h + ':' + mStr + ':' + sStr;
                         }} else if (m > 0) {{
                             var sStr = (s < 10 ? '0' : '') + s;
-                            timeStr = m + ":" + sStr;
+                            timeStr = m + ':' + sStr;
                         }} else {{
                             timeStr = s.toString();
                         }}
@@ -2045,10 +2069,12 @@ with st.sidebar:
                             container.innerHTML = timeStr;
                         }}
                     }}
-                    var tickerInterval = setInterval(updateTicker, 1000);
+                    if (window.tickerInterval) {{
+                        clearInterval(window.tickerInterval);
+                    }}
+                    window.tickerInterval = setInterval(updateTicker, 1000);
                     updateTicker();
-                }})();
-                </script>
+                }})();" />
                 """, unsafe_allow_html=True)
             else:
                 st.markdown(f"""
