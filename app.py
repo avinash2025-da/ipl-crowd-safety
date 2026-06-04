@@ -371,8 +371,8 @@ default_accounts = {
         "role": "stadium_ops",
         "serial_id": "STAD-UPP-004",
         "is_subscribed": True,
-        "is_premium_subscribed": True,
-        "is_pro_subscribed": True
+        "is_premium_subscribed": False,
+        "is_pro_subscribed": False
     },
     "wank_admin01": {
         "name": "WANK_Admin01",
@@ -441,9 +441,9 @@ if "subscription_payments" not in st.session_state:
             "username": "chin_admin01",
             "name": "CHIN_Admin01",
             "role": "stadium_ops",
-            "plan": "PREMIUM: ₹399 INR / 3 Months (AI Insights)",
-            "amount": 399,
-            "term": "3 months",
+            "plan": "PREMIUM: ₹199 INR / 1 Month (AI Insights)",
+            "amount": 199,
+            "term": "1 month",
             "date": "2026-05-20 09:12:45",
             "method": "UPI: chinnaswamy@okaxis",
             "transaction_id": "TXN50182742"
@@ -1932,65 +1932,145 @@ with st.sidebar:
 
     username_key_val = st.session_state.get("username_key", "").strip().lower()
     is_day_1 = st.session_state.get("app_usage_day", "Day 1") == "Day 1"
-    is_manager_or_admin = username_key_val in ["che_admin01", "chin_admin01", "eden_admin01", "uppal_admin01", "wank_admin01", "avinash", "madhukar", "sharon", "deepak"]
+    
+    curr_user_l = st.session_state.get("user_name", "").strip().lower()
+    is_admin_user = curr_user_l in ["avinash", "madhukar", "sharon", "deepak"] or username_key_val in ["avinash", "madhukar", "sharon", "deepak"]
+    is_stadium_user = username_key_val in ["che_admin01", "chin_admin01", "eden_admin01", "uppal_admin01", "wank_admin01"]
 
-    # Render Day Simulation Controls unconditionally for Admin/Managers to test
-    if not hide_filters or is_manager_or_admin:
-        st.markdown("<hr style='margin:16px 0; opacity:0.15;'>", unsafe_allow_html=True)
-        st.markdown(
-            f'<p style="font-size:10px;font-weight:800;letter-spacing:1px;margin:0 0 10px 0;color:#94A3B8;text-transform:uppercase;">⏳ USAGE DAY SIMULATION</p>',
-            unsafe_allow_html=True
-        )
-        sim_opts = ["Day 1", "Day 2+"]
-        curr_sim_day = st.radio("Active App Day Context", sim_opts, index=0 if st.session_state.app_usage_day == "Day 1" else 1, horizontal=True, key="sim_day_radio_sidebar")
-        st.session_state.app_usage_day = curr_sim_day
-
-    # Embed professional live Javascript ticking timer in sidebar for Day 1 sessions (Trial or Administration mode)
-    if st.session_state.app_usage_day == "Day 1":
-        if username_key_val == "uppal_admin01" or username_key_val in ["avinash", "madhukar", "sharon", "deepak"]:
+    # Embed professional live Javascript ticking timer in sidebar ONLY for stadium manager users, NOT for admins/creators (No day simulation in sidebar)
+    if is_stadium_user and not is_admin_user:
+        if username_key_val == "che_admin01":
+            st.markdown("""
+            <div style="background: rgba(124, 58, 237, 0.08); border: 1px solid #7C3AED50; border-radius: 10px; padding: 12px; margin-top: 10px; margin-bottom: 2px;">
+                <p style="font-size:9.5px; font-weight:800; color:#A78BFA; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">💎 SUBSCRIPTION TERMINAL</p>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#FFFFFF; margin-top: 2px;">
+                    ∞ Lifetime Access
+                </div>
+                <p style="font-size:8.5px; color:#A78BFA; margin:4px 0 0 0;">First stadium promoter bypass tier active.</p>
+            </div>
+            """, unsafe_allow_html=True)
+        elif username_key_val == "chin_admin01":
+            if is_day_1:
+                st.markdown("""
+                <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid #38BDF850; border-radius: 10px; padding: 12px; margin-top: 10px; margin-bottom: 2px;">
+                    <p style="font-size:9.5px; font-weight:800; color:#38BDF8; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">⏳ SUBSCRIPTION COUNTDOWN</p>
+                    <div id="sidebar-ticking-timer" style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#FFFFFF; margin-top: 2px;">
+                        Calculating...
+                    </div>
+                    <p style="font-size:8.5px; color:#94A3B8; margin:4px 0 0 0;">Active 1-Month Plan. Access expires after term.</p>
+                </div>
+                
+                <script>
+                (function() {
+                    var targetTime = localStorage.getItem('ipl_chin_target_time_ms');
+                    var nowSec = Date.now();
+                    if (!targetTime || (parseInt(targetTime) < nowSec)) {
+                        targetTime = nowSec + (14 * 3600 + 32 * 60 + 48) * 1000;
+                        localStorage.setItem('ipl_chin_target_time_ms', targetTime.toString());
+                    } else {
+                        targetTime = parseInt(targetTime);
+                    }
+                    
+                    function updateTicker() {
+                        var currentMs = Date.now();
+                        var diffMs = targetTime - currentMs;
+                        if (diffMs < 0) diffMs = 0;
+                        
+                        var totalSecs = Math.floor(diffMs / 1000);
+                        var h = Math.floor(totalSecs / 3600);
+                        var m = Math.floor((totalSecs % 3600) / 60);
+                        var s = totalSecs % 60;
+                        
+                        var hStr = (h < 10 ? '0' : '') + h;
+                        var mStr = (m < 10 ? '0' : '') + m;
+                        var sStr = (s < 10 ? '0' : '') + s;
+                        
+                        var container = document.getElementById('sidebar-ticking-timer');
+                        if (container) {
+                            container.innerHTML = hStr + "h : " + mStr + "m : " + sStr + "s";
+                        }
+                    }
+                    setInterval(updateTicker, 1000);
+                    updateTicker();
+                })();
+                </script>
+                """, unsafe_allow_html=True)
+            else:
+                st.markdown("""
+                <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid #EF444450; border-radius: 10px; padding: 12px; margin-top: 10px; margin-bottom: 2px;">
+                    <p style="font-size:9.5px; font-weight:800; color:#EF4444; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">⏳ SUBSCRIPTION EXPIRED</p>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#EF4444; margin-top: 2px;">
+                        00h : 00m : 00s
+                    </div>
+                    <p style="font-size:8.5px; color:#F87171; margin:4px 0 0 0;">Term ended. Dashboard visuals are blurred.</p>
+                </div>
+                """, unsafe_allow_html=True)
+        elif username_key_val == "uppal_admin01":
+            if is_day_1:
+                st.markdown("""
+                <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid #10B98150; border-radius: 10px; padding: 12px; margin-top: 10px; margin-bottom: 2px;">
+                    <p style="font-size:9.5px; font-weight:800; color:#10B981; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">⏳ TRIAL HOUR COUNTDOWN</p>
+                    <div id="sidebar-ticking-timer" style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#FFFFFF; margin-top: 2px;">
+                        Calculating...
+                    </div>
+                    <p style="font-size:8.5px; color:#94A3B8; margin:4px 0 0 0;">Active 1-Day Trial. Auto-expires after Day 1.</p>
+                </div>
+                
+                <script>
+                (function() {
+                    var targetTime = localStorage.getItem('ipl_trial_target_time_ms');
+                    var nowSec = Date.now();
+                    if (!targetTime || (parseInt(targetTime) < nowSec)) {
+                        targetTime = nowSec + (14 * 3600 + 32 * 60 + 48) * 1000;
+                        localStorage.setItem('ipl_trial_target_time_ms', targetTime.toString());
+                    } else {
+                        targetTime = parseInt(targetTime);
+                    }
+                    
+                    function updateTicker() {
+                        var currentMs = Date.now();
+                        var diffMs = targetTime - currentMs;
+                        if (diffMs < 0) diffMs = 0;
+                        
+                        var totalSecs = Math.floor(diffMs / 1000);
+                        var h = Math.floor(totalSecs / 3600);
+                        var m = Math.floor((totalSecs % 3600) / 60);
+                        var s = totalSecs % 60;
+                        
+                        var hStr = (h < 10 ? '0' : '') + h;
+                        var mStr = (m < 10 ? '0' : '') + m;
+                        var sStr = (s < 10 ? '0' : '') + s;
+                        
+                        var container = document.getElementById('sidebar-ticking-timer');
+                        if (container) {
+                            container.innerHTML = hStr + "h : " + mStr + "m : " + sStr + "s";
+                        }
+                    }
+                    setInterval(updateTicker, 1000);
+                    updateTicker();
+                })();
+                </script>
+                """, unsafe_allow_html=True)
+            else:
+                st.markdown("""
+                <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid #EF444450; border-radius: 10px; padding: 12px; margin-top: 10px; margin-bottom: 2px;">
+                    <p style="font-size:9.5px; font-weight:800; color:#EF4444; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">⏳ TRIAL EXPIRED</p>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#EF4444; margin-top: 2px;">
+                        00h : 00m : 00s
+                    </div>
+                    <p style="font-size:8.5px; color:#F87171; margin:4px 0 0 0;">Free trial finished. Dashboard visuals are blurred.</p>
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            # Multi-month plan active ticker (Eden, Wankhede)
             st.markdown("""
             <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid #10B98150; border-radius: 10px; padding: 12px; margin-top: 10px; margin-bottom: 2px;">
-                <p style="font-size:9.5px; font-weight:800; color:#10B981; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">⏳ TRIAL HOUR COUNTDOWN</p>
-                <div id="sidebar-ticking-timer" style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#FFFFFF; margin-top: 2px;">
-                    Calculating...
+                <p style="font-size:9.5px; font-weight:800; color:#10B981; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">⏳ CONTRACT STATUS</p>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#FFFFFF; margin-top: 2px;">
+                    Active Contract
                 </div>
-                <p style="font-size:8.5px; color:#94A3B8; margin:4px 0 0 0;">Active 1-Day Trial. Auto-expires after Day 1.</p>
+                <p style="font-size:8.5px; color:#94A3B8; margin:4px 0 0 0;">Multi-month premium/pro combo active.</p>
             </div>
-            
-            <script>
-            (function() {
-                var targetTime = localStorage.getItem('ipl_trial_target_time_ms');
-                var nowSec = Date.now();
-                if (!targetTime || (parseInt(targetTime) < nowSec)) {
-                    targetTime = nowSec + (14 * 3600 + 32 * 60 + 48) * 1000;
-                    localStorage.setItem('ipl_trial_target_time_ms', targetTime.toString());
-                } else {
-                    targetTime = parseInt(targetTime);
-                }
-                
-                function updateTicker() {
-                    var currentMs = Date.now();
-                    var diffMs = targetTime - currentMs;
-                    if (diffMs < 0) diffMs = 0;
-                    
-                    var totalSecs = Math.floor(diffMs / 1000);
-                    var h = Math.floor(totalSecs / 3600);
-                    var m = Math.floor((totalSecs % 3600) / 60);
-                    var s = totalSecs % 60;
-                    
-                    var hStr = (h < 10 ? '0' : '') + h;
-                    var mStr = (m < 10 ? '0' : '') + m;
-                    var sStr = (s < 10 ? '0' : '') + s;
-                    
-                    var container = document.getElementById('sidebar-ticking-timer');
-                    if (container) {
-                        container.innerHTML = hStr + "h : " + mStr + "m : " + sStr + "s";
-                    }
-                }
-                setInterval(updateTicker, 1000);
-                updateTicker();
-            })();
-            </script>
             """, unsafe_allow_html=True)
 
     # Modern dynamic theme toggle at bottom of sidebar
@@ -2145,18 +2225,18 @@ if username_key in ["che_admin01", "chin_admin01", "eden_admin01", "uppal_admin0
         st.session_state.is_premium_subscribed = True
         st.session_state.is_pro_subscribed = True
     elif username_key == "chin_admin01":
-        st.session_state.is_premium_subscribed = True
-        st.session_state.is_pro_subscribed = False
+        if is_day_1:
+            st.session_state.is_premium_subscribed = True
+            st.session_state.is_pro_subscribed = False
+        else:
+            st.session_state.is_premium_subscribed = False
+            st.session_state.is_pro_subscribed = False
     elif username_key == "eden_admin01":
         st.session_state.is_premium_subscribed = True
         st.session_state.is_pro_subscribed = True
     elif username_key == "uppal_admin01":
-        if is_day_1:
-            st.session_state.is_premium_subscribed = True
-            st.session_state.is_pro_subscribed = True
-        else:
-            st.session_state.is_premium_subscribed = False
-            st.session_state.is_pro_subscribed = False
+        st.session_state.is_premium_subscribed = False
+        st.session_state.is_pro_subscribed = False
     elif username_key == "wank_admin01":
         st.session_state.is_premium_subscribed = True
         st.session_state.is_pro_subscribed = True
@@ -2166,18 +2246,21 @@ if username_key == "che_admin01":
     has_premium_access = True
     has_pro_access = True
 elif username_key == "chin_admin01":
-    has_premium_access = True
-    has_pro_access = False
+    if is_day_1:
+        has_premium_access = True
+        has_pro_access = False
+    else:
+        has_premium_access = False
+        has_pro_access = False
 elif username_key == "eden_admin01":
     has_premium_access = True
     has_pro_access = True
 elif username_key == "uppal_admin01":
-    if is_day_1:
-        has_premium_access = True
-        has_pro_access = True
-    else:
-        has_premium_access = False
-        has_pro_access = False
+    # Uppal Stadium has only access to visuals (not premium/pro options) for 1 day. 
+    # Having has_premium_access as False disables premium options on Day 1, while page is not blurred on Day 1.
+    # On Day 2+, since has_premium_access is False, the dashboard pages will get blurred.
+    has_premium_access = False
+    has_pro_access = False
 elif username_key == "wank_admin01":
     has_premium_access = True
     has_pro_access = True
@@ -2443,7 +2526,10 @@ if page == "User Portal":
         if username_key_val == "che_admin01":
             active_plan_descr = "🎁 Free Trial (Lifetime)"
         elif username_key_val == "chin_admin01":
-            active_plan_descr = "✨ Premium (AI Insights 3M)"
+            if is_day_1_val:
+                active_plan_descr = "✨ Premium (AI Insights 1M)"
+            else:
+                active_plan_descr = "❌ Premium (AI Insights 1M) - Expired"
         elif username_key_val == "eden_admin01":
             active_plan_descr = "🔮 Premium + Pro (3M)"
         elif username_key_val == "uppal_admin01":
@@ -2787,6 +2873,26 @@ if page == "Admin Dashboard":
         st.error("❌ ACCESS DENIED: Critical authorization failure. This financial monitor workspace is reserved exclusively for system administrators.")
         st.stop()
 
+    # System administration simulation control interface
+    st.markdown("<div style='margin-bottom: 20px;'>", unsafe_allow_html=True)
+    with st.expander("🛠️ SYSTEM SIMULATION INTERFACE (ADMIN ONLY)", expanded=True):
+        st.markdown(
+            '<p style="font-size:11px; font-weight:800; color:#EF4444; margin-top:2px; margin-bottom:10px; letter-spacing:0.5px; text-transform:uppercase;">⚠️ SIMULATED SUBSCRIPTION ACTIVE/EXPIRED CONTEXT</p>',
+            unsafe_allow_html=True
+        )
+        sim_opts = ["Day 1", "Day 2+"]
+        sel_sim_day = st.radio(
+            "Change Active App-Usage Day context (Simulating Time-Flow Expansions):",
+            sim_opts,
+            index=0 if st.session_state.app_usage_day == "Day 1" else 1,
+            horizontal=True,
+            key="admin_page_usage_day_sim_radio"
+        )
+        if sel_sim_day != st.session_state.get("app_usage_day", "Day 1"):
+            st.session_state.app_usage_day = sel_sim_day
+            st.rerun()
+    st.markdown("</div>", unsafe_allow_html=True)
+
     # Calculate real statistics from ledger
     payments_list = st.session_state.get("subscription_payments", [])
     total_subscribers = len(set(p["username"] for p in payments_list))
@@ -2963,6 +3069,9 @@ if page == "Admin Dashboard":
     is_day_1_val = st.session_state.get("app_usage_day", "Day 1") == "Day 1"
     uppal_status = "🟢 Active (1D Trial)" if is_day_1_val else "🔴 Expired (Blurred)"
     uppal_color = "#10B981" if is_day_1_val else "#F87171"
+    
+    chin_status = "✨ Active (1M Insights)" if is_day_1_val else "🔴 Expired (Blurred)"
+    chin_color = "#38BDF8" if is_day_1_val else "#F87171"
 
     managers_showcase = [
         {
@@ -2979,9 +3088,9 @@ if page == "Admin Dashboard":
             "name": "CHIN_Admin01",
             "stadium": "Chinnaswamy Stadium",
             "role": "Zone Marshall",
-            "plan_desc": "Premium (Insights 3M)",
-            "status": "✨ Premium Active",
-            "status_color": "#38BDF8",
+            "plan_desc": "AI Insights Plan (1 Month)",
+            "status": chin_status,
+            "status_color": chin_color,
             "color": "#1E3A8A",
             "bg_color": "rgba(30, 58, 138, 0.08)"
         },
