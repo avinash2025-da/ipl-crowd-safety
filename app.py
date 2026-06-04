@@ -2047,7 +2047,7 @@ with st.sidebar:
                     }}
                     var tickerInterval = setInterval(updateTicker, 1000);
                     updateTicker();
-                })();
+                }})();
                 </script>
                 """, unsafe_allow_html=True)
             else:
