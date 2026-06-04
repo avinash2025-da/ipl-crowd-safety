@@ -1949,129 +1949,117 @@ with st.sidebar:
                 <p style="font-size:8.5px; color:#A78BFA; margin:4px 0 0 0;">First stadium promoter bypass tier active.</p>
             </div>
             """, unsafe_allow_html=True)
-        elif username_key_val == "chin_admin01":
+        else:
+            # Non-free stadium users: chin_admin01, eden_admin01, uppal_admin01, wank_admin01
+            plan_label = "1-DAY FREE TRIAL"
+            plan_color = "#10B981"
+            plan_bg = "rgba(16, 185, 129, 0.08)"
+            plan_border = "#10B98150"
+            if username_key_val == "chin_admin01":
+                plan_label = "1-MONTH PREMIUM PLAN"
+                plan_color = "#38BDF8"
+                plan_bg = "rgba(56, 189, 248, 0.08)"
+                plan_border = "#38BDF850"
+            elif username_key_val == "eden_admin01":
+                plan_label = "3-MONTH PREMIUM + PRO"
+                plan_color = "#A78BFA"
+                plan_bg = "rgba(167, 139, 250, 0.08)"
+                plan_border = "#A78BFA50"
+            elif username_key_val == "wank_admin01":
+                plan_label = "PREM 3M + PRO 6M COMBO"
+                plan_color = "#FBBF24"
+                plan_bg = "rgba(251, 191, 36, 0.08)"
+                plan_border = "#FBBF2450"
+
             if is_day_1:
-                st.markdown("""
-                <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid #38BDF850; border-radius: 10px; padding: 12px; margin-top: 10px; margin-bottom: 2px;">
-                    <p style="font-size:9.5px; font-weight:800; color:#38BDF8; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">⏳ SUBSCRIPTION COUNTDOWN</p>
-                    <div id="sidebar-ticking-timer" style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#FFFFFF; margin-top: 2px;">
+                st.markdown(f"""
+                <div style="background: {plan_bg}; border: 1px solid {plan_border}; border-radius: 10px; padding: 12px; margin-top: 10px; margin-bottom: 2px;">
+                    <p style="font-size:9.5px; font-weight:800; color:{plan_color}; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">⏳ SUBSCRIPTION COUNTDOWN</p>
+                    <div id="sidebar-ticking-timer" style="font-family: 'JetBrains Mono', monospace; font-size:18px; font-weight:700; color:#FFFFFF; margin-top: 2px;">
                         Calculating...
                     </div>
-                    <p style="font-size:8.5px; color:#94A3B8; margin:4px 0 0 0;">Active 1-Month Plan. Access expires after term.</p>
+                    <p style="font-size:8.5px; color:#94A3B8; margin:4px 0 0 0;">Active {plan_label}. Expiration count-down live.</p>
                 </div>
                 
                 <script>
-                (function() {
-                    var targetTime = localStorage.getItem('ipl_chin_target_time_ms');
-                    var nowSec = Date.now();
-                    if (!targetTime || (parseInt(targetTime) < nowSec)) {
-                        targetTime = nowSec + (14 * 3600 + 32 * 60 + 48) * 1000;
-                        localStorage.setItem('ipl_chin_target_time_ms', targetTime.toString());
-                    } else {
+                (function() {{
+                    var userId = "{username_key_val}";
+                    var key = "ipl_target_expiry_ms_" + userId;
+                    var targetTime = localStorage.getItem(key);
+                    var now = Date.now();
+                    if (!targetTime || parseInt(targetTime) < now) {{
+                        // First initialization today, starts from 23 hours, 59 minutes, 59 seconds
+                        targetTime = now + (23 * 3600 + 59 * 60 + 59) * 1000;
+                        localStorage.setItem(key, targetTime.toString());
+                    }} else {{
                         targetTime = parseInt(targetTime);
-                    }
+                    }}
                     
-                    function updateTicker() {
-                        var currentMs = Date.now();
-                        var diffMs = targetTime - currentMs;
-                        if (diffMs < 0) diffMs = 0;
+                    function updateTicker() {{
+                        var curr = Date.now();
+                        var diff = targetTime - curr;
+                        if (diff <= 0) {{
+                            diff = 0;
+                            clearInterval(tickerInterval);
+                            // Visual blur of stream elements immediately
+                            try {{
+                                var doc = window.parent.document;
+                                var elms = doc.querySelectorAll('div[data-testid="stKPI"], div[data-testid="stMetricValue"], div[data-testid="stArrowDataFrame"], div[data-testid="stPlotlyChart"]');
+                                elms.forEach(function(el) {{
+                                    el.style.filter = 'blur(8px) grayscale(45%)';
+                                    el.style.pointerEvents = 'none';
+                                    el.style.opacity = '0.82';
+                                }});
+                            }} catch (e) {{}}
+                            // Instant redirection to User Portal via query parameters reload
+                            setTimeout(function() {{
+                                try {{
+                                    window.parent.location.search = '?expired=true';
+                                }} catch (e) {{
+                                    try {{
+                                        window.location.search = '?expired=true';
+                                    }} catch (err) {{}}
+                                }}
+                            }}, 800);
+                        }}
                         
-                        var totalSecs = Math.floor(diffMs / 1000);
+                        var totalSecs = Math.floor(diff / 1000);
                         var h = Math.floor(totalSecs / 3600);
                         var m = Math.floor((totalSecs % 3600) / 60);
                         var s = totalSecs % 60;
                         
-                        var hStr = (h < 10 ? '0' : '') + h;
-                        var mStr = (m < 10 ? '0' : '') + m;
-                        var sStr = (s < 10 ? '0' : '') + s;
+                        var timeStr = "";
+                        if (h > 0) {{
+                            var mStr = (m < 10 ? '0' : '') + m;
+                            var sStr = (s < 10 ? '0' : '') + s;
+                            timeStr = h + ":" + mStr + ":" + sStr;
+                        }} else if (m > 0) {{
+                            var sStr = (s < 10 ? '0' : '') + s;
+                            timeStr = m + ":" + sStr;
+                        }} else {{
+                            timeStr = s.toString();
+                        }}
                         
                         var container = document.getElementById('sidebar-ticking-timer');
-                        if (container) {
-                            container.innerHTML = hStr + "h : " + mStr + "m : " + sStr + "s";
-                        }
-                    }
-                    setInterval(updateTicker, 1000);
+                        if (container) {{
+                            container.innerHTML = timeStr;
+                        }}
+                    }}
+                    var tickerInterval = setInterval(updateTicker, 1000);
                     updateTicker();
                 })();
                 </script>
                 """, unsafe_allow_html=True)
             else:
-                st.markdown("""
+                st.markdown(f"""
                 <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid #EF444450; border-radius: 10px; padding: 12px; margin-top: 10px; margin-bottom: 2px;">
                     <p style="font-size:9.5px; font-weight:800; color:#EF4444; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">⏳ SUBSCRIPTION EXPIRED</p>
-                    <div style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#EF4444; margin-top: 2px;">
-                        00h : 00m : 00s
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size:18px; font-weight:700; color:#EF4444; margin-top: 2px;">
+                        0 (EXPIRED)
                     </div>
-                    <p style="font-size:8.5px; color:#F87171; margin:4px 0 0 0;">Term ended. Dashboard visuals are blurred.</p>
+                    <p style="font-size:8.5px; color:#F87171; margin:4px 0 0 0;">Term finished. Dashboard visuals are blurred.</p>
                 </div>
                 """, unsafe_allow_html=True)
-        elif username_key_val == "uppal_admin01":
-            if is_day_1:
-                st.markdown("""
-                <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid #10B98150; border-radius: 10px; padding: 12px; margin-top: 10px; margin-bottom: 2px;">
-                    <p style="font-size:9.5px; font-weight:800; color:#10B981; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">⏳ TRIAL HOUR COUNTDOWN</p>
-                    <div id="sidebar-ticking-timer" style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#FFFFFF; margin-top: 2px;">
-                        Calculating...
-                    </div>
-                    <p style="font-size:8.5px; color:#94A3B8; margin:4px 0 0 0;">Active 1-Day Trial. Auto-expires after Day 1.</p>
-                </div>
-                
-                <script>
-                (function() {
-                    var targetTime = localStorage.getItem('ipl_trial_target_time_ms');
-                    var nowSec = Date.now();
-                    if (!targetTime || (parseInt(targetTime) < nowSec)) {
-                        targetTime = nowSec + (14 * 3600 + 32 * 60 + 48) * 1000;
-                        localStorage.setItem('ipl_trial_target_time_ms', targetTime.toString());
-                    } else {
-                        targetTime = parseInt(targetTime);
-                    }
-                    
-                    function updateTicker() {
-                        var currentMs = Date.now();
-                        var diffMs = targetTime - currentMs;
-                        if (diffMs < 0) diffMs = 0;
-                        
-                        var totalSecs = Math.floor(diffMs / 1000);
-                        var h = Math.floor(totalSecs / 3600);
-                        var m = Math.floor((totalSecs % 3600) / 60);
-                        var s = totalSecs % 60;
-                        
-                        var hStr = (h < 10 ? '0' : '') + h;
-                        var mStr = (m < 10 ? '0' : '') + m;
-                        var sStr = (s < 10 ? '0' : '') + s;
-                        
-                        var container = document.getElementById('sidebar-ticking-timer');
-                        if (container) {
-                            container.innerHTML = hStr + "h : " + mStr + "m : " + sStr + "s";
-                        }
-                    }
-                    setInterval(updateTicker, 1000);
-                    updateTicker();
-                })();
-                </script>
-                """, unsafe_allow_html=True)
-            else:
-                st.markdown("""
-                <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid #EF444450; border-radius: 10px; padding: 12px; margin-top: 10px; margin-bottom: 2px;">
-                    <p style="font-size:9.5px; font-weight:800; color:#EF4444; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">⏳ TRIAL EXPIRED</p>
-                    <div style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#EF4444; margin-top: 2px;">
-                        00h : 00m : 00s
-                    </div>
-                    <p style="font-size:8.5px; color:#F87171; margin:4px 0 0 0;">Free trial finished. Dashboard visuals are blurred.</p>
-                </div>
-                """, unsafe_allow_html=True)
-        else:
-            # Multi-month plan active ticker (Eden, Wankhede)
-            st.markdown("""
-            <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid #10B98150; border-radius: 10px; padding: 12px; margin-top: 10px; margin-bottom: 2px;">
-                <p style="font-size:9.5px; font-weight:800; color:#10B981; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">⏳ CONTRACT STATUS</p>
-                <div style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#FFFFFF; margin-top: 2px;">
-                    Active Contract
-                </div>
-                <p style="font-size:8.5px; color:#94A3B8; margin:4px 0 0 0;">Multi-month premium/pro combo active.</p>
-            </div>
-            """, unsafe_allow_html=True)
 
     # Modern dynamic theme toggle at bottom of sidebar
     st.markdown("<hr style='margin:16px 0; opacity:0.15;'>", unsafe_allow_html=True)
@@ -2113,6 +2101,17 @@ with st.sidebar:
 # ─────────────────────────────────────────────────────────
 # RENDER PAGES
 # ─────────────────────────────────────────────────────────
+# Check for Javascript-driven expiration redirect
+try:
+    if hasattr(st, "query_params") and "expired" in st.query_params:
+        if st.query_params["expired"] == "true":
+            st.session_state.app_usage_day = "Day 2+"
+            st.session_state.active_page = "User Portal"
+            st.query_params.clear()
+            st.rerun()
+except Exception:
+    pass
+
 # Admin constraint: force Admins to ONLY view the Admin Dashboard
 is_admin_check = st.session_state.get("is_logged_in", False) and st.session_state.get("user_name", "").strip().lower() in ["avinash", "madhukar", "sharon", "deepak"]
 if is_admin_check and st.session_state.active_page != "Admin Dashboard":
@@ -2232,14 +2231,22 @@ if username_key in ["che_admin01", "chin_admin01", "eden_admin01", "uppal_admin0
             st.session_state.is_premium_subscribed = False
             st.session_state.is_pro_subscribed = False
     elif username_key == "eden_admin01":
-        st.session_state.is_premium_subscribed = True
-        st.session_state.is_pro_subscribed = True
+        if is_day_1:
+            st.session_state.is_premium_subscribed = True
+            st.session_state.is_pro_subscribed = True
+        else:
+            st.session_state.is_premium_subscribed = False
+            st.session_state.is_pro_subscribed = False
     elif username_key == "uppal_admin01":
         st.session_state.is_premium_subscribed = False
         st.session_state.is_pro_subscribed = False
     elif username_key == "wank_admin01":
-        st.session_state.is_premium_subscribed = True
-        st.session_state.is_pro_subscribed = True
+        if is_day_1:
+            st.session_state.is_premium_subscribed = True
+            st.session_state.is_pro_subscribed = True
+        else:
+            st.session_state.is_premium_subscribed = False
+            st.session_state.is_pro_subscribed = False
 
 # Overwrite access metrics based on custom stadium mappings requested by the user
 if username_key == "che_admin01":
@@ -2253,8 +2260,12 @@ elif username_key == "chin_admin01":
         has_premium_access = False
         has_pro_access = False
 elif username_key == "eden_admin01":
-    has_premium_access = True
-    has_pro_access = True
+    if is_day_1:
+        has_premium_access = True
+        has_pro_access = True
+    else:
+        has_premium_access = False
+        has_pro_access = False
 elif username_key == "uppal_admin01":
     # Uppal Stadium has only access to visuals (not premium/pro options) for 1 day. 
     # Having has_premium_access as False disables premium options on Day 1, while page is not blurred on Day 1.
@@ -2262,8 +2273,12 @@ elif username_key == "uppal_admin01":
     has_premium_access = False
     has_pro_access = False
 elif username_key == "wank_admin01":
-    has_premium_access = True
-    has_pro_access = True
+    if is_day_1:
+        has_premium_access = True
+        has_pro_access = True
+    else:
+        has_premium_access = False
+        has_pro_access = False
 else:
     has_premium_access = st.session_state.get("is_premium_subscribed", False) or has_unlimited_bypass
     has_pro_access = st.session_state.get("is_pro_subscribed", False) or has_unlimited_bypass
@@ -2873,26 +2888,6 @@ if page == "Admin Dashboard":
         st.error("❌ ACCESS DENIED: Critical authorization failure. This financial monitor workspace is reserved exclusively for system administrators.")
         st.stop()
 
-    # System administration simulation control interface
-    st.markdown("<div style='margin-bottom: 20px;'>", unsafe_allow_html=True)
-    with st.expander("🛠️ SYSTEM SIMULATION INTERFACE (ADMIN ONLY)", expanded=True):
-        st.markdown(
-            '<p style="font-size:11px; font-weight:800; color:#EF4444; margin-top:2px; margin-bottom:10px; letter-spacing:0.5px; text-transform:uppercase;">⚠️ SIMULATED SUBSCRIPTION ACTIVE/EXPIRED CONTEXT</p>',
-            unsafe_allow_html=True
-        )
-        sim_opts = ["Day 1", "Day 2+"]
-        sel_sim_day = st.radio(
-            "Change Active App-Usage Day context (Simulating Time-Flow Expansions):",
-            sim_opts,
-            index=0 if st.session_state.app_usage_day == "Day 1" else 1,
-            horizontal=True,
-            key="admin_page_usage_day_sim_radio"
-        )
-        if sel_sim_day != st.session_state.get("app_usage_day", "Day 1"):
-            st.session_state.app_usage_day = sel_sim_day
-            st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
-
     # Calculate real statistics from ledger
     payments_list = st.session_state.get("subscription_payments", [])
     total_subscribers = len(set(p["username"] for p in payments_list))
@@ -3073,6 +3068,12 @@ if page == "Admin Dashboard":
     chin_status = "✨ Active (1M Insights)" if is_day_1_val else "🔴 Expired (Blurred)"
     chin_color = "#38BDF8" if is_day_1_val else "#F87171"
 
+    eden_status = "🔮 Prem+Pro Active" if is_day_1_val else "🔴 Expired (Blurred)"
+    eden_color = "#A78BFA" if is_day_1_val else "#F87171"
+
+    wank_status = "🔮 Prem+Pro Active" if is_day_1_val else "🔴 Expired (Blurred)"
+    wank_color = "#10B981" if is_day_1_val else "#F87171"
+
     managers_showcase = [
         {
             "name": "CHE_Admin01",
@@ -3099,8 +3100,8 @@ if page == "Admin Dashboard":
             "stadium": "Eden Gardens",
             "role": "Ops Supervisor",
             "plan_desc": "Premium + Pro (3Months)",
-            "status": "🔮 Prem+Pro Active",
-            "status_color": "#A78BFA",
+            "status": eden_status,
+            "status_color": eden_color,
             "color": "#0D9488",
             "bg_color": "rgba(13, 148, 136, 0.08)"
         },
@@ -3119,8 +3120,8 @@ if page == "Admin Dashboard":
             "stadium": "Wankhede Stadium",
             "role": "Safety Director",
             "plan_desc": "Prem 3M + Pro 6M Combo",
-            "status": "🔮 Prem+Pro Active",
-            "status_color": "#10B981",
+            "status": wank_status,
+            "status_color": wank_color,
             "color": "#D97706",
             "bg_color": "rgba(217, 119, 6, 0.08)"
         }
