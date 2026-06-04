@@ -1948,7 +1948,7 @@ with st.sidebar:
     # Embed professional live Javascript ticking timer in sidebar for Day 1 sessions (Trial or Administration mode)
     if st.session_state.app_usage_day == "Day 1":
         if username_key_val == "uppal_admin01" or username_key_val in ["avinash", "madhukar", "sharon", "deepak"]:
-            st.markdown(f"""
+            st.markdown("""
             <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid #10B98150; border-radius: 10px; padding: 12px; margin-top: 10px; margin-bottom: 2px;">
                 <p style="font-size:9.5px; font-weight:800; color:#10B981; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:0.5px;">⏳ TRIAL HOUR COUNTDOWN</p>
                 <div id="sidebar-ticking-timer" style="font-family: 'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:#FFFFFF; margin-top: 2px;">
